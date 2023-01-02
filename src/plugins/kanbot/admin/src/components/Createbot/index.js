@@ -109,7 +109,7 @@ const index = () => {
                     name="app_id"
                     error={content.app_id.length == 0 ? 'Trường App ID là bắt buộc' : undefined} 
                     onChange={e => setContent({...content, app_id: e.target.value})} 
-                    value={content.app_id ? content.app_id : "832661161343867"} 
+                    value={content.app_id} 
                     labelAction={
                     <Tooltip description={ "Trường App ID là bắt buộc" }>
                         <button 
@@ -128,7 +128,7 @@ const index = () => {
                   name="server_token"
                   error={content.server_access_token.length == 0 ? 'Trường Server access token là bắt buộc' : undefined} 
                   onChange={e => setContent({...content, server_access_token: e.target.value})} 
-                  value={content.server_access_token ? content.server_access_token : "SHNOINM4BIPFHHVEUOPJJY4QUFL6VX5S"} 
+                  value={content.server_access_token} 
                   labelAction={
                   <Tooltip description={ "Trường Server access token là bắt buộc" }>
                       <button 
