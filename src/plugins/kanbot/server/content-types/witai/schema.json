@@ -1,0 +1,42 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "witai",
+  "info": {
+    "singularName": "witai",
+    "pluralName": "witais",
+    "displayName": "witai"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "app_name": {
+      "type": "string",
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "app_name"
+    },
+    "bot_description": {
+      "type": "text"
+    },
+    "bot_id": {
+      "type": "biginteger"
+    },
+    "language": {
+      "type": "text"
+    },
+    "private": {
+      "type": "boolean"
+    },
+    "server_access_token": {
+      "type": "text"
+    },
+    "client_access_token": {
+      "type": "text"
+    }
+  }
+}

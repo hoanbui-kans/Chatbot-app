@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "utterances",
+  "info": {
+    "singularName": "utterance",
+    "pluralName": "utterances",
+    "displayName": "utterance"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}

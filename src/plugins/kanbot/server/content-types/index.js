@@ -1,3 +1,7 @@
 'use strict';
 
-module.exports = {};
+const witai = require('./witai');
+
+module.exports = {
+  witai
+}
