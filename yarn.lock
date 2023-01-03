@@ -1693,7 +1693,7 @@
     "lodash" "4.17.21"
     "sift" "16.0.0"
 
-"@strapi/plugin-content-manager@4.5.5":
+"@strapi/plugin-content-manager@^4.5.5", "@strapi/plugin-content-manager@4.5.5":
   "integrity" "sha512-PkZMN2qXJZYUMF3/P1N6cK9Vlbno/TOF482Nuqa/piZW7XnplXnj3de4/P+2Wc4Vlp/y7TREhIw0f43q7jDCEA=="
   "resolved" "https://registry.npmjs.org/@strapi/plugin-content-manager/-/plugin-content-manager-4.5.5.tgz"
   "version" "4.5.5"
@@ -1741,7 +1741,7 @@
     "@strapi/utils" "4.5.5"
     "lodash" "4.17.21"
 
-"@strapi/plugin-upload@4.5.5":
+"@strapi/plugin-upload@^4.5.5", "@strapi/plugin-upload@4.5.5":
   "integrity" "sha512-5T+LPNKMnduZtlVjuNunG6m57p0jXLfZzkaFDjlGUWvIrOrjCTt6MGA+0Ysfe+1kvo8hBsQl+1IXVVMxH4lzoQ=="
   "resolved" "https://registry.npmjs.org/@strapi/plugin-upload/-/plugin-upload-4.5.5.tgz"
   "version" "4.5.5"

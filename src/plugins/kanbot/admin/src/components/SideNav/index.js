@@ -21,21 +21,25 @@ const SizeNav = () => {
     id: 1,
     label: 'Intents',
     icon: <ExclamationMarkCircle />,
-    to: '/address'
+    to: 'address'
   }, {
     id: 2,
     label: 'Entities',
-    to: '/category'
+    to: 'category'
   }, {
     id: 3,
     label: 'Traits',
     icon: <Apps />,
-    to: '/city',
+    to: 'city',
     active: true
   }, {
     id: 4,
     label: 'Utterances',
-    to: '/country'
+    to: 'country'
+  },{
+    id: 5,
+    label: 'Composer',
+    to: 'composer'
   }];
   return (
   <SubNav ariaLabel="Settings sub nav">
@@ -43,7 +47,7 @@ const SizeNav = () => {
       <SubNavSections>
         <SubNavSection label="Global Settings">
           {links.map(link =>
-                <SubNavLink to={link.to} active={link.active} icon={link.icon} key={link.id}>
+                <SubNavLink to={`/plugins/${pluginId}/${link.to}`} active={link.active} icon={link.icon} key={link.id}>
                   {link.label}
                 </SubNavLink>)}
         </SubNavSection>

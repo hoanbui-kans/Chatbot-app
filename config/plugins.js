@@ -7,6 +7,10 @@ module.exports = {
       enabled: true,
       resolve: './src/plugins/product'
     },
+    'order': {
+      enabled: true,
+      resolve: './src/plugins/order'
+    },
     'kanbot': {
       enabled: true,
       resolve: './src/plugins/kanbot'
@@ -14,5 +18,5 @@ module.exports = {
     'connection': {
       enabled: true,
       resolve: './src/plugins/connection'
-    },
+    }
   }

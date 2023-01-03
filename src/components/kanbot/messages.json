@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_kanbot_messages",
+  "info": {
+    "displayName": "Messages"
+  },
+  "options": {},
+  "attributes": {
+    "message": {
+      "type": "text"
+    }
+  }
+}

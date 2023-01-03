@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_entities_lookups",
+  "info": {
+    "displayName": "lookups",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "free-text",
+        "keywords"
+      ]
+    }
+  }
+}

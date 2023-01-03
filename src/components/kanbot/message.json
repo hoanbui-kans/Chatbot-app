@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_kanbot_messages_group",
+  "info": {
+    "displayName": "message_group"
+  },
+  "options": {},
+  "attributes": {
+    "messages": {
+      "displayName": "Messages group",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.messages"
+    }
+  }
+}

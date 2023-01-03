@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_kanbot_entities",
+  "info": {
+    "displayName": "entities"
+  },
+  "options": {},
+  "attributes": {
+    "entity": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.entity"
+    },
+    "role": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.role"
+    },
+    "resolved_value": {
+      "type": "string"
+    }
+  }
+}

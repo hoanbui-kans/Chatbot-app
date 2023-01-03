@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_kanbot_selections",
+  "info": {
+    "displayName": "selection"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

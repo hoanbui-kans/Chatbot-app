@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_kanbot_values",
+  "info": {
+    "displayName": "values"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}

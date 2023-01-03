@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "roles",
+  "info": {
+    "singularName": "role",
+    "pluralName": "roles",
+    "displayName": "role",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "uid"
+    },
+    "entities": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.entity",
+      "inversedBy": "kanbot_roles"
+    }
+  }
+}

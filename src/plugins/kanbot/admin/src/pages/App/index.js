@@ -13,18 +13,23 @@ import HomePage from '../HomePage';
 import Bot from '../Bot';
 import Settings from '../Settings';
 import Addbot from '../Settings/Addbot';
+import Composer from '../Composer';
+
+import { Provider } from 'react-redux';
+import { store } from '../store';
 
 const App = () => {
   return (
-    <div>
+    <Provider store={store}>
       <Switch>
         <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
         <Route path={`/plugins/${pluginId}/bot`} component={Bot} exact />
         <Route path={`/plugins/${pluginId}/settings`} component={Settings} exact />
         <Route path={`/plugins/${pluginId}/settings/add-bot`} component={Addbot} exact />
+        <Route path={`/plugins/${pluginId}/composer`} component={Composer} exact />
         <Route component={NotFound} />
       </Switch>
-    </div>
+    </Provider>
   );
 };
 

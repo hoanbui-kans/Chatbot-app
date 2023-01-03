@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "response",
+  "info": {
+    "singularName": "response",
+    "pluralName": "responses",
+    "displayName": "response",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true,
+    "comment": ""
+  },
+  "attributes": {
+    "type": {
+      "type": "dynamiczone",
+      "components": [
+        "kanbot.message",
+        "kanbot.quick-replies",
+        "kanbot.templates"
+      ],
+      "max": 1
+    },
+    "typing": {
+      "type": "boolean"
+    }
+  }
+}

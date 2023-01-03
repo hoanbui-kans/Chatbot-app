@@ -4,12 +4,11 @@
  *
  */
 
-import React,  { useState } from 'react';
+import React from 'react';
 // import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
 
 import { 
-  Flex, 
   Layout, 
   HeaderLayout, 
   LinkButton, 
@@ -23,7 +22,7 @@ import Plus from '@strapi/icons/Plus';
 import SizeNav from '../../components/SideNav';
 
 const HomePage = () => {
-  return <Layout>
+  return <Layout sideNav={<SizeNav />}>
             <HeaderLayout 
                 primaryAction={
                     <LinkButton 

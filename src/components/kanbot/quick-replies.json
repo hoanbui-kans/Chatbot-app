@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_kanbot_quick_replies",
+  "info": {
+    "displayName": "quick_replies"
+  },
+  "options": {},
+  "attributes": {
+    "option": {
+      "displayName": "selection",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.selection"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "entities",
+  "info": {
+    "singularName": "entity",
+    "pluralName": "entities",
+    "displayName": "entity",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "unique": true
+    },
+    "name": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "intents": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.intent",
+      "inversedBy": "entities"
+    },
+    "kanbot_roles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.role",
+      "mappedBy": "entities"
+    }
+  }
+}

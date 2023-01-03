@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "utterances",
+  "info": {
+    "singularName": "utterance",
+    "pluralName": "utterances",
+    "displayName": "utterance",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "message": {
+      "type": "text"
+    },
+    "intent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::kanbot.intent",
+      "inversedBy": "utterances"
+    },
+    "entities": {
+      "displayName": "entities",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.entities"
+    },
+    "traits": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.trait",
+      "inversedBy": "utterances"
+    }
+  }
+}

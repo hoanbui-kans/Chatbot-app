@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_order_info_billings",
+  "info": {
+    "displayName": "billing"
+  },
+  "options": {},
+  "attributes": {
+    "entity": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.entity"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}

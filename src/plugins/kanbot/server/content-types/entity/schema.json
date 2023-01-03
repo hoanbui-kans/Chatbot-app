@@ -8,7 +8,7 @@
     "displayName": "entity"
   },
   "options": {
-    "draftAndPublish": true,
+    "draftAndPublish": false,
     "comment": ""
   },
   "attributes": {}

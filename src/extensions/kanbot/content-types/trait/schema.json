@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "traits",
+  "info": {
+    "singularName": "trait",
+    "pluralName": "traits",
+    "displayName": "trait",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "name": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "value": {
+      "displayName": "values",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.values"
+    },
+    "utterances": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.utterance",
+      "mappedBy": "traits"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "response",
+  "info": {
+    "singularName": "response",
+    "pluralName": "responses",
+    "displayName": "response"
+  },
+  "options": {
+    "draftAndPublish": true,
+    "comment": ""
+  },
+  "attributes": {}
+}

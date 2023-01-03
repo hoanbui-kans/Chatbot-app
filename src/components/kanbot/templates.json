@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_kanbot_templates",
+  "info": {
+    "displayName": "templates"
+  },
+  "options": {},
+  "attributes": {
+    "media": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "button": {
+      "displayName": "buttons",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.buttons",
+      "max": 2,
+      "min": 0
+    }
+  }
+}
