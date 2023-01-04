@@ -4,6 +4,27 @@
  *  router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('plugin::kanbot.entity');
+module.exports = {
+    type: 'admin',
+    routes: [
+      {
+        method: 'GET',
+        path: '/entity/',
+        handler: 'entity.findAllEntity',
+        config: {
+          policies: [],
+          auth: false,
+        },
+      },
+      {
+        method: 'POST',
+        path: '/entity/',
+        handler: 'entity.createEntity',
+        config: {
+          policies: [],
+          auth: false,
+        },
+      },
+    ]
+  }
+  

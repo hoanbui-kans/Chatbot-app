@@ -4,10 +4,12 @@
  *  service
  */
 
-const myService = require('./my-service');
 const witai = require('./witai');
+const intent = require('./intent');
+const entity = require('./entity');
 
 module.exports = {
   witai,
-  myService
-};
+  intent,
+  entity
+}

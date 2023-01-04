@@ -14,31 +14,41 @@ import {
 import ExclamationMarkCircle from '@strapi/icons/ExclamationMarkCircle';
 import Apps from '@strapi/icons/Apps';
 import Plus from '@strapi/icons/Plus';
+import ChartCircle from '@strapi/icons/ChartCircle';
+import ManyToMany from '@strapi/icons/ManyToMany';
+import Discuss from '@strapi/icons/Discuss';
 
 const SizeNav = () => {
   const [search, setSearch] = useState('');
+  const iconSize = {
+    width: 18,
+    height: 18
+  }
   const links = [{
     id: 1,
     label: 'Intents',
-    icon: <ExclamationMarkCircle />,
-    to: 'address'
+    icon: <Discuss style={iconSize} />,
+    to: 'intents'
   }, {
     id: 2,
     label: 'Entities',
-    to: 'category'
+    icon: <ChartCircle style={iconSize} />,
+    to: 'entities'
   }, {
     id: 3,
     label: 'Traits',
-    icon: <Apps />,
-    to: 'city',
+    icon: <Apps style={iconSize} />,
+    to: 'traits',
     active: true
   }, {
     id: 4,
     label: 'Utterances',
-    to: 'country'
+    icon: <ChartCircle style={iconSize} />,
+    to: 'utterances'
   },{
     id: 5,
     label: 'Composer',
+    icon: <ManyToMany style={iconSize} />,
     to: 'composer'
   }];
   return (

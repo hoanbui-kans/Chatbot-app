@@ -19,7 +19,7 @@ const initialState = {
   edges: [],
   panelEditor: {
     open: false,
-    id: false
+    state: false
   },
 };
 

@@ -61,26 +61,11 @@ export const QuestionTemplate = (id) => {
 export const ResponseTemplate = (id) => {
   return ({
     id: id,
-    type: 'respomse-template',
+    type: 'response-template',
     // you can also pass a React component as a label
     data: { 
       title: 'Câu trả lời nhanh',
-      value: {
-        text: "Pick a color:",
-        quick_replies:[
-          {
-            "content_type":"text",
-            "title":"Red",
-            "payload" : "messaging_postbacks",
-            "image_url":"http://example.com/img/red.png"
-          },{
-            "content_type":"text",
-            "title":"Green",
-            "payload" : "messaging_postbacks",
-            "image_url":"http://example.com/img/green.png"
-          }
-        ]
-      } 
+      value: ""
     },
     position: { x: 150, y: 125 },
     targetPosition: Position.Left,

@@ -12,9 +12,12 @@ import ReactFlow, {
 } from 'reactflow';
 
 import CustomEdge from "./edges/ButtonEdge";
+
 // Node Template
 import DefaultNode from "./nodes/DefaultNode";
 import EmailNode from "./nodes/EmailNode";
+import ResponseNode from "./nodes/ResponseNode";
+
 // Redux 
 import { useDispatch, useSelector } from "react-redux";
 import { initialNotes, initialEdges, addNode, updateNode, updateEdge } from "../../slice/diagram-builder-slice";
@@ -28,7 +31,8 @@ const proOptions = { hideAttribution: true };
 
 const nodeTypes = {
   'default-template': DefaultNode,
-  'email-template': EmailNode
+  'email-template': EmailNode,
+  'response-template': ResponseNode
 }
 
 const edgeTypes = {

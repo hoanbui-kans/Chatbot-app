@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     ModalLayout, 
     ModalBody, 
@@ -16,50 +16,43 @@ import {
 } from '@strapi/design-system';
 
 import { addNode } from '../../slice/diagram-builder-slice';
-import { EmailTemplate } from './models/DiagramModel';
+import { EmailTemplate, ResponseTemplate } from './models/DiagramModel';
 import { v4 as uuidv4 } from 'uuid';
 import Envelop from '@strapi/icons/Envelop';
 import { useDispatch } from "react-redux";
 
 import { useReactFlow } from 'reactflow';
-
+import { findAll } from '../../../api/Entity';
 
 const Node = [
     {
-        name: 'Email',
-        icon: Envelop
-    },
-    {
-        name: 'Email',
-        icon: Envelop
-    },
-    {
-        name: 'Email',
-        icon: Envelop
-    },
-    {
-        name: 'Email',
-        icon: Envelop
-    },
-    {
-        name: 'Email',
-        icon: Envelop
-    },
-    {
-        name: 'Email',
+        name: 'Response',
         icon: Envelop
     }
 ]
+
 const NodeModal = ({ setOpenNode }) => {
 
     const dispatch = useDispatch();
     const reactFlowInstance  = useReactFlow();
 
     const addMoreNode = () => {
-        const newNode = EmailTemplate(uuidv4());
+        const newNode = ResponseTemplate(uuidv4());
         dispatch(addNode(newNode));
         reactFlowInstance.addNodes(newNode);
     }
+
+    const [entities, setEntities] = useState(false);
+  
+    useEffect(() => {
+      async function getEntities () {
+        const fetchEntities = await findAll();
+        if(fetchEntities){
+          setEntities(fetchEntities);
+        }
+      }
+      getEntities();
+    }, [])
 
     return (
         <>
@@ -94,7 +87,7 @@ const NodeModal = ({ setOpenNode }) => {
                                                     <Status variant="success" size="S" showBullet={false}>
                                                         <Envelop textColor="success600"/>
                                                     </Status>
-                                                    <Typography>Địa chỉ Email</Typography>
+                                                    <Typography>Câu trả lời</Typography>
                                                 </Stack>
                                         </Button>
                                     </GridItem>

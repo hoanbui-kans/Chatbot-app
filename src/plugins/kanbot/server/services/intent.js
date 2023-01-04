@@ -6,4 +6,13 @@
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('plugin::kanbot.intent');
+module.exports = ({ strapi }) => ({
+    async findAll () {
+      return await strapi.entityService.findOne("plugin::kanbot.witai", id);
+    },
+  
+    async createEntity () {
+      return [1, 2, 3];
+    },
+  
+  });

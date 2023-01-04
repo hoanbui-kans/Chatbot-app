@@ -20,7 +20,7 @@ import {
 
 import { Plus, ArrowLeft} from '@strapi/icons';
 import Flow from './components/Flow';
-import BotSideNav from '../../components/BotSideNav'
+import SideNav from '../../components/SideNav'
 import NodeModal from './components/NodeModal';
 import DiagramEditor from './components/DiagramEditor';
 import { ReactFlowProvider } from 'reactflow';
@@ -29,7 +29,7 @@ const index = () => {
   const [ openNode, setOpenNode ] = useState(false);
   return (
     <>
-      <Layout sideNav={<BotSideNav />}>
+      <Layout sideNav={<SideNav />}>
                 <HeaderLayout 
                     navigationAction={
                         <Link 
