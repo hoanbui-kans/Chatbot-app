@@ -25,9 +25,11 @@ const DiagramBuilderSlice = createSlice({
             state.nodes = [...CurrentNodes, newNode];
           }
       },
+
       updateNode: (state, action) => {
           state.nodes = action.payload;
       },
+      
       updateNodeData: (state, action) => {
         if(action.payload) {
           const CurrentNodes = state.nodes;
@@ -42,6 +44,7 @@ const DiagramBuilderSlice = createSlice({
           state.nodes = newNodes;
         }
       },
+
       removeNode: (state, action) => {
         if(action.payload) {
           const CurrentNodes = state.nodes;
@@ -66,9 +69,11 @@ const DiagramBuilderSlice = createSlice({
       setStatePanel: (state, action) => {
         state.panelEditor = action.payload
       },
+
       setEditorState: (state, action) => {
         state.editorState = action.payload
       }
+
     }
 })
 

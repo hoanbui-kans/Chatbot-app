@@ -3,17 +3,21 @@ import { Stack, Button, Combobox, ComboboxOption, EmptyStateLayout, Box  }  from
 import { findAllResponse } from '../../../../../api/Response';
 import { Illo } from '../../../../../components/Illo';
 import { Plus } from '@strapi/icons'
-import { updateNodeData, initialNotes } from '../../../../slice/diagram-builder-slice';
+import { updateNodeData, initialNotes, stateDataPanel } from '../../../../slice/diagram-builder-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const LoadResponse = ({ setCreateResponse }) => {
 
     const dispatch = useDispatch();
     const nodeState = useSelector(initialNotes);
+    const stateEditor = useSelector(stateDataPanel);
 
     const [value, setValue] = useState(false);
     const [messages, setMessages] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
+
+    const { id, data } = stateEditor;
+
 
     const HandleSetNode = (e) => {
         setValue(e);
@@ -55,8 +59,16 @@ const LoadResponse = ({ setCreateResponse }) => {
         <>
             <Stack spacing={3}>
                 {
+                    
+                    
                     Array.isArray(messages) && messages.length ? 
-                        <Selection data={messages}/>
+                        Array.isArray(data.response) && data.response.length ? 
+                            data.response.map((val, index) => {
+                                return(
+                                    <Selection key={index} data={messages}/>
+                                )
+                            })
+                        : ""
                     : 
                     <Box background="neutral0">
                             <EmptyStateLayout 
@@ -68,7 +80,7 @@ const LoadResponse = ({ setCreateResponse }) => {
                     </Box>
                 }
                  <Stack spacing={3} horizontal justifyContent="end">
-                        <Button loading={isLoading} size="M" variant="primary">
+                        <Button loading={isLoading} size="M" variant="default">
                             Lưu
                         </Button>
                 </Stack>

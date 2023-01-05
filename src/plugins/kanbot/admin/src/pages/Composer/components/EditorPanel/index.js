@@ -9,9 +9,11 @@ const index = () => {
     const isShowPanel = useSelector(statePanel);
     const editorData = useSelector(stateDataPanel);
     const dispatch = useDispatch();
+
     const HandleClosePanel = () => {
         dispatch(setStatePanel(false));
     }
+    
     return (
         <>
             {

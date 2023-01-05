@@ -1,20 +1,21 @@
 import React, { memo, useState } from 'react'
 import { NodeToolbar } from 'reactflow';
 import { useDispatch } from 'react-redux';
-import { setStatePanel } from '../../../slice/diagram-builder-slice';
+import { setStatePanel, setEditorState } from '../../../slice/diagram-builder-slice';
 import { Box, Typography, Stack, IconButton } from '@strapi/design-system';
 import { Pencil} from '@strapi/icons';
 
 import EntityResponse from './components/entityResponse';
 
-const DefaultNode = ({id, data}) => {
-
+const DefaultNode = (node) => {
+  const {id, data} = node;
   const [open, setOpen] = useState(false); 
 
   const dispatch = useDispatch();
 
   const HandleOpenUpdateNode = () => {
-    dispatch(setStatePanel(true))
+    dispatch(setStatePanel(true));
+    dispatch(setEditorState(node));
   }
 
   return (

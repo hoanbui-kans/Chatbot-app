@@ -6,13 +6,15 @@ import { useDispatch } from 'react-redux';
 import { removeNode } from '../../../slice/diagram-builder-slice';
 import EntityResponse from './components/entityResponse';
 import EntityInput from './components/entityInput';
-import { setStatePanel } from '../../../slice/diagram-builder-slice';
-const ResponseNode = ({ id, data }) => {
+import { setStatePanel, setEditorState } from '../../../slice/diagram-builder-slice';
 
+const ResponseNode = (node) => {
+  const { id, data } = node;
   const dispatch = useDispatch();
 
   const HandleOpenUpdateNode = () => {
-      dispatch(setStatePanel(true))
+      dispatch(setStatePanel(true));
+      dispatch(setEditorState(node));
   }
 
   const onDelete = () => {
