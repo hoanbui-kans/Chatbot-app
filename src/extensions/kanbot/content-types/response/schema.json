@@ -12,6 +12,18 @@
     "comment": ""
   },
   "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "typing": {
+      "type": "boolean",
+      "default": true
+    },
     "type": {
       "type": "dynamiczone",
       "components": [
@@ -20,9 +32,6 @@
         "kanbot.templates"
       ],
       "max": 1
-    },
-    "typing": {
-      "type": "boolean"
     }
   }
 }

@@ -1,7 +1,8 @@
 {
   "collectionName": "components_kanbot_messages_group",
   "info": {
-    "displayName": "message_group"
+    "displayName": "message_group",
+    "description": ""
   },
   "options": {},
   "attributes": {

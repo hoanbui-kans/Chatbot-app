@@ -7,5 +7,6 @@ const response = require('./response');
 
 module.exports = {
   witai,
-  entity
+  entity,
+  response
 }

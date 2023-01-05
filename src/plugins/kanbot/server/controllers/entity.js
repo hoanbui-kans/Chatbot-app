@@ -21,6 +21,5 @@ module.exports = createCoreController('plugin::kanbot.entity', ({ strapi }) => (
       .service('entity')
       .createEntity();
     },
-
-  
+    
   }));

@@ -15,7 +15,7 @@ import { TbArrowRampRight2 } from 'react-icons/tb';
 const EmailNode = ({id, data}) => {
 
   const dispatch = useDispatch();
-
+  
   const onDelete = () => {
     dispatch(removeNode(id));
   }

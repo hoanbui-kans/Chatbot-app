@@ -1,7 +1,8 @@
 {
   "collectionName": "components_kanbot_messages",
   "info": {
-    "displayName": "Messages"
+    "displayName": "Messages",
+    "description": ""
   },
   "options": {},
   "attributes": {

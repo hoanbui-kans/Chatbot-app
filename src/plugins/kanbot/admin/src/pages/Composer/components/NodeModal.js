@@ -42,18 +42,6 @@ const NodeModal = ({ setOpenNode }) => {
         reactFlowInstance.addNodes(newNode);
     }
 
-    const [entities, setEntities] = useState(false);
-  
-    useEffect(() => {
-      async function getEntities () {
-        const fetchEntities = await findAll();
-        if(fetchEntities){
-          setEntities(fetchEntities);
-        }
-      }
-      getEntities();
-    }, [])
-
     return (
         <>
             <ModalLayout onClose={() => setOpenNode(false)} labelledBy="title">

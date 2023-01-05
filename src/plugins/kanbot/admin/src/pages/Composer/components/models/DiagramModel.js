@@ -8,7 +8,13 @@ export const DefaultTemplate = (id) => {
     // you can also pass a React component as a label
     data: { 
       title: 'Mặc định',
-      value: '' 
+      response: [
+        {
+          id: "",
+          title: "",
+          type: "success"
+        }
+      ] 
     },
     position: { x: 150, y: 125 },
     targetPosition: Position.Left,
@@ -22,7 +28,22 @@ export const EmailTemplate = (id) => {
       // you can also pass a React component as a label
       data: { 
         title: 'Địa chỉ Email',
-        value: 'customer@gmail.com' 
+        response: [
+          {
+            id: "",
+            title: "",
+            type: "",
+            port: "left",
+            type: "success"
+          },
+          {
+            id: "",
+            title: "",
+            type: "",
+            port: "right",
+            type: "danger"
+          }
+        ] 
       },
       position: { x: 150, y: 125 },
       sourcePosition: Position.Right,
@@ -65,7 +86,21 @@ export const ResponseTemplate = (id) => {
     // you can also pass a React component as a label
     data: { 
       title: 'Câu trả lời nhanh',
-      value: ""
+      request: {
+        entity: '',
+      },
+      response: [
+        {
+          id: "",
+          title: "",
+          type: "success"
+        },
+        {
+          id: "",
+          title: "",
+          type: "danger"
+        }
+      ] 
     },
     position: { x: 150, y: 125 },
     targetPosition: Position.Left,

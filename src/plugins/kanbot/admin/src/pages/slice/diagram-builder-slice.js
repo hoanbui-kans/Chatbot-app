@@ -1,26 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
 import { Position } from 'reactflow';
+import { DefaultTemplate } from "../Composer/components/models/DiagramModel";
 
 const initialState = {
   nodes: [
-    {
-      id: uuidv4(),
-      type: 'default-template',
-      // you can also pass a React component as a label
-      data: { 
-        title: 'Mặc định',
-        value: 'demo' 
-      },
-      position: { x: 150, y: 125 },
-      targetPosition: Position.Left,
-    }
+    DefaultTemplate(uuidv4())
   ],
   edges: [],
-  panelEditor: {
-    open: false,
-    state: false
-  },
+  panelEditor: false,
+  editorState: false,
 };
 
  
@@ -74,8 +63,11 @@ const DiagramBuilderSlice = createSlice({
         }
       },
       // Builder
-      setStatePanel:(state, action) => {
+      setStatePanel: (state, action) => {
         state.panelEditor = action.payload
+      },
+      setEditorState: (state, action) => {
+        state.editorState = action.payload
       }
     }
 })
@@ -83,10 +75,13 @@ const DiagramBuilderSlice = createSlice({
 export const { 
   setNodes, addNode, updateNode, removeNode, onNodesChange, 
   updateEdge, updateNodeData, removeEdge,
-  setStatePanel
+  setStatePanel, setEditorState
 } = DiagramBuilderSlice.actions;
 
 export const initialNotes = (state) => state.diagram.nodes;
 export const initialEdges = (state) => state.diagram.edges;
+
 export const statePanel = (state) => state.diagram.panelEditor;
+export const stateDataPanel = (state) => state.diagram.editorState;
+
 export default DiagramBuilderSlice.reducer;

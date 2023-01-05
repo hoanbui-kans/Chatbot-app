@@ -6,10 +6,8 @@
     --x-title-line-height: 1.25;
     --x-heading-color: #282C4B;
     --x-title-box-size: 22px;
-  
     --x-banner-content-size: 16px;
     --x-banner-content-height: 1.55;
-  
     --x-brand-color: #2d88e2;
     --x-primary-color: #282C4B;
     --x-accent-color: #616cf0;
@@ -80,11 +78,23 @@
   }
   
   .touchdevice-flow .react-flow__handle {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: #9f7aea;
+    background-color: #8482ff;
   }
+  
+  .react-flow__edge-path, .react-flow__connection-path {
+        stroke: #b1afff;
+        stroke-width: 2px;
+        fill: none;
+    }
+
+  .react-flow__handle-right {
+        right: -6px;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
 
   button.edgebutton {
         padding: 4px;
@@ -117,8 +127,10 @@
     }
   }
 
-  .x_node_container{
+.x_node_container{
     width: 320px;
+    border-top: 3px solid #333;
+    box-shadow: 0px 0px 5px -3px;
 }
 
 .x_bot_builder_container{
@@ -126,6 +138,7 @@
     padding: 75px 0px;
     margin: auto;
 }
+
 .x_bot_builder_title{
     font-size: 24px;
     border-radius: unset;
@@ -281,19 +294,6 @@
     border-radius: 0px;
 }
 
-.x_editor_panel{
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 999;
-    background-color: white;
-    width: 400px;
-    height: 100%;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    padding: 35px;
-    padding-top: 65px;
-}
-
 .x_editor_panel_close{
     background-color: #c9c9c9;
     border-radius: 0px;
@@ -347,4 +347,14 @@
 
 .x_create_intent_panel_open{
     transform: translateX(0%);
+}
+
+.x_editor_panel{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 480px;
+    max-width: 100%;
+    z-index: 999;
 }

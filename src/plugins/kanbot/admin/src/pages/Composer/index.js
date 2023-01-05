@@ -22,7 +22,6 @@ import { Plus, ArrowLeft} from '@strapi/icons';
 import Flow from './components/Flow';
 import SideNav from '../../components/SideNav'
 import NodeModal from './components/NodeModal';
-import DiagramEditor from './components/DiagramEditor';
 import { ReactFlowProvider } from 'reactflow';
 
 const index = () => {
@@ -56,7 +55,6 @@ const index = () => {
                     <Box background="neutral0" hasRadius boxshadow>
                       <ReactFlowProvider>
                           <Flow />
-                          <DiagramEditor />   
                           { openNode && <NodeModal setOpenNode={setOpenNode}/> }
                       </ReactFlowProvider>
                     </Box>

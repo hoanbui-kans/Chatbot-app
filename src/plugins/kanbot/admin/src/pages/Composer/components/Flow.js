@@ -21,7 +21,8 @@ import ResponseNode from "./nodes/ResponseNode";
 // Redux 
 import { useDispatch, useSelector } from "react-redux";
 import { initialNotes, initialEdges, addNode, updateNode, updateEdge } from "../../slice/diagram-builder-slice";
-import { useDrop } from 'react-dnd'
+import { useDrop } from 'react-dnd';
+import EditorPanel from './EditorPanel';
 
 import 'reactflow/dist/style.css';
 import "../style.css";
@@ -66,7 +67,6 @@ const Flow = () => {
                 x: offset.x - reactFlowBounds.left,
                 y: offset.y - reactFlowBounds.top,
               }};
-                console.log(offset);
             }
           dispatch(addNode(Node));
         }
@@ -97,20 +97,20 @@ const Flow = () => {
       <div>
         <div ref={reactFlowWrapper} style={{width: "100%", height: "80vh"}}>
             <ReactFlow 
-                  className="touchdevice-flow"
-                  proOptions={proOptions} 
-                  attributionPosition="top-right" 
-                  defaultNodes={defaultNodes} 
-                  defaultEdges={defaultEdges} 
-                  nodeTypes={nodeTypes}
-                  edgeTypes={edgeTypes}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  onConnect={onConnect}
-                  fitView
-                  >
+                className="touchdevice-flow"
+                proOptions={proOptions} 
+                attributionPosition="top-right" 
+                defaultNodes={defaultNodes} 
+                defaultEdges={defaultEdges} 
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                fitView >
                   <Controls />
               <Background gap={10} size={.6} color="#333"/>
+              <EditorPanel />
             </ReactFlow>
         </div>
       </div>
