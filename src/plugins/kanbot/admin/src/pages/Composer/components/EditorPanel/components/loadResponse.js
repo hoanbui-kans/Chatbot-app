@@ -4,7 +4,7 @@ import { findAllResponse } from '../../../../../api/Response';
 import { findAllEntities } from '../../../../../api/Entity';
 import { Illo } from '../../../../../components/Illo';
 import { Plus } from '@strapi/icons'
-import { updateNodeData, initialNotes, stateDataPanel, initialEdges } from '../../../../slice/diagram-builder-slice';
+import { stateDataPanel, setEditorState } from '../../../../slice/diagram-panelEditor-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const LoadResponse = ({ setCreateResponse }) => {
@@ -15,34 +15,34 @@ const LoadResponse = ({ setCreateResponse }) => {
     const [nodeData, setNodeData] = useState(stateEditor.data);
     const [value, setValue] = useState(false);
     const [messages, setMessages] = useState(false);
+
     const [entities, setEntities] = useState(false);
+    const [selectEntity, setSelecEntity] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
-    const [stateEdges, setEdges] = useSelector(initialEdges);
 
     const SelectNode = ({index, data, HandleSetNode}) => {
 
-        const ID = nodeData.response[index].id;
         const [selection, setSeletion] = useState("");
 
         const updateNode = (e) => {
-            const _e = parseInt(e)
+            const _index = parseInt(e)
             const response = [...nodeData.response];
-            response[index] = messages[_e];
+            response[index] = messages.filter((val) => val.id == e)[0];
             const newNode = { ...nodeData, response: response };
             HandleSetNode(newNode);
         };
         
-        const HandleSelect = (e) => {
+        const HandleSelect = useCallback((e) => {
             setSeletion(e);
             updateNode(e);
-        };
+        }, [selection]);
     
         return(
             <Combobox label="Lựa chọn mẫu câu trả lời" value={selection} onChange={HandleSelect}>
                 {
                     data.map((val, index) => {
                         return (
-                            <ComboboxOption key={index} value={index.toString()}>{val.title}</ComboboxOption>
+                            <ComboboxOption key={index} value={val.id.toString()}>{val.title}</ComboboxOption>
                         )
                     })
                 }
@@ -50,20 +50,7 @@ const LoadResponse = ({ setCreateResponse }) => {
         )
     }
 
-    const SelectEntity = ({ data }) => {
-        return(
-            <Combobox value="" label="Lựa chọn mẫu câu trả lời">
-                {
-                    Array.isArray(data) && data.length ?
-                        data.map((val, index) => {
-                                <ComboboxOption key={index} value={val.title}>{val.title}</ComboboxOption>
-                        })
-                    :""
-                }
-            </Combobox>
-        )
-    }
-
+    
     const HandleSetNode = (node) => {
         setNodeData(node)
     }
@@ -99,9 +86,23 @@ const LoadResponse = ({ setCreateResponse }) => {
     return (
         <>
             <Stack spacing={3}>
-                <Box>
-                    <SelectEntity data={entities} />
-                </Box>
+                {/* <Box>
+                    {
+                        Array.isArray(entities) && entities.length && 
+                            entities.map(( val, index) => {
+                                return(
+                                    <Combobox value={value} onChange={setValue} label="Lựa chọn nội dung xác thực">
+                                        {
+                                            data.map((val, index) => {
+                                                return(<ComboboxOption key={index} value={val.title}>{val.title}</ComboboxOption>)
+                                            })
+                                        }
+                                    </Combobox>
+                                )
+                        })
+                    }
+                    
+                </Box> */}
                 <Box paddingTop={3} paddingBottom={3}>
                     <Divider />
                 </Box>

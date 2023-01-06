@@ -1,13 +1,13 @@
 import React from 'react'
-import { Box, Link, Button, HeaderLayout, Stack, Typography } from '@strapi/design-system';
-import { statePanel, stateDataPanel, setStatePanel } from '../../../slice/diagram-builder-slice';
+import { Box } from '@strapi/design-system';
 import { useDispatch, useSelector } from 'react-redux';
-import { ArrowLeft, Pencil, Plus, Cross } from '@strapi/icons';
 import ResponseMessageController from './controllers/ResponseMessageController';
 
+import { statePanel, setStatePanel } from '../../../slice/diagram-panelEditor-slice';
+
 const index = () => {
+
     const isShowPanel = useSelector(statePanel);
-    const editorData = useSelector(stateDataPanel);
     const dispatch = useDispatch();
 
     const HandleClosePanel = () => {

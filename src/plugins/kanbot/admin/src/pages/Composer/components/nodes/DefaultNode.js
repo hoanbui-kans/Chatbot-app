@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react'
 import { NodeToolbar, Handle, Position } from 'reactflow';
 import { useDispatch } from 'react-redux';
-import { setStatePanel, setEditorState } from '../../../slice/diagram-builder-slice';
-import { Box, Typography, Stack, IconButton, Button, Status } from '@strapi/design-system';
+import { setStatePanel, setEditorState } from '../../../slice/diagram-panelEditor-slice';
+import { Box, Typography, Stack, IconButton, Status } from '@strapi/design-system';
 import { Pencil} from '@strapi/icons';
 import { TbArrowRampRight2 } from 'react-icons/tb'
 import EntityResponse from './components/entityResponse';

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Stack, Button, ToggleCheckbox, Box }  from '@strapi/design-system';
 import { Cross } from "@strapi/icons"
 import { useDispatch } from 'react-redux';
-import { setStatePanel } from '../../../../slice/diagram-builder-slice';
+import { setStatePanel } from '../../../../slice/diagram-panelEditor-slice';
 import LoadResponse from '../components/loadResponse';
 import NewResponse from '../components/newResponse';
 
