@@ -10,7 +10,7 @@ export const DefaultTemplate = (id) => {
       title: 'Mặc định',
       response: [
         {
-          id: "",
+          id: `success-${id}`,
           title: "",
           type: "success"
         }
@@ -91,12 +91,12 @@ export const ResponseTemplate = (id) => {
       },
       response: [
         {
-          id: "",
+          id: `success-${id}`,
           title: "",
           type: "success"
         },
         {
-          id: "",
+          id: `danger-${id}`,
           title: "",
           type: "danger"
         }

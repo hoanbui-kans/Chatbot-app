@@ -1,6 +1,6 @@
 import { request } from '@strapi/helper-plugin';
 
-export const findAll = async () => {
+export const findAllEntities = async () => {
     try {
         const response = await request('/kanbot/entity/', {
             method: "GET"

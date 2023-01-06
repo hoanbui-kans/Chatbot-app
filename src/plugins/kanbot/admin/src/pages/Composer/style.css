@@ -78,23 +78,18 @@
   }
   
   .touchdevice-flow .react-flow__handle {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background-color: #8482ff;
+    background-color: rgb(19, 18, 18);
   }
   
   .react-flow__edge-path, .react-flow__connection-path {
-        stroke: #b1afff;
+        stroke: #303030;
         stroke-width: 2px;
         fill: none;
-    }
+   }
 
-  .react-flow__handle-right {
-        right: -6px;
-        top: 50%;
-        transform: translate(0, -50%);
-    }
 
   button.edgebutton {
         padding: 4px;
@@ -128,9 +123,10 @@
   }
 
 .x_node_container{
-    width: 320px;
+    width: 420px;
     border-top: 3px solid #333;
     box-shadow: 0px 0px 5px -3px;
+    position: relative;
 }
 
 .x_bot_builder_container{
@@ -357,4 +353,28 @@
     width: 480px;
     max-width: 100%;
     z-index: 999;
+}
+
+.x_create_node{
+    position: absolute;
+    top: calc(100% + 60px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+.x_create_node:before{
+    content: "";
+    height: 60px;
+    width: 4px;
+    background: #e4e4e4;
+    position: absolute;
+    top: -60px;
+    left: calc(50% - 2px);
+    z-index: -1;
+}
+
+.x_picker_box {
+    min-width: 540px;
+    box-shadow: 0px 0px 5px -3px;
 }

@@ -3,7 +3,6 @@ import {
     ModalLayout, 
     ModalBody, 
     ModalHeader, 
-    ModalFooter, 
     Typography,
     Button, 
     Stack, 
@@ -22,7 +21,6 @@ import Envelop from '@strapi/icons/Envelop';
 import { useDispatch } from "react-redux";
 
 import { useReactFlow } from 'reactflow';
-import { findAll } from '../../../api/Entity';
 
 const Node = [
     {

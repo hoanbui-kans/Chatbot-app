@@ -12,22 +12,34 @@ const initialState = {
   editorState: false,
 };
 
- 
 const DiagramBuilderSlice = createSlice({  
     name: 'diagram',
     initialState,
     reducers: {
       // Nodes
       addNode: (state, action) => {
+          const PrevNode =  state.nodes[state.nodes.length - 1];
           const newNode = action.payload;
-          if(newNode){
-            const CurrentNodes = state.nodes;
-            state.nodes = [...CurrentNodes, newNode];
-          }
+          state.nodes = [...state.nodes, newNode];
+          const newEdge = { id: `${PrevNode.id}-${PrevNode.id}`, source: `${PrevNode.id}`, target: `${newNode.id}` };
+          state.edges = [...state.edges, newEdge];
       },
 
       updateNode: (state, action) => {
-          state.nodes = action.payload;
+          let NewNode = [];
+          const StateNode = [...action.payload];
+          if(StateNode){
+            StateNode.map((val, index) => {
+              let CurrentNodes = { ...val };
+              if(index == StateNode.length - 1){
+                CurrentNodes = { ...CurrentNodes, data: { ...CurrentNodes.data, latest: true}};
+              } else {
+                CurrentNodes = { ...CurrentNodes, data: { ...CurrentNodes.data, latest: false}};
+              }
+              NewNode.push(CurrentNodes);
+            })
+          }
+          state.nodes = NewNode;
       },
       
       updateNodeData: (state, action) => {
@@ -48,10 +60,11 @@ const DiagramBuilderSlice = createSlice({
       removeNode: (state, action) => {
         if(action.payload) {
           const CurrentNodes = state.nodes;
-          let newNodes = CurrentNodes.filter((node) => node.id != action.payload);
-          state.nodes = newNodes;
+          const NewNode = CurrentNodes.filter((node, index) => node.id != action.payload);
+          state.nodes = NewNode;
         }
       },
+
       // Edges
       updateEdge: (state, action) => {
         if(action.payload){
@@ -60,7 +73,7 @@ const DiagramBuilderSlice = createSlice({
       },
       removeEdge: (state, action) => {
         if(action.payload) {
-          const CurrentEdges = state.nodes;
+          const CurrentEdges = state.edges;
           let newEdges = CurrentEdges.filter((edge) => edge.id != action.payload);
           state.edges = newEdges;
         }
@@ -73,8 +86,7 @@ const DiagramBuilderSlice = createSlice({
       setEditorState: (state, action) => {
         state.editorState = action.payload
       }
-
-    }
+    },
 })
 
 export const { 

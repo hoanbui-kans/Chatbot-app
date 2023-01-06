@@ -84,37 +84,39 @@ const Flow = () => {
         dispatch(updateEdge(addEdge({...connection, type: 'buttonEdge'}, defaultEdges)))
       }
 
-    useEffect(() => {
-      reactFlowInstance.setNodes(defaultNodes);
-    }, [defaultNodes]);
+      useEffect(() => {
+        reactFlowInstance.setNodes(defaultNodes);
+      }, [defaultNodes]);
 
 
-    useEffect(() => {
-      reactFlowInstance.setEdges(defaultEdges);
-    }, [defaultEdges]);
+      useEffect(() => {
+        reactFlowInstance.setEdges(defaultEdges);
+      }, [defaultEdges]);
 
-    return(
-      <div>
-        <div ref={reactFlowWrapper} style={{width: "100%", height: "80vh"}}>
-            <ReactFlow 
-                className="touchdevice-flow"
-                proOptions={proOptions} 
-                attributionPosition="top-right" 
-                defaultNodes={defaultNodes} 
-                defaultEdges={defaultEdges} 
-                nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                fitView >
-                  <Controls />
-              <Background gap={10} size={.6} color="#333"/>
-              <EditorPanel />
-            </ReactFlow>
+      return(
+        <div>
+          <div ref={reactFlowWrapper} style={{width: "100%", height: "80vh"}}>
+              <ReactFlow 
+                  className="touchdevice-flow"
+                  proOptions={proOptions} 
+                  attributionPosition="top-right" 
+                  defaultNodes={defaultNodes} 
+                  defaultEdges={defaultEdges} 
+                  nodeTypes={nodeTypes}
+                  edgeTypes={edgeTypes}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={onEdgesChange}
+                  onConnect={onConnect}
+                  nodesDraggable={true}
+
+                  >
+                    <Controls showFitView={true} onInteractiveChange={(e) => console.log(e)}/>
+                    <Background gap={10} size={.6} color="#333"/>
+                <EditorPanel />
+              </ReactFlow>
+          </div>
         </div>
-      </div>
-    )
+      )
 } 
 
 export default Flow

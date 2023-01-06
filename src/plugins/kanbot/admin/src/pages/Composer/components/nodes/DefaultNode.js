@@ -1,11 +1,12 @@
 import React, { memo, useState } from 'react'
-import { NodeToolbar } from 'reactflow';
+import { NodeToolbar, Handle, Position } from 'reactflow';
 import { useDispatch } from 'react-redux';
 import { setStatePanel, setEditorState } from '../../../slice/diagram-builder-slice';
-import { Box, Typography, Stack, IconButton } from '@strapi/design-system';
+import { Box, Typography, Stack, IconButton, Button, Status } from '@strapi/design-system';
 import { Pencil} from '@strapi/icons';
-
+import { TbArrowRampRight2 } from 'react-icons/tb'
 import EntityResponse from './components/entityResponse';
+import CreateButton from './components/createButton';
 
 const DefaultNode = (node) => {
   const {id, data} = node;
@@ -33,14 +34,21 @@ const DefaultNode = (node) => {
                 </Typography>
             </Stack>
             <div className="x_node_content">
-              {
-                  Array.isArray(data.response) && data.response.length && data.response.map((val, index) => {
-                    return(
-                      <EntityResponse key={index} data={val}/>
-                    )
-                  })
-              }
+              <Box>
+                  <Status variant={'success'} showBullet={false} className="x_node_case_item">
+                      <Stack horizontal spacing={3} justifyContent="space-between">
+                      <Stack horizontal spacing={3}>
+                          <TbArrowRampRight2 size={16} color='#8d8d8d'/>
+                          <Typography>{ data.title ? data.title : "Mẫu trả lời tin nhắn"}</Typography>
+                      </Stack>
+                      </Stack>
+                  </Status>
+              </Box>
+              <Handle type="source" position={Position.Right} id={`source-${id}`}/>
             </div>
+           {
+            data.latest &&  <CreateButton />
+           }
         </Box>
     </>
   )

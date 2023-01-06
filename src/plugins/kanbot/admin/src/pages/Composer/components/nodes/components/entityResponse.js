@@ -15,7 +15,7 @@ const EntityResponse = ({ data }) => {
                         <Typography>{ data.title ? data.title : "Mẫu trả lời tin nhắn"}</Typography>
                     </Stack>
                     </Stack>
-                    <Handle type="source" position={Position.Right} id="default_check"/>
+                    <Handle type="source" position={Position.Bottom} id="default_check"/>
                 </Status>
             </Box>
         </>
