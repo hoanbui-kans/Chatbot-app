@@ -10,6 +10,7 @@ module.exports = ({ strapi }) => ({
   async findBot (id) {
     return await strapi.entityService.findOne("plugin::kanbot.witai", id);
   },
+  
 
   async findAllBot () {
     return [1, 2, 3];

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "conservations",
+  "info": {
+    "singularName": "conservation",
+    "pluralName": "conservations",
+    "displayName": "conservation",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "flow": {
+      "displayName": "chatflow",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.chatflow"
+    }
+  }
+}

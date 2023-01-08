@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_kanbot_chatflows",
+  "info": {
+    "displayName": "chatflow"
+  },
+  "options": {},
+  "attributes": {
+    "kanbot_entity": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.entity"
+    },
+    "kanbot_response": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.response"
+    },
+    "typing": {
+      "type": "boolean"
+    }
+  }
+}

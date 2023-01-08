@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
+    "fb-messenger-bot-api": "^4.4.0",
     "node-wit": "^6.5.1",
     "react-icons": "^4.7.1",
     "react-indiana-drag-scroll": "^2.2.0",
     "react-redux": "^8.0.5",
     "react-toastify": "^9.1.1",
     "reactflow": "^11.4.0",
+    "redis": "^4.5.1",
     "slugify": "^1.6.5",
     "uuid": "^9.0.0"
   },

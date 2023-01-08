@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "conservations",
+  "info": {
+    "singularName": "conservation",
+    "pluralName": "conservations",
+    "displayName": "conservation"
+  },
+  "options": {
+    "draftAndPublish": true,
+    "comment": ""
+  },
+  "attributes": {}
+}

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { removeNode } from '../../../slice/diagram-builder-slice';
 import EntityResponse from './components/entityResponse';
 import EntityInput from './components/entityInput';
-import { setStatePanel, setEditorState } from '../../../slice/diagram-builder-slice';
+import { setStatePanel, setEditorState } from '../../../slice/diagram-panelEditor-slice';
 import CreateButton from './components/createButton';
 import { TbArrowRampRight2 } from 'react-icons/tb'
 import Message from '@strapi/icons/Message';
