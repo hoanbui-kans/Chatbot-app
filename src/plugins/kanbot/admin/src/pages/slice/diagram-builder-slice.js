@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
-import { Position } from 'reactflow';
+
 import { DefaultTemplate } from "../Composer/components/models/DiagramModel";
 
 const initialState = {
   nodes: [
-    DefaultTemplate(uuidv4())
+    DefaultTemplate(uuidv4()) 
   ],
   edges: [],
   panelEditor: false,
@@ -43,15 +43,20 @@ const DiagramBuilderSlice = createSlice({
       },
       
       updateNodeData: (state, action) => {
+        console.log('action.payload', action.payload);
         if(action.payload) {
           const CurrentNodes = state.nodes;
           let newNodes = [];
+
           CurrentNodes.map((node) => {
+            let NodeData = {...node}
             if(node.id == action.payload.id){ 
-              node.data = action.payload.data;
+              NodeData.data = action.payload.data;
             }
-            newNodes.push(node);
+            newNodes.push(NodeData);
           });
+
+          console.log(newNodes);
 
           state.nodes = newNodes;
         }

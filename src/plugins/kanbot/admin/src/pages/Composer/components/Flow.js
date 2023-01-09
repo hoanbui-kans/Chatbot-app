@@ -1,6 +1,4 @@
-import React, { useEffect, useRef } from "react";
-
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect } from "react";
 
 import ReactFlow, {
   Controls,
@@ -20,9 +18,7 @@ import ResponseNode from "./nodes/ResponseNode";
 
 // Redux 
 import { useDispatch, useSelector } from "react-redux";
-import { initialNotes, initialEdges, addNode, updateNode, updateEdge } from "../../slice/diagram-builder-slice";
-import { useDrop } from 'react-dnd';
-import EditorPanel from './EditorPanel';
+import { initialNotes, initialEdges, updateNode, updateEdge } from "../../slice/diagram-builder-slice";
 
 import 'reactflow/dist/style.css';
 import "../style.css";
@@ -49,29 +45,6 @@ const Flow = () => {
       
       const reactFlowInstance  = useReactFlow();
 
-      const accept = 'diagramComponent';
-
-      const ref = useRef();
-      const reactFlowWrapper = useRef(null);
-
-      const [collectedProps, drop] = useDrop(() => ({
-        accept,
-        drop: (item, monitor) => {
-          let Node = item.node;
-
-          const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-
-          const offset = monitor.getSourceClientOffset();
-            if(offset) {
-              Node = {...Node, id: uuidv4(), position: {
-                x: offset.x - reactFlowBounds.left,
-                y: offset.y - reactFlowBounds.top,
-              }};
-            }
-          dispatch(addNode(Node));
-        }
-      }))
-
       const onNodesChange = (changes) => {
         dispatch(updateNode(applyNodeChanges(changes, defaultNodes)));
       }
@@ -95,24 +68,22 @@ const Flow = () => {
 
       return(
         <div>
-          <div ref={reactFlowWrapper} style={{width: "100%", height: "80vh"}}>
+          <div style={{width: "100%", height: "80vh"}}>
               <ReactFlow 
-                  className="touchdevice-flow"
-                  proOptions={proOptions} 
-                  attributionPosition="top-right" 
-                  defaultNodes={defaultNodes} 
-                  defaultEdges={defaultEdges} 
-                  nodeTypes={nodeTypes}
-                  edgeTypes={edgeTypes}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  onConnect={onConnect}
-                  nodesDraggable={true}
-
+                    className="touchdevice-flow"
+                    proOptions={proOptions} 
+                    attributionPosition="top-right" 
+                    defaultNodes={defaultNodes} 
+                    defaultEdges={defaultEdges} 
+                    nodeTypes={nodeTypes}
+                    edgeTypes={edgeTypes}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    nodesDraggable={true}
                   >
                     <Controls showFitView={true} onInteractiveChange={(e) => console.log(e)}/>
                     <Background gap={10} size={.6} color="#333"/>
-                <EditorPanel />
               </ReactFlow>
           </div>
         </div>

@@ -1,7 +1,8 @@
-import ConservationService from '../../../../services/ConservationService';
-import WitService from '../../../../services/witService';
+const ConservationService = require('../Conservation/ConservationService');
+const WitService = require('../witAi/WitService');
 
 class HandlerFacebookMessage {
+  
   constructor(senderId, recipientId, context, message){
     this.message = message.text;
     this.context = context;
@@ -12,23 +13,6 @@ class HandlerFacebookMessage {
       if(!message) return;
       message = message.replace(mention, '').trim();
       return message;
-  }
-
-  async getPageInfo(pageId){
-    if(!pageId) return false;
-    try {
-        const query = 'SELECT `page_access_key` FROM `kanbox_socials_page` WHERE `page_id`= ?';
-        const SaveMessage = await connection.promise().query( query , [pageId],
-        function(err, result) {
-            console.log(err)
-            return result;
-        });
-        if(Array.isArray(SaveMessage[0]) && SaveMessage[0].length){
-          return SaveMessage[0][0];
-        }
-      } catch (error) {
-        console.log(error);
-      }
   }
 
   async processMessage () {
@@ -64,18 +48,12 @@ class HandlerFacebookMessage {
           const senderID = sender.id;
           const recipientID = recipient.id;
           const messageText = message.text;
-          const query = 'INSERT INTO `kanbox_conservation` (sender, receiver, chanel, status, message ) VALUES ( ?, ?, ?, ?, ?)';
-          const SaveMessage = await connection.promise().query(query,
-          [senderID, recipientID, 'facebook', 'recieved', messageText],
-          function(err, result) {
-              console.log(err)
-              return result;
-          });
         } catch (error) {
           console.log(error);
         }
     }
   }
+  
 }
 
-export default HandlerFacebookMessage;
+module.exports = HandlerFacebookMessage

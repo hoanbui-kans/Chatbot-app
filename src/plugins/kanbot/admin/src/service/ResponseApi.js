@@ -2,6 +2,7 @@ import axios from 'axios';
 import { SingletonWitClient } from './witService';
 
 export class WitClientAPI extends SingletonWitClient {
+  
     constructor (message) {
       this.message = message;
       this.response = {

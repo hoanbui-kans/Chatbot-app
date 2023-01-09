@@ -10,7 +10,7 @@ export const DefaultTemplate = (id) => {
       title: 'Mặc định',
       response: [
         {
-          id: `success-${id}`,
+          id: ``,
           title: "",
           type: "success"
         }
@@ -85,18 +85,19 @@ export const ResponseTemplate = (id) => {
     type: 'response-template',
     // you can also pass a React component as a label
     data: { 
-      title: 'Câu trả lời nhanh',
+      title: 'Xác thực dữ liệu',
       request: {
-        entity: '',
+        id: "",
+        title: ""
       },
       response: [
         {
-          id: `success-${id}`,
+          id: ``,
           title: "",
           type: "success"
         },
         {
-          id: `danger-${id}`,
+          id: ``,
           title: "",
           type: "danger"
         }

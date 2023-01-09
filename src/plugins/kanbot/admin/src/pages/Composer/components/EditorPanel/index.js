@@ -1,26 +1,53 @@
-import React from 'react'
-import { Box } from '@strapi/design-system';
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import ResponseMessageController from './controllers/ResponseMessageController';
+import { statePanel, setStatePanel, stateDataPanel } from '../../../slice/diagram-panelEditor-slice';
+import { initialNotes } from '../../../slice/diagram-builder-slice';
 
-import { statePanel, setStatePanel } from '../../../slice/diagram-panelEditor-slice';
+import { Stack, IconButton, Box, Typography }  from '@strapi/design-system';
+import { Cross } from "@strapi/icons"
+
+import LoadResponse from './components/loadResponse';
+import NewResponse from './components/newResponse';
 
 const index = () => {
 
+    const [createResponse, setCreateResponse] = useState(false);
+    const nodes = useSelector(initialNotes);
+
+    const editorData = useSelector(stateDataPanel);
     const isShowPanel = useSelector(statePanel);
     const dispatch = useDispatch();
 
     const HandleClosePanel = () => {
         dispatch(setStatePanel(false));
     }
-    
+
     return (
         <>
             {
-                isShowPanel && 
+            isShowPanel && 
                 <Box padding={3} className="x_editor_panel" background="neutral0" shadow="filterShadow" borderColor="neutral100">
                     <Box padding={3}>
-                        <ResponseMessageController />
+                    <Stack spacing={4}>
+                            <Stack 
+                                style={{
+                                    borderBottom: '1px solid #e7e7e7',
+                                    paddingBottom: 12,
+                                    marginBottom: 16
+                                }} 
+                                horizontal 
+                                justifyContent="space-between">
+                                <Typography variant="beta" fontWeight="bold">
+                                    { editorData.data.title }
+                                </Typography>
+                                <IconButton onClick={HandleClosePanel} label="Đóng" icon={<Cross />} />
+                            </Stack>
+                            {
+                                !createResponse && 
+                                <LoadResponse setCreateResponse={setCreateResponse}/>
+                            }
+                            <NewResponse setCreateResponse={setCreateResponse}/>
+                        </Stack>
                     </Box>
                 </Box>
             }

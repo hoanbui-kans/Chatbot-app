@@ -1,18 +1,13 @@
 'use strict';
-
 /**
  *  controller
  */
 
-import { FacebookMessagingAPIClient, ValidateWebhook, FacebookMessageParser } from "fb-messenger-bot-api";
-import HandlerFacebookMessage from "../helper/Facebook/HandlerFaceookMessage";
-import { createClient } from 'redis';
+const { FacebookMessagingAPIClient, ValidateWebhook, FacebookMessageParser }  = require("fb-messenger-bot-api");
+const HandlerFacebookMessage = require("../helper/Facebook/HandlerFaceookMessage");
+const { createClient } = require('redis');
 
 const { createCoreController } = require('@strapi/strapi').factories;
-
-const client = createClient(6379);
-
-client.on('error', (err) => console.log('Redis Client Error', err));
 
 module.exports = createCoreController('plugin::kanbot.conservation', (({ strapi }) => ({
 
@@ -32,19 +27,33 @@ module.exports = createCoreController('plugin::kanbot.conservation', (({ strapi 
         ctx.throw(403);
       }
     }
-
   },
 
   async incommingMessage(ctx){
     try {
-        const incomingMessages = FacebookMessageParser.parsePayload(ctx.body);
-        const { sender, recipient, message } = incomingMessages[0];
 
+        // create client connect redis
+        const client = createClient(6379);
+        client.on('error', (err) => console.log('Redis Client Error', err));
+
+        await client.connect();
+
+        // get incoming message data
+        const incomingMessages = FacebookMessageParser.parsePayload(ctx.request.body);
+        const { sender, recipient, message } = incomingMessages[0];
+        if(!message) {
+          return ctx.body = 'no message'
+        }
         const senderId = sender.id;
         const recipientId = recipient.id;
         const conservationId = senderId + '-' + recipientId;
+        // get page access token
+        const { page_token } = await strapi
+        .plugin('connection')
+        .service('facebook')
+        .findOneByPageId(recipientId);
 
-        await client.connect();
+        // get avaiable conservation context
         let context;
         const RedisContext = await client.get(conservationId);
         
@@ -61,11 +70,13 @@ module.exports = createCoreController('plugin::kanbot.conservation', (({ strapi 
           }
         }
 
+        // create facebook message convervation handler
         const handerFbMessage = new HandlerFacebookMessage(senderId, recipientId, context, message);
-        const pageAccessToken = await handerFbMessage.getPageInfo(recipientId);
-        const { page_access_key } = pageAccessToken;
-        const messagingClient = new FacebookMessagingAPIClient(page_access_key);
 
+        // create message client
+        const messagingClient = new FacebookMessagingAPIClient(page_token);
+
+        // send message 
         await messagingClient.markSeen(senderId);
         await messagingClient.toggleTyping(senderId, true);
 
@@ -83,11 +94,13 @@ module.exports = createCoreController('plugin::kanbot.conservation', (({ strapi 
         }
         
         messagingClient.sendTextMessage(senderId, text).then(async(result) => {});
+
+        // closing redis
         await client.disconnect(); 
-        ctx.body = context
+        // fallback context
+        return ctx.body = text
       } catch (err) {
         ctx.throw(403, err);
       }
   }
-
 })));

@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "facebooks",
+  "info": {
+    "singularName": "facebook",
+    "pluralName": "facebooks",
+    "displayName": "facebook"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}

@@ -16,6 +16,6 @@ module.exports = {
   trait,
   utterance,
   role,
-  response,
-  conservation
+  response, 
+  conservation,
 }

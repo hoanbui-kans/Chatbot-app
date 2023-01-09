@@ -14,18 +14,45 @@ import {
   Link,
   Box,
   ContentLayout,
-  ActionLayout,
   Stack
 } from '@strapi/design-system';
 
-import { Plus, ArrowLeft} from '@strapi/icons';
+import { ArrowLeft, Pencil } from '@strapi/icons';
 import Flow from './components/Flow';
 import SideNav from '../../components/SideNav'
 import NodeModal from './components/NodeModal';
 import { ReactFlowProvider } from 'reactflow';
+import { initialNotes, initialEdges } from '../slice/diagram-builder-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { createResponse } from '../../api/Response';
+import ChatUi from './components/ChatUi';
+import EditorPanel from './components/EditorPanel';
 
 const index = () => {
-  const [ openNode, setOpenNode ] = useState(false);
+
+  const dispatch = useDispatch();
+  const Nodes = useSelector(initialNotes);
+  const Edges = useSelector(initialEdges);
+
+  // Title
+  const [title, setTitle] = useState('Bot Ai');
+  const [editTitle, setEditTitle] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Simulator chat
+  const [simChat, setSimChat] = useState(false);
+
+  const HandleCreateResponse = async () => {
+    const response = await createResponse(Edges);
+  }
+
+  const HandleSaveTitle = (e) => {
+    setTitle(e);
+    setEditTitle(false);
+  }
+
+
+  
   return (
     <>
       <Layout sideNav={<SideNav />}>
@@ -39,26 +66,35 @@ const index = () => {
                           }
                           primaryAction={
                             <Stack spacing={3} horizontal>
-                              <Button variant="secondary">Draft</Button>
-                              <Button>Publish</Button>
+                              <Button variant={simChat ? 'danger-light' : 'success-light'} onClick={() => { setSimChat(!simChat) }}>Thử nghiệm</Button>
+                              <Button 
+                                loading={ loading == 'draft' ? true : false } 
+                                onClick={() => HandleCreateResponse('draft')} variant="secondary">Lưu nháp</Button>
+                              <Button 
+                                loading={ loading == 'publish' ? true : false } 
+                                onClick={() => HandleCreateResponse('publish')}>Đăng</Button>
                             </Stack>
                           } 
-                          title="Composer" 
-                          subtitle="AI languages facebook" as="h2" 
-                        />
-                        <ActionLayout 
-                          startActions={<>
-                            <Button onClick={() => setOpenNode(true)} variant="secondary" startIcon={<Plus />}>Add Node</Button>
-                          </>}
+                          secondaryAction={
+                            <Button onClick={() => setEditTitle(true)} variant="tertiary" startIcon={<Pencil />}>
+                              Đổi tên
+                            </Button>
+                          }
+                          title={ title ? title : "Bot Ai"}
+                          subtitle="AI languages facebook" 
+                          as="h2" 
                         />
                   <ContentLayout>
                     <Box background="neutral0" hasRadius boxshadow>
                       <ReactFlowProvider>
                           <Flow />
-                          { openNode && <NodeModal setOpenNode={setOpenNode}/> }
                       </ReactFlowProvider>
                     </Box>
                   </ContentLayout>
+                  
+                  { editTitle && <NodeModal title={title} HandleSaveTitle={HandleSaveTitle}/> }
+                  { simChat && <Box className="simchat"><ChatUi title={title} setSimChat={setSimChat}/></Box> }
+                  <EditorPanel />
         </Layout>
     </>
   )

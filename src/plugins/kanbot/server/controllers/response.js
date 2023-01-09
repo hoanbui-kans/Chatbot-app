@@ -24,7 +24,7 @@ module.exports = createCoreController('plugin::kanbot.response', (({ strapi }) =
             ctx.body = await strapi
             .plugin('kanbot')
             .service('response')
-            .findOne(ctx.request.body);
+            .findOne(ctx.params.id);
         } catch (err) {
             ctx.throw(500, err);
         }

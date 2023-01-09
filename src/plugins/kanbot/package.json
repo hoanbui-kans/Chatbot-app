@@ -9,6 +9,7 @@
     "displayName": "Kanbot"
   },
   "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^1.9.9",
     "@reduxjs/toolkit": "^1.9.1",
     "fb-messenger-bot-api": "^4.4.0",
     "node-wit": "^6.5.1",

@@ -1,136 +1,168 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Stack, Button, Combobox, ComboboxOption, EmptyStateLayout, Box, Divider }  from '@strapi/design-system';
-import { findAllResponse } from '../../../../../api/Response';
-import { findAllEntities } from '../../../../../api/Entity';
+import React, { useState, useEffect, memo } from 'react'
+import { Stack, Button, Select, Option, EmptyStateLayout, Box, Divider, Loader  }  from '@strapi/design-system';
 import { Illo } from '../../../../../components/Illo';
 import { Plus } from '@strapi/icons'
-import { stateDataPanel, setEditorState } from '../../../../slice/diagram-panelEditor-slice';
+import { stateDataPanel, entityOptions, responseOptions, fetchData, stateLoading, setStatePanel } from '../../../../slice/diagram-panelEditor-slice';
+import { updateNodeData } from '../../../../slice/diagram-builder-slice';
 import { useDispatch, useSelector } from 'react-redux';
+
+const SelectResponse = ({ index, data, updateResponse, current }) => {
+
+    const [selection, setSeletion] = useState(current ? current.toString() : "");
+
+    const HandleUpdateResponse = (e) => {
+        const selectValue = data.find((val) => val.id == e);
+        setSeletion(e);
+        updateResponse(index, {
+            id: e,
+            title: selectValue.title
+        });
+    }
+    return(
+        <Select label="Lựa chọn mẫu câu trả lời" placeholder="" value={selection} onChange={HandleUpdateResponse}>
+            {
+                data.map((val, index) => {
+                    return (
+                        <Option key={index} value={val.id.toString()}>{val.title}</Option>
+                    )
+                })
+            }
+        </Select>
+    )
+}
+
+const SelectEntity = ({ updateEntity, data, current }) => {
+
+    const [value, setValue] = useState(current ? current.toString() : ""); 
+
+    const HandleUpdateData = (e) => {
+        const selectValue = data.find((val) => val.id == e);
+        setValue(e);
+        updateEntity(selectValue);
+    }
+
+    return(
+        <>  
+            <Box>
+                <Select value={value} onChange={HandleUpdateData} label="Lựa chọn nội dung xác thực" placeholder="">
+                    {
+                        data.map(( val, index) => {
+                            return(<Option key={index} value={val.id.toString()}>{val.title}</Option>)
+                        })
+                    }
+                </Select>
+            </Box>
+            <Box paddingTop={3} paddingBottom={3}>
+                <Divider />
+            </Box>
+        </>
+    )
+}
 
 const LoadResponse = ({ setCreateResponse }) => {
 
     const dispatch = useDispatch();
+    const loading = useSelector(stateLoading);
     const stateEditor = useSelector(stateDataPanel);
-
-    const [nodeData, setNodeData] = useState(stateEditor.data);
-    const [value, setValue] = useState(false);
-    const [messages, setMessages] = useState(false);
-
-    const [entities, setEntities] = useState(false);
-    const [selectEntity, setSelecEntity] = useState(false);
+    const entities = useSelector(entityOptions);
+    const responses = useSelector(responseOptions);
     const [isLoading, setIsLoading] = useState(false)
-
-    const SelectNode = ({index, data, HandleSetNode}) => {
-
-        const [selection, setSeletion] = useState("");
-
-        const updateNode = (e) => {
-            const _index = parseInt(e)
-            const response = [...nodeData.response];
-            response[index] = messages.filter((val) => val.id == e)[0];
-            const newNode = { ...nodeData, response: response };
-            HandleSetNode(newNode);
-        };
-        
-        const HandleSelect = useCallback((e) => {
-            setSeletion(e);
-            updateNode(e);
-        }, [selection]);
     
-        return(
-            <Combobox label="Lựa chọn mẫu câu trả lời" value={selection} onChange={HandleSelect}>
-                {
-                    data.map((val, index) => {
-                        return (
-                            <ComboboxOption key={index} value={val.id.toString()}>{val.title}</ComboboxOption>
-                        )
-                    })
-                }
-            </Combobox>
-        )
+    const [updateState, setUpdateState] = useState(stateEditor.data);
+
+    useEffect(() => {
+        setUpdateState(stateEditor.data)
+    }, [stateEditor])
+
+    // Load response and entity data from server
+    useEffect(() => {
+        dispatch(fetchData());
+    }, [dispatch]);
+
+
+    const HandleUpdateEntity = (e) => {
+        setUpdateState({ 
+            ...updateState, 
+            request: {
+                id: e.id,
+                title: e.title
+        }})
     }
 
-    
-    const HandleSetNode = (node) => {
-        setNodeData(node)
+    const handleupdateResponse = (_i, e) => {
+        const Response = [];
+        updateState.response.map((val, index) => {
+            if(index == _i){
+                Response.push({
+                    ...val,
+                    id: e.id,
+                    title: e.title
+                })
+            } else {
+                Response.push(val)
+            }
+        });
+        setUpdateState({...updateState, response: Response})
     }
 
-
-    async function getResponse () {
-        const response = await findAllResponse();
-        if(response){
-            setMessages(response);
-        }
+    const HandleUpdateNodeData = () => {
+        setIsLoading(true);
+        setTimeout(() => {
+            dispatch(updateNodeData({ 
+                id: stateEditor.id,
+                data: updateState
+            }));
+            dispatch(setStatePanel(false))
+            setIsLoading(false);
+        }, 400);
     }
-
-    useEffect( async () => {
-        if(!messages){
-            await getResponse ();
-        }
-    }, [messages])
-
-    async function getEntities () {
-        const response = await findAllEntities();
-        if(response){
-            setEntities(response);
-        }
-    }
-
-
-    useEffect( async () => {
-        if(!entities){
-            await getEntities();
-        }
-    }, [entities])
 
     return (
         <>
-            <Stack spacing={3}>
-                {/* <Box>
-                    {
-                        Array.isArray(entities) && entities.length && 
-                            entities.map(( val, index) => {
-                                return(
-                                    <Combobox value={value} onChange={setValue} label="Lựa chọn nội dung xác thực">
-                                        {
-                                            data.map((val, index) => {
-                                                return(<ComboboxOption key={index} value={val.title}>{val.title}</ComboboxOption>)
-                                            })
-                                        }
-                                    </Combobox>
-                                )
-                        })
-                    }
-                    
-                </Box> */}
-                <Box paddingTop={3} paddingBottom={3}>
-                    <Divider />
+        {
+            loading == 'pending' ? 
+                <Box padding={5} style={{ display: 'flex', justifyContent: 'center'}}>
+                    <Loader>Loading content...</Loader>
                 </Box>
-                {
-                    Array.isArray(messages) && messages.length ? 
-                        Array.isArray(nodeData.response) && nodeData.response.length ? 
-                            nodeData.response.map((val, index) => {
-                                    return(
-                                        <SelectNode index={index} key={index} data={messages} HandleSetNode={HandleSetNode}/>
-                                    )
-                                })
-                            : ""
-                    : 
-                    <Box background="neutral0">
+            :   <Stack spacing={4}>
+                    {
+                        Array.isArray(entities) 
+                        && entities.length 
+                        && updateState.request 
+                        && <SelectEntity updateEntity={HandleUpdateEntity} data={entities} current={updateState.request.id}/>
+                    }
+                    {
+                        Array.isArray(responses) && responses.length ? 
+                            Array.isArray(updateState.response) && updateState.response.length ? 
+                            updateState.response.map((val, index) => {
+                                        return(
+                                            <SelectResponse 
+                                                index={index} 
+                                                updateResponse={handleupdateResponse} 
+                                                key={index} 
+                                                data={responses}
+                                                current={val.id}
+                                            />
+                                        )
+                                    })
+                                : ""
+                        : 
+                        <Box background="neutral0">
                             <EmptyStateLayout 
-                            icon={<Illo />} 
-                            content="Bạn chưa có mẫu câu trả lời nào..." 
-                            action={<Button onClick={() => {setCreateResponse(false)}} variant="secondary" startIcon={<Plus />}>Tạo mới</Button>} />
-                    </Box>
-                }
-                 <Stack spacing={3} horizontal justifyContent="end">
-                        <Button loading={isLoading} size="M" variant="default">
+                                icon={<Illo />} 
+                                content="Bạn chưa có mẫu câu trả lời nào..." 
+                                action={<Button onClick={() => {setCreateResponse(false)}} variant="secondary" startIcon={<Plus />}>Tạo mới</Button>} />
+                        </Box>
+                    }
+                    <Stack spacing={3} horizontal justifyContent="end">
+                        <Button loading={isLoading} size="M" variant="default" onClick={HandleUpdateNodeData}>
                             Lưu
                         </Button>
-                </Stack>
-            </Stack>
+                    </Stack>
+                </Stack>    
+        }
         </>
   )
 }
 
-export default LoadResponse
+export default memo(LoadResponse) 

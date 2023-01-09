@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "facebooks",
+  "info": {
+    "singularName": "facebook",
+    "pluralName": "facebooks",
+    "displayName": "facebook",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "page_id": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "page_token": {
+      "type": "string"
+    }
+  }
+}

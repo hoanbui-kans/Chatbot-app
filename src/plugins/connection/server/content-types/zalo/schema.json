@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "zalos",
+  "info": {
+    "singularName": "zalo",
+    "pluralName": "zalos",
+    "displayName": "zalo"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}

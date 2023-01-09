@@ -1,10 +1,10 @@
-import React from 'react'
-import { Wit } from 'node-wit'
+
+const { Wit } = require('node-wit');
 
 class WitService {
-  constructor(accessToken) {
+  constructor() {
       this.client = new Wit({
-        accessToken: accessToken,
+        accessToken: 'IV32DLW5JLLMUGMEQGZACMY2GXEFNV4S',
       });
   }
 
@@ -22,4 +22,4 @@ class WitService {
 
 }
 
-export default WitService
+module.exports = WitService

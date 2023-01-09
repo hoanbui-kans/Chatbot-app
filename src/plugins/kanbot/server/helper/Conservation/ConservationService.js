@@ -44,4 +44,4 @@ class ConservationService {
   }
 }
 
-export default ConservationService
+module.exports = ConservationService

@@ -38,7 +38,7 @@ module.exports = createCoreService('plugin::kanbot.response', ({ strapi }) => ({
     },
   
     async findOne(id) {
-        return await strapi.entityService.fineOne("plugin::kanbot.response", id, {
+        return await strapi.entityService.findOne("plugin::kanbot.response", id, {
             populate: populate
         });
     },

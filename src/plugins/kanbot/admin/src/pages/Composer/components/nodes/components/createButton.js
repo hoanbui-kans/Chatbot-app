@@ -54,12 +54,10 @@ const CreateButton = () => {
 
     const addMoreNode = () => {
         const newNode = ResponseTemplate(uuidv4());
-        
         const lastNode = nodes[nodes.length - 1];
         let top = lastNode.position.y + lastNode.height;
         let right = lastNode.position.x + lastNode.width; 
         newNode.position = { x: right + 150, y: top };
-        
         dispatch(addNode(newNode));
         reactFlowInstance.addNodes(newNode);
     }
@@ -68,7 +66,7 @@ const CreateButton = () => {
         <div className="x_create_node">
             {
                 !showPicker ? 
-                  <Button onClick={() => setShowPicker(!showPicker)} startIcon={<Plus />}>Create Node</Button> 
+                  <Button onClick={() => setShowPicker(!showPicker)} startIcon={<Plus />}>Thêm trường dữ liệu</Button> 
                 : <Box background="neutral0" hasRadius borderColor="neutral100" padding={3} className="x_picker_box">
                         <Stack horizontal justifyContent="space-between">
                             <Typography fontWeight="bold">Thêm trường dữ liệu cho đoạn hội thoại</Typography>

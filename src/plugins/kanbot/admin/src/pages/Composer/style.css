@@ -78,17 +78,32 @@
   }
   
   .touchdevice-flow .react-flow__handle {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: rgb(19, 18, 18);
+    background-color: #3e39fd;
+    outline: 1px solid #6864ff;
   }
-  
+
+  .react-flow__handle-right {
+        right: -6px;
+        top: 50%;
+        transform: translate(0, -50%);
+  }
+
+  .react-flow__handle-left {
+        top: 50%;
+        left: -6px;
+        transform: translate(0, -50%);
+  }
+
   .react-flow__edge-path, .react-flow__connection-path {
-        stroke: #303030;
-        stroke-width: 2px;
+        stroke: #c9c9c9;
+        stroke-width: 3px;
         fill: none;
+        animation: dash 5s linear;
    }
+
 
 
   button.edgebutton {
@@ -133,6 +148,33 @@
     max-width: 1080px;
     padding: 75px 0px;
     margin: auto;
+}
+
+.flowchat {
+    width: 100%;
+}
+
+button#onboarding {
+    display: none;
+}
+
+.simchat{
+    width: 420px;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    height: calc(100vh - 30px);
+    background: white;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 12%), 0 0 10px rgb(0 0 0 / 6%);
+    border-radius: .35rem;
+    overflow: hidden;
+    padding: 5px;
+    padding-bottom: 15px;
+}
+
+.react-flow__nodes .selected > div {
+    border: 1px solid #4945ff;
+    border-top: 3px solid #4945ff;
 }
 
 .x_bot_builder_title{
@@ -352,7 +394,7 @@
     height: 100vh;
     width: 480px;
     max-width: 100%;
-    z-index: 999;
+    z-index: 1;
 }
 
 .x_create_node{

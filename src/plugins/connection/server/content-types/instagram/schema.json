@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "instagrams",
+  "info": {
+    "singularName": "instagram",
+    "pluralName": "instagrams",
+    "displayName": "instagram"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}
