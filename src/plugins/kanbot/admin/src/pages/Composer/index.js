@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import pluginId from '../../pluginId';
 
 import { 
@@ -26,7 +26,9 @@ import { initialNotes, initialEdges } from '../slice/diagram-builder-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { createResponse } from '../../api/Response';
 import ChatUi from './components/ChatUi';
-import EditorPanel from './components/EditorPanel';
+
+import EditorEntity from './components/EditorPanel/EditorEntity';
+import EditorIntent from './components/EditorPanel/EditorIntent';
 
 const index = () => {
 
@@ -41,10 +43,17 @@ const index = () => {
 
   // Simulator chat
   const [simChat, setSimChat] = useState(false);
+  
+  // Intent
+  const [showIntent, setShowIntent] = useState(false);
 
   const HandleCreateResponse = async () => {
     const response = await createResponse(Edges);
   }
+
+  useEffect(() => {
+    console.log(Nodes)
+  }, [Nodes])
 
   const HandleSaveTitle = (e) => {
     setTitle(e);
@@ -92,9 +101,10 @@ const index = () => {
                     </Box>
                   </ContentLayout>
                   
-                  { editTitle && <NodeModal title={title} HandleSaveTitle={HandleSaveTitle}/> }
+                  { editTitle && <NodeModal title={title} HandleShowIntent={setShowIntent} HandleSaveTitle={HandleSaveTitle}/> }
                   { simChat && <Box className="simchat"><ChatUi title={title} setSimChat={setSimChat}/></Box> }
-                  <EditorPanel />
+                  <EditorEntity />
+                  <EditorIntent showIntent={showIntent} HandleShowIntent={setShowIntent} />
         </Layout>
     </>
   )

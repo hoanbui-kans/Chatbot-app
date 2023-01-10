@@ -10,7 +10,7 @@ module.exports = {
       {
         method: 'GET',
         path: '/response/',
-        handler: 'response.findMany',
+        handler: 'response.findManyResponse',
         config: {
           policies: [],
           auth: false,
@@ -19,7 +19,7 @@ module.exports = {
       {
         method: 'GET',
         path: '/response/:id',
-        handler: 'response.findOne',
+        handler: 'response.findOneResponse',
         config: {
           policies: [],
           auth: false,
@@ -36,7 +36,7 @@ module.exports = {
       },
       {
         method: 'PUT',
-        path: '/response/',
+        path: '/response/:id',
         handler: 'response.updateResponse',
         config: {
           policies: [],
@@ -45,7 +45,7 @@ module.exports = {
       },
       {
         method: 'DELETE',
-        path: '/response/',
+        path: '/response/:id',
         handler: 'response.deleteResponse',
         config: {
           policies: [],

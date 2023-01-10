@@ -3,13 +3,11 @@
  *  controller
  */
 
-const { FacebookMessagingAPIClient, ValidateWebhook, FacebookMessageParser }  = require("fb-messenger-bot-api");
-const HandlerFacebookMessage = require("../helper/Facebook/HandlerFaceookMessage");
+const { FacebookMessagingAPIClient, ValidateWebhook, FacebookMessageParser } = require("fb-messenger-bot-api");
 const { createClient } = require('redis');
+const HandlerFacebookMessage = require("../helper/Facebook/HandlerFaceookMessage");
 
-const { createCoreController } = require('@strapi/strapi').factories;
-
-module.exports = createCoreController('plugin::kanbot.conservation', (({ strapi }) => ({
+module.exports = ({ strapi }) => ({
 
   async messageHooks(ctx){
      // Parse the query params
@@ -102,5 +100,55 @@ module.exports = createCoreController('plugin::kanbot.conservation', (({ strapi 
       } catch (err) {
         ctx.throw(403, err);
       }
-  }
-})));
+  },
+
+  async findManyConservation(ctx) {
+      try {
+        ctx.body = await strapi.plugin('kanbot')
+                  .service('conservation')
+                  .findMany(ctx.request.body);
+      } catch (error) {
+        ctx.throw(403, error)
+      }
+  },
+
+  async findOneConservation(ctx) {
+      try {
+        ctx.body = await strapi.plugin('kanbot')
+                  .service('conservation')
+                  .findOne(ctx.params.id);
+      } catch (error) {
+        ctx.throw(403, error)
+      }
+  },
+
+  async createConservation(ctx) {
+      try {
+        ctx.body = await strapi.plugin('kanbot')
+                  .service('conservation')
+                  .create(ctx.request.body);
+      } catch (error) {
+        ctx.throw(403, error)
+      }
+  },
+
+  async updateConservation(ctx) {
+    try {
+        ctx.body = await strapi.plugin('kanbot')
+                  .service('conservation')
+                  .update(ctx.params.id, ctx.request.body);
+      } catch (error) {
+        ctx.throw(403, error)
+      }
+  },
+
+  async deteteConservation(ctx) {
+    try {
+        ctx.body = await strapi.plugin('kanbot')
+                  .service('conservation')
+                  .delete(ctx.params.id);
+      } catch (error) {
+        ctx.throw(403, error)
+      }
+  },
+});

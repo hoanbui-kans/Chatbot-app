@@ -1,6 +1,6 @@
 import { request } from '@strapi/helper-plugin';
 
-export const findAllEntities = async () => {
+export const findManyEntity = async () => {
     try {
         const response = await request('/kanbot/entity/', {
             method: "GET"
@@ -11,7 +11,7 @@ export const findAllEntities = async () => {
     }
 }
 
-export const findOne = async (id) => {
+export const findOneEntity = async (id) => {
     try {
         const response = await request(`/kanbot/entity/${id}`, {
             method: "GET"
@@ -22,7 +22,7 @@ export const findOne = async (id) => {
     }
 }
 
-export const create = async (data) => {
+export const createEntity = async (data) => {
     try {
         const response = await request(`/kanbot/entity/`, {
             method: "POST",
@@ -36,14 +36,24 @@ export const create = async (data) => {
     }
 }
 
-export const update = async (id, data) => {
+export const updateEntity = async (id, data) => {
     try {
-        const response = await request(`/kanbot/entity/`, {
-            method: "POST",
+        const response = await request(`/kanbot/entity/${id}`, {
+            method: "PUT",
             body: {
-                id: id,
                 data: data
             }
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
+}
+
+export const deleteEntity = async (id) => {
+    try {
+        const response = await request(`/kanbot/entity/${id}`, {
+            method: "DELETE",
         })
         return response;
     } catch (error) {

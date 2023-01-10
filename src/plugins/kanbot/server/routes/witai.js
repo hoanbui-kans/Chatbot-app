@@ -8,8 +8,17 @@ module.exports = {
   routes: [
     {
       method: 'GET',
-      path: '/witai/find-bot/',
-      handler: 'witai.findAllBot',
+      path: '/witai/',
+      handler: 'witai.findManyWitAi',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
+      path: '/witai/:id',
+      handler: 'witai.findOneWitAi',
       config: {
         policies: [],
         auth: false,
@@ -17,12 +26,30 @@ module.exports = {
     },
     {
       method: 'POST',
-      path: '/witai/create-bot/',
-      handler: 'witai.createbot',
+      path: '/witai/',
+      handler: 'witai.createWitAi',
       config: {
         policies: [],
         auth: false,
       },
     },
+    {
+      method: 'PUT',
+      path: '/witai/:id',
+      handler: 'witai.updateWitAi',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'DELETE',
+      path: '/witai/:id',
+      handler: 'witai.deleteWitAi',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    }
   ]
 }

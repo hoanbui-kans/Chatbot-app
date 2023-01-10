@@ -4,7 +4,6 @@
  *  service
  */
 
-const { createCoreService } = require('@strapi/strapi').factories;
 const populate = {
     type: {
         populate: {
@@ -28,7 +27,7 @@ const populate = {
     }
 }
 
-module.exports = createCoreService('plugin::kanbot.response', ({ strapi }) => ({
+module.exports = ({ strapi }) => ({
 
     async findMany(query) {
         return await strapi.entityService.findMany("plugin::kanbot.response", {
@@ -55,4 +54,4 @@ module.exports = createCoreService('plugin::kanbot.response', ({ strapi }) => ({
         return await strapi.entityService.delete("plugin::kanbot.response", id);
     }
 
-  }));
+});

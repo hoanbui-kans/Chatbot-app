@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 import { 
     Typography,
@@ -8,7 +8,8 @@ import {
     Box,
     Grid,
     GridItem,
-    Divider
+    Divider,
+    Popover 
 } from '@strapi/design-system';
 
 import { useDispatch } from "react-redux";
@@ -62,15 +63,19 @@ const CreateButton = () => {
         reactFlowInstance.addNodes(newNode);
     }
 
+    const [visible, setVisible] = useState(false);
+    const buttonRef = useRef();
+
     return (
         <div className="x_create_node">
+           <Button ref={buttonRef} onClick={() => setVisible(s => !s)} startIcon={<Plus />}>Thêm trường dữ liệu</Button> 
             {
-                !showPicker ? 
-                  <Button onClick={() => setShowPicker(!showPicker)} startIcon={<Plus />}>Thêm trường dữ liệu</Button> 
-                : <Box background="neutral0" hasRadius borderColor="neutral100" padding={3} className="x_picker_box">
+                visible && 
+                    <Popover centered source={buttonRef} spacing={16}>
+                        <Box background="neutral0" padding={3} className="x_picker_box">
                         <Stack horizontal justifyContent="space-between">
                             <Typography fontWeight="bold">Thêm trường dữ liệu cho đoạn hội thoại</Typography>
-                            <IconButton onClick={() => setShowPicker(!showPicker)} label="Đóng" icon={<Cross/>} />
+                            <IconButton onClick={() => setVisible(s => !s)} label="Đóng" icon={<Cross/>} />
                         </Stack>
                         <Box paddingTop={4} paddingBottom={6}>
                             <Divider />
@@ -96,6 +101,7 @@ const CreateButton = () => {
                             }
                         </Grid>
                     </Box>
+                </Popover>
             }
         </div>
     )

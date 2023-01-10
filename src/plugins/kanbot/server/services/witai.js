@@ -4,28 +4,30 @@
  *  service
  */
 
-
 module.exports = ({ strapi }) => ({
 
-  async findBot (id) {
-    return await strapi.entityService.findOne("plugin::kanbot.witai", id);
-  },
-  
+  async findMany(query) {
+       return await strapi.entityService.findMany("plugin::kanbot.witai", {
+           query: query
+       });
+   },
 
-  async findAllBot () {
-    return [1, 2, 3];
-  },
+   async findOne(id) {
+       return await strapi.entityService.findOne("plugin::kanbot.witai", id, {
+           populate: "*"
+       });
+   },
 
-  async create (data) {
-    return await strapi.entityService.create("plugin::kanbot.witai", data);
-  },
+   async create(data) {
+       return await strapi.entityService.create("plugin::kanbot.witai", data);
+   },
 
-  async update (id, data) {
-    return await strapi.entityService.update("plugin::kanbot.witai", id, data);
-  },
+   async update(id, data) {
+       return await strapi.entityService.update("plugin::kanbot.witai", id, data);
+   },
 
-  async delete(id) {
-    return await strapi.entityService.delete("plugin::kanbot.witai", id);
-  },
+   async delete(id) {
+       return await strapi.entityService.delete("plugin::kanbot.witai", id);
+   }
 
 });

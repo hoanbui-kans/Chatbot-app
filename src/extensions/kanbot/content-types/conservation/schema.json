@@ -19,6 +19,12 @@
       "type": "uid",
       "targetField": "title"
     },
+    "kanbot_intent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::kanbot.intent",
+      "inversedBy": "conservations"
+    },
     "flow": {
       "displayName": "chatflow",
       "type": "component",

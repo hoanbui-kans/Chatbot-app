@@ -1,31 +1,19 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { statePanel, setStatePanel, stateDataPanel } from '../../../slice/diagram-panelEditor-slice';
-import { initialNotes } from '../../../slice/diagram-builder-slice';
-
+import React, { useState, useEffect, memo} from 'react'
 import { Stack, IconButton, Box, Typography }  from '@strapi/design-system';
 import { Cross } from "@strapi/icons"
 
-import LoadResponse from './components/loadResponse';
-import NewResponse from './components/newResponse';
-
-const index = () => {
-
-    const [createResponse, setCreateResponse] = useState(false);
-    const nodes = useSelector(initialNotes);
-
-    const editorData = useSelector(stateDataPanel);
-    const isShowPanel = useSelector(statePanel);
-    const dispatch = useDispatch();
+const EditorIntent = ({ showIntent, HandleShowIntent }) => {
+    
+    const [title, setTitle] = useState("");
 
     const HandleClosePanel = () => {
-        dispatch(setStatePanel(false));
+        HandleShowIntent(false)
     }
 
     return (
         <>
             {
-            isShowPanel && 
+            showIntent && 
                 <Box padding={3} className="x_editor_panel" background="neutral0" shadow="filterShadow" borderColor="neutral100">
                     <Box padding={3}>
                     <Stack spacing={4}>
@@ -38,15 +26,10 @@ const index = () => {
                                 horizontal 
                                 justifyContent="space-between">
                                 <Typography variant="beta" fontWeight="bold">
-                                    { editorData.data.title }
+                                    Thêm mục tiêu
                                 </Typography>
                                 <IconButton onClick={HandleClosePanel} label="Đóng" icon={<Cross />} />
                             </Stack>
-                            {
-                                !createResponse && 
-                                <LoadResponse setCreateResponse={setCreateResponse}/>
-                            }
-                            <NewResponse setCreateResponse={setCreateResponse}/>
                         </Stack>
                     </Box>
                 </Box>
@@ -55,4 +38,4 @@ const index = () => {
     )
 }
 
-export default index
+export default memo(EditorIntent)

@@ -1,6 +1,6 @@
 import { request } from '@strapi/helper-plugin';
 
-export const findAll = async () => {
+export const findManyIntent = async () => {
     try {
         const response = await request('/kanbot/intent/', {
             method: "GET"
@@ -11,7 +11,7 @@ export const findAll = async () => {
     }
 }
 
-export const findOne = async (id) => {
+export const findOneIntent = async (id) => {
     try {
         const response = await request(`/kanbot/intent/${id}`, {
             method: "GET"
@@ -22,7 +22,7 @@ export const findOne = async (id) => {
     }
 }
 
-export const create = async (data) => {
+export const createIntent = async (data) => {
     try {
         const response = await request(`/kanbot/intent/`, {
             method: "POST",
@@ -36,14 +36,24 @@ export const create = async (data) => {
     }
 }
 
-export const update = async (id, data) => {
+export const updateIntent = async (id, data) => {
     try {
-        const response = await request(`/kanbot/intent/`, {
-            method: "POST",
+        const response = await request(`/kanbot/intent/${id}`, {
+            method: "PUT",
             body: {
-                id: id,
                 data: data
             }
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
+}
+
+export const deleteIntent = async (id) => {
+    try {
+        const response = await request(`/kanbot/intent/${id}`, {
+            method: "DELETE",
         })
         return response;
     } catch (error) {

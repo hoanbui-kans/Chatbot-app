@@ -4,55 +4,61 @@
  *  controller
  */
 
-const { createCoreController } = require('@strapi/strapi').factories;
+module.exports = ({ strapi }) => ({
 
-module.exports = createCoreController('plugin::kanbot.witai', ({ strapi }) => ({
-
-  async findbot (ctx) {
-    ctx.body = await strapi
-    .plugin('kanbot')
-    .service('witai')
-    .findAllBot();
+    async findManyWitAi (ctx) {
+      try {
+          ctx.body = await strapi
+          .plugin('kanbot')
+          .service('witai')
+          .findMany(ctx.query);
+      } catch (err) {
+          ctx.throw(500, err);
+      }
   },
 
-  async findAllBot (ctx) {
-    ctx.body = await strapi
-    .plugin('kanbot')
-    .service('witai')
-    .findAllBot();
+  async findOneWitAi (ctx) {
+      try {
+          ctx.body = await strapi
+          .plugin('kanbot')
+          .service('witai')
+          .findOne(ctx.params.id);
+      } catch (err) {
+          ctx.throw(500, err);
+      }
   },
 
-  async createbot (ctx) {
-    try {
-      ctx.body = await strapi
-        .plugin("kanbot")
-        .service("witai")
-        .create(ctx.request.body);
-    } catch (err) {
-      ctx.throw(500, err);
-    }
+  async createWitAi (ctx) {
+      try {
+          ctx.body = await strapi
+          .plugin('kanbot')
+          .service('witai')
+          .create(ctx.request.body);
+      } catch (err) {
+          ctx.throw(500, err);
+      }
   },
 
-  async updatebot (ctx) {
-    try {
-      ctx.body = await strapi
-        .plugin("kanbot")
-        .service("witai")
-        .update(ctx.request.body.id, ctx.request.body.data);
-    } catch (err) {
-      ctx.throw(500, err);
-    }
+  async updateWitAi (ctx) {
+      try {
+          ctx.body = await strapi
+          .plugin('kanbot')
+          .service('witai')
+          .update(ctx.params.id, ctx.request.body);
+      } catch (err) {
+          ctx.throw(500, err);
+      }
   },
 
-  async deletebot (ctx) {
-    try {
-      ctx.body = await strapi
-        .plugin("kanbot")
-        .service("witat")
-        .delete(ctx.request.body.id);
-    } catch (err) {
-      ctx.throw(500, err);
-    }
-  }
+  async deleteWitAi (ctx) {
+      try {
+          ctx.body = await strapi
+          .plugin('kanbot')
+          .service('witai')
+          .delete(ctx.params.id);
+      } catch (err) {
+          ctx.throw(500, err);
+      }
+  },
 
-}));
+});

@@ -4,11 +4,9 @@
  *  controller
  */
 
-const { createCoreController } = require('@strapi/strapi').factories;
+module.exports = ({ strapi }) => ({
 
-module.exports = createCoreController('plugin::kanbot.response', (({ strapi }) => ({
-
-    async findMany (ctx) {
+    async findManyResponse (ctx) {
        try {
             ctx.body = await strapi
             .plugin('kanbot')
@@ -19,7 +17,7 @@ module.exports = createCoreController('plugin::kanbot.response', (({ strapi }) =
        }
     },
 
-    async findOne (ctx) {
+    async findOneResponse (ctx) {
         try {
             ctx.body = await strapi
             .plugin('kanbot')
@@ -63,4 +61,4 @@ module.exports = createCoreController('plugin::kanbot.response', (({ strapi }) =
         }
     },
 
-})));
+});

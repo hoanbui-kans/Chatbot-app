@@ -34,6 +34,51 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: 'GET',
+      path: '/conservation/',
+      handler: 'conservation.findManyConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
+      path: '/conservation/:id',
+      handler: 'conservation.findOneConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'POST',
+      path: '/conservation/',
+      handler: 'conservation.createConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'PUT',
+      path: '/conservation/:id',
+      handler: 'conservation.updateConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'DELETE',
+      path: '/conservation/:id',
+      handler: 'conservation.deteteConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
     
   ]
 };
