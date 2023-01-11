@@ -91,7 +91,9 @@ module.exports = ({ strapi }) => ({
           await client.del( conservationId );
         }
         
-        messagingClient.sendTextMessage(senderId, text).then(async(result) => {});
+        await messagingClient.sendTextMessage(senderId, text).then(async(result) => {
+          console.log(result);
+        });
 
         // closing redis
         await client.disconnect(); 

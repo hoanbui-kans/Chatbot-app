@@ -43,7 +43,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::kanbot.conservation",
-      "mappedBy": "kanbot_intent"
+      "mappedBy": "intent"
     }
   }
 }

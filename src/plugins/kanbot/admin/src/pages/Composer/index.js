@@ -6,6 +6,7 @@
 
 import React, { useState, useEffect } from 'react';
 import pluginId from '../../pluginId';
+import { useParams } from 'react-router-dom';
 
 import { 
   Layout, 
@@ -17,59 +18,91 @@ import {
   Stack
 } from '@strapi/design-system';
 
-import { ArrowLeft, Pencil } from '@strapi/icons';
+import { ArrowLeft } from '@strapi/icons';
 import Flow from './components/Flow';
-import SideNav from '../../components/SideNav'
-import NodeModal from './components/NodeModal';
 import { ReactFlowProvider } from 'reactflow';
 import { initialNotes, initialEdges } from '../slice/diagram-builder-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { createResponse } from '../../api/Response';
+import { createConservation } from '../../api/Conservation';
+
 import ChatUi from './components/ChatUi';
 
 import EditorEntity from './components/EditorPanel/EditorEntity';
 import EditorIntent from './components/EditorPanel/EditorIntent';
+import { findOneIntent } from '../../api/Intent';
 
 const index = () => {
 
-  const dispatch = useDispatch();
+  const { id } = useParams();
+
   const Nodes = useSelector(initialNotes);
   const Edges = useSelector(initialEdges);
 
   // Title
-  const [title, setTitle] = useState('Bot Ai');
-  const [editTitle, setEditTitle] = useState(false);
+  const [editBot, setEditBot] = useState(false);
+  const [intent, setIntent] = useState('');
+
   const [loading, setLoading] = useState(false);
 
   // Simulator chat
   const [simChat, setSimChat] = useState(false);
   
   // Intent
-  const [showIntent, setShowIntent] = useState(false);
+  const [showIntentEditor, setShowIntentEditor] = useState(false);
 
   const HandleCreateResponse = async () => {
     const response = await createResponse(Edges);
+  }
+
+  const HandleCreateConservation = async () => {
+    setLoading(true);
+    let Flow = [];
+    Nodes.map((val, index) => {
+        if(index > 0){
+          const FlowData = val.data
+          const success_response = FlowData.response ? FlowData.response.find((val) => val.id == "success") : "";
+          const error_response = FlowData.response ? FlowData.response.find((val) => val.id == "error") : "";
+          const data =  {
+            entity: FlowData.request ? FlowData.request.id : "",
+            success_response: success_response ? success_response.id : "",
+            error_response: error_response ? error_response.id : ""
+          }
+          Flow.push(data);
+        }
+    })
+    const data = {
+      intent: intent,
+      default_response: parseInt(Nodes[0].data.response[0].id),
+      flow: Flow
+    }
+    await createConservation(data);
+    setLoading(false)
   }
 
   useEffect(() => {
     console.log(Nodes)
   }, [Nodes])
 
-  const HandleSaveTitle = (e) => {
-    setTitle(e);
-    setEditTitle(false);
-  }
-
+  useEffect( async() => {
+      if(!intent){
+        const response = await findOneIntent(id);
+        if(response){
+          setIntent(response)
+        }
+        console.log(response);
+      }
+  }, [])
 
   
   return (
     <>
-      <Layout sideNav={<SideNav />}>
+            <Layout>
                 <HeaderLayout 
                     navigationAction={
                         <Link 
                             startIcon={<ArrowLeft />} 
-                            to={`/plugins/${pluginId}/settings`}>
+                            to={`/plugins/${pluginId}/intents`}>
                               Trở lại
                         </Link>
                           }
@@ -81,16 +114,10 @@ const index = () => {
                                 onClick={() => HandleCreateResponse('draft')} variant="secondary">Lưu nháp</Button>
                               <Button 
                                 loading={ loading == 'publish' ? true : false } 
-                                onClick={() => HandleCreateResponse('publish')}>Đăng</Button>
+                                onClick={HandleCreateConservation}>Đăng</Button>
                             </Stack>
-                          } 
-                          secondaryAction={
-                            <Button onClick={() => setEditTitle(true)} variant="tertiary" startIcon={<Pencil />}>
-                              Đổi tên
-                            </Button>
                           }
-                          title={ title ? title : "Bot Ai"}
-                          subtitle="AI languages facebook" 
+                          title={ intent ? intent.title : "Bot Ai"}
                           as="h2" 
                         />
                   <ContentLayout>
@@ -100,11 +127,9 @@ const index = () => {
                       </ReactFlowProvider>
                     </Box>
                   </ContentLayout>
-                  
-                  { editTitle && <NodeModal title={title} HandleShowIntent={setShowIntent} HandleSaveTitle={HandleSaveTitle}/> }
-                  { simChat && <Box className="simchat"><ChatUi title={title} setSimChat={setSimChat}/></Box> }
+                  { simChat && <Box className="simchat"><ChatUi title={'bot Ai'} setSimChat={setSimChat}/></Box> }
                   <EditorEntity />
-                  <EditorIntent showIntent={showIntent} HandleShowIntent={setShowIntent} />
+                  { showIntentEditor && <EditorIntent showIntent={showIntent} HandleShowIntent={setShowIntentEditor} /> }
         </Layout>
     </>
   )

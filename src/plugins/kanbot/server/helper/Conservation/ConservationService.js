@@ -37,6 +37,8 @@ class ConservationService {
       return context;
     } 
 
+    console.log(context.conservation);
+    
     context.conservation.followUp = `Cám ơn ${entities['wit$contact:contact']}, đơn hàng của bạn đã được đặt thành công!`;
     context.conservation.complete = true;
 

@@ -116,8 +116,8 @@ const index = () => {
                             </Button>
                         </Stack>
                     } 
-                    title="Mục tiêu"
-                    subtitle="Mục tiêu đề cập" 
+                    title="Chiến dịch"
+                    subtitle="Tạo cuộc hội thoại từ chiến dịch" 
                     as="h2" 
                     />
             <ContentLayout>

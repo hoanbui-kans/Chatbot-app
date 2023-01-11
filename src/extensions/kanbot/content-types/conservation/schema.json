@@ -19,7 +19,7 @@
       "type": "uid",
       "targetField": "title"
     },
-    "kanbot_intent": {
+    "intent": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::kanbot.intent",
@@ -30,6 +30,11 @@
       "type": "component",
       "repeatable": true,
       "component": "kanbot.chatflow"
+    },
+    "default_response": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.response"
     }
   }
 }

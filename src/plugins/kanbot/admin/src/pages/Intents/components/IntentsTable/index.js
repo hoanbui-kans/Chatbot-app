@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Box, Flex, Table, Thead, Tbody, TFooter, Th, Tr, Td} from '@strapi/design-system';
+import { Box, Flex, Table, Thead, Tbody, TFooter, Th, Tr, Td, Link} from '@strapi/design-system';
 import { IconButton, Typography, VisuallyHidden, Badge, Stack  } from '@strapi/design-system';
 import { Plus, Pencil, Trash } from '@strapi/icons'
+import pluginId from '../../../../pluginId';
 
 const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) => {
 
@@ -37,7 +38,11 @@ const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) =
                                 <Typography textColor="neutral800">{index + 1}</Typography>
                             </Td>
                             <Td>
-                                <Typography textColor="neutral800">{entry.title}</Typography>
+                                <Typography textColor="neutral800">
+                                    <Link to={`/plugins/${pluginId}/${entry.id}/composer`}>
+                                        { entry.title }
+                                    </Link>
+                                </Typography>
                             </Td>
                             <Td>
                                 <Stack horizontal spacing={3}>

@@ -28,7 +28,7 @@ const SizeNav = () => {
   }
   const links = [{
     id: 1,
-    label: 'Mục tiêu',
+    label: 'Chiến dịch',
     icon: <Discuss style={iconSize} />,
     to: 'intents'
   }, {
@@ -47,11 +47,6 @@ const SizeNav = () => {
     label: 'Cấu trúc câu',
     icon: <Message style={iconSize} />,
     to: 'utterances'
-  },{
-    id: 5,
-    label: 'Trình soạn thảo',
-    icon: <ManyToMany style={iconSize} />,
-    to: 'composer'
   }];
   return (
   <SubNav ariaLabel="Settings sub nav">

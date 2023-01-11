@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { findAllEntities } from "../../api/Entity";
-import { findAllResponse } from "../../api/Response";
+import { findManyEntity } from "../../api/Entity";
+import { findManyResponse } from "../../api/Response";
 
 const initialState = {
     panelEditor: false,
@@ -13,8 +13,8 @@ const initialState = {
 export const fetchData = createAsyncThunk(
   'diagramEditor/fetchData',
   async () => {
-    const entities = await findAllEntities();
-    const responses = await findAllResponse();
+    const entities = await findManyEntity();
+    const responses = await findManyResponse();
     return {
       entities: entities ? entities : false,
       responses: responses ? responses : false

@@ -6,19 +6,20 @@
   },
   "options": {},
   "attributes": {
-    "kanbot_entity": {
+    "entity": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::kanbot.entity"
     },
-    "kanbot_response": {
+    "success_response": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::kanbot.response"
     },
-    "typing": {
-      "type": "boolean",
-      "default": true
+    "error_response": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::kanbot.response"
     }
   }
 }
