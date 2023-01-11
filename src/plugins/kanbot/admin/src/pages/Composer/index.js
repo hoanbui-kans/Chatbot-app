@@ -90,7 +90,6 @@ const index = () => {
         if(response){
           setIntent(response)
         }
-        console.log(response);
       }
   }, [])
 
