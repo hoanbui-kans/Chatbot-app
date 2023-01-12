@@ -15,13 +15,17 @@ import CustomEdge from "./edges/ButtonEdge";
 import DefaultNode from "./nodes/DefaultNode";
 import EmailNode from "./nodes/EmailNode";
 import ResponseNode from "./nodes/ResponseNode";
+import QuestionNode from "./nodes/QuestionNode";
 
 // Redux 
 import { useDispatch, useSelector } from "react-redux";
 import { initialNotes, initialEdges, updateNode, updateEdge } from "../../slice/diagram-builder-slice";
 
+import AddNodeModal from "./AddNodeModal";
+
 import 'reactflow/dist/style.css';
 import "../style.css";
+
 
 
 const proOptions = { hideAttribution: true };
@@ -29,7 +33,8 @@ const proOptions = { hideAttribution: true };
 const nodeTypes = {
   'default-template': DefaultNode,
   'email-template': EmailNode,
-  'response-template': ResponseNode
+  'response-template': ResponseNode,
+  'question-template': QuestionNode
 }
 
 const edgeTypes = {
@@ -37,7 +42,7 @@ const edgeTypes = {
 };
 
 
-const Flow = () => {
+const Flow = ({ addNode, setAddNode }) => {
 
       const dispatch = useDispatch();
       const defaultNodes = useSelector(initialNotes);
@@ -64,6 +69,7 @@ const Flow = () => {
 
       useEffect(() => {
         reactFlowInstance.setEdges(defaultEdges);
+        console.log(defaultEdges);
       }, [defaultEdges]);
 
       return(
@@ -84,6 +90,7 @@ const Flow = () => {
                   >
                     <Controls showFitView={true} onInteractiveChange={(e) => console.log(e)}/>
                     <Background gap={10} size={.6} color="#333"/>
+                    { addNode && <AddNodeModal setAddNode={setAddNode}/>}
               </ReactFlow>
           </div>
         </div>

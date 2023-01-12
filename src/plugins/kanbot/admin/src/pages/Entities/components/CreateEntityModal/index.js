@@ -1,43 +1,60 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack} from '@strapi/design-system';
-import { TextInput, Status, Grid, GridItem, IconButton } from '@strapi/design-system';
-import { Cross } from '@strapi/icons';
-import Drag from '@strapi/icons/Drag';
+import { TextInput, IconButton, AccordionGroup, Flex, Accordion, AccordionToggle, AccordionContent } from '@strapi/design-system';
+import { Cross, Pencil, Trash } from '@strapi/icons';
+import Loading from '../../../../components/Loading';
 
-const CreateModal = ({ setEntityCreate, HandleCreateEntity }) => {
+const CreateModal = ({ setIsLoading, setEntityCreate, HandleCreateEntity }) => {
 
   const [title, setTitle] = useState('');
-  const [updateEntities, setUpdateEntities] = useState([]);
-  const [EntitiesSelected, setEntitiesSelected] = useState([]);
-
-  const [values, setValues] = useState([]);
-
-  const [options, setOptions] = useState([{
+  const [options, setOptions] = useState([]);
+  const keywordSchema = {
     keyword: '',
-    synonyms: ['Nhập tiêu đề cho mục tiêu' , 'Nhập tiêu đề cho mục tiêu',, 'Nhập tiêu đề cho mục tiêu', 'Nhập tiêu đề cho mục tiêu', 'Nhập tiêu đề cho mục tiêu', 'Nhập tiêu đề cho mục tiêu']
-  }]);
+  };
 
   const HandleCreate = async () => {
+    setIsLoading(true);
+    const keywords = options.filter((val) => val.keyword != '');
+
     const data = {
       title: title,
-      entities: updateEntities,
+      keywords: keywords
     }
     await HandleCreateEntity(data);
     setTitle('');
-    setUpdateEntities([]);
+    setOptions([]);
+    setEntityCreate(false)
+    setIsLoading(false)
   }
 
-  useEffect(() => {
-    const selected = [];
-    if(Array.isArray(updateEntities) && updateEntities.length){
-        updateEntities.map((Id) => {
-            let entry = entities.find((val) => val.id == Id);
-            selected.push(entry);
+  const HandleUpdateKeyword = (index, keyword) => {
+    let newOptions = [];
+    options.map((val, _i) => {
+      if(index == _i){
+        newOptions.push({
+          keyword: keyword
         })
-    }
-    setEntitiesSelected(selected);
-  }, [updateEntities]);
+      } else {
+        newOptions.push(val)
+      }
+    });
+    setOptions(newOptions);
+  }
 
+  const HandleDeleteKeyword = (index) => {
+    let newOption = options.filter((val, _i) => _i != index);
+    setOptions(newOption);
+  }
+
+  const HandleAddKeyWords = () => {
+    setOptions((options) => [...options, keywordSchema]);
+  }
+
+  const [expandedID, setExpandedID] = useState(null);
+
+  const handleToggle = id => () => {
+    setExpandedID(s => s === id ? null : id);
+  };
 
   return (
     <>
@@ -57,61 +74,51 @@ const CreateModal = ({ setEntityCreate, HandleCreateEntity }) => {
                     onChange={e => setTitle(e.target.value)} 
                     value={title} />
                 </Box>
-                <Box>
+                <Stack spacing={3}>
                 {
                     Array.isArray(options) && options.length ?
-                      options.map((val, index) => {
-                        return(
-                          <Box padding={3} borderColor="neutral200" hasRadius key={index}>
-                            <Stack spacing={4}>
-                              <TextInput 
-                                  placeholder="Nhập từ khóa" 
-                                  label="Từ khóa" 
-                                  name="content"
-                              />
-                              <Stack padding={3} background="neutral100" hasRadius spacing={4}>
-                                <TextInput 
-                                    placeholder="Nhập từ đồng nghĩa" 
-                                    label="Từ đồng nghĩa" 
-                                    name="content"
-                                />
-                                {
-                                  Array.isArray(val.synonyms) && val.synonyms.length ? 
-                                    <Grid gap={3} horizontal>
-                                        {
-                                          val.synonyms.map((val, index) => {
-                                            return(
-                                                <GridItem col={3}>
-                                                    <Status 
-                                                        size='S'
-                                                        showBullet={false}
-                                                        key={index}
-                                                        variant='primary'
-                                                        >
-                                                        <Stack spacing={3} variant="alternative" horizontal>
-                                                            <Typography variant="pi" fontWeight="bold">{ val }</Typography>
-                                                            <IconButton style={{background: "unset"}} noBorder size="S"  label="Xóa" icon={<Cross stylle={{width: 8, height: 8}}/>}/>
-                                                        </Stack>
-                                                    </Status>
-                                                </GridItem>
-                                              )
-                                          })
-                                        }
-                                    </Grid>
-                                  : ""
-                                }
-                              </Stack>
-                            </Stack>
-                          </Box>
-                        )
-                      }) : ""
+                      <AccordionGroup>
+                        {
+                          options.map((val, index) => {
+                            return(
+                             <Accordion expanded={expandedID === `acc-${index}`} onToggle={handleToggle(`acc-${index}`)} id={`acc-${index}`} size="S">
+                              <AccordionToggle 
+                                    action={
+                                    <Stack horizontal spacing={2}>
+                                      <IconButton onClick={handleToggle(`acc-${index}`)} label="Chỉnh sửa" icon={<Pencil />} />
+                                      <IconButton onClick={() => HandleDeleteKeyword(index)} label="Xóa" icon={<Trash />} />
+                                    </Stack>
+                                    } 
+                                    title={options[index].keyword ? options[index].keyword : "Từ khóa"} 
+                                    togglePosition="left" 
+                                  />
+                                  <AccordionContent>
+                                    <Box padding={3}>
+                                        <TextInput 
+                                          style={{width: '100%'}}
+                                          value={options[index].keyword}
+                                          onChange={(e) => HandleUpdateKeyword(index, e.target.value)}
+                                          placeholder="Nhập từ khóa" 
+                                          label 
+                                          name="content"
+                                        />
+                                    </Box>
+                                  </AccordionContent>
+                            </Accordion>
+                            )
+                          })
+                        }
+                    </AccordionGroup > : ""
                   }
-                </Box>
+                  <Box>
+                    <Button variant="secondary" onClick={HandleAddKeyWords}>+ Thêm từ khóa</Button>
+                  </Box>
+                </Stack>
             </Stack>
           </ModalBody>
           <ModalFooter startActions={<Button onClick={() => setEntityCreate(false)} variant="tertiary">
                 Hủy
-            </Button>} endActions={<Button onClick={() => HandleCreate()}>Lưu</Button>} />
+            </Button>} endActions={<Button onClick={HandleCreate}>Lưu</Button>} />
       </ModalLayout>
     </>
   )

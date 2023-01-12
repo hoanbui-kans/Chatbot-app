@@ -31,6 +31,12 @@
       "relation": "manyToMany",
       "target": "plugin::kanbot.role",
       "mappedBy": "entities"
+    },
+    "keywords": {
+      "displayName": "Keywords",
+      "type": "component",
+      "repeatable": true,
+      "component": "kanbot.keywords"
     }
   }
 }

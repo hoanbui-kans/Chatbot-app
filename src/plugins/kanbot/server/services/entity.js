@@ -5,7 +5,8 @@
  */
 
 const populate = {
-  intents: true
+  intents: true,
+  keywords: true
 }
 
 module.exports = ({ strapi }) => ({

@@ -7,12 +7,12 @@
 module.exports = ({strapi}) => ({
     async findManyUtterance (ctx) {
         try {
-             ctx.body = await strapi
-             .plugin('kanbot')
-             .service('utterance')
-             .findMany(ctx.query);
+            ctx.body = await strapi
+            .plugin('kanbot')
+            .service('utterance')
+            .findMany(ctx.query);
         } catch (err) {
-             ctx.throw(500, err);
+            ctx.throw(500, err);
         }
      },
  
@@ -29,10 +29,10 @@ module.exports = ({strapi}) => ({
  
      async createUtterance (ctx) {
          try {
-             ctx.body = await strapi
-             .plugin('kanbot')
-             .service('utterance')
-             .create(ctx.request.body);
+            ctx.body = await strapi
+            .plugin('kanbot')
+            .service('utterance')
+            .create(ctx.request.body);
          } catch (err) {
              ctx.throw(500, err);
          }

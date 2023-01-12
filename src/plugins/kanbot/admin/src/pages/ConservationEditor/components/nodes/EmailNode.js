@@ -1,7 +1,6 @@
 import React, { useState, memo } from 'react'
 import { IconButton, Input, Button, Box, Status, Typography, Stack } from '@strapi/design-system'
 import { IoCloseOutline, IoDuplicateOutline, IoTrashOutline, IoMailOutline, IoFolderOpenOutline } from "react-icons/io5";
-import { Handle, Position, NodeToolbar } from 'reactflow';
 import { useDispatch } from 'react-redux';
 import { updateNodeData, removeNode } from '../../../slice/diagram-builder-slice';
 
@@ -21,16 +20,7 @@ const EmailNode = ({id, data}) => {
   }
 
   return (
-    <Box padding={4} hasRadius background="neutral0" borderColor="neutral200" className="x_node_container">
-         <NodeToolbar className="x_node_toolbar" isVisible={'true'} position={'right'}>
-              <IconButton 
-                icon={<Duplicate size={22} />}
-              />
-              <IconButton 
-                onClick={onDelete} 
-                icon={<Trash size={22} />}
-              />
-        </NodeToolbar>
+    <Box padding={4} hasRadius background="neutral0" className="x_node_container">
         <Stack background="neutral0" padding={1} hasRadius spacing={4} horizontal marginBottom={2}>
             <Typography variant="omega" fontWeight="bold">
                 { data.title }

@@ -1,23 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
-import { DefaultTemplate } from "../Composer/components/models/DiagramModel";
+import { DefaultTemplate } from "../ConservationEditor/components/models/DiagramModel";
 
 const initialState = {
   nodes: [
     DefaultTemplate(uuidv4()) 
   ],
-  edges: [],
-  panelEditor: false,
   editorState: false,
 };
 
-const DiagramBuilderSlice = createSlice({  
+const ConservationBuilder = createSlice({  
     name: 'diagram',
     initialState,
     reducers: {
       // Nodes
       addNode: (state, action) => {
-          const PrevNode =  state.nodes[state.nodes.length - 1];
           const newNode = action.payload;
           state.nodes = [...state.nodes, newNode];
       },
@@ -25,7 +22,7 @@ const DiagramBuilderSlice = createSlice({
       updateNode: (state, action) => {
           state.nodes = action.payload;
       },
-      
+
       updateNodeData: (state, action) => {
         if(action.payload) {
           const CurrentNodes = state.nodes;
@@ -50,41 +47,21 @@ const DiagramBuilderSlice = createSlice({
         }
       },
 
-      // Edges
-      updateEdge: (state, action) => {
-        if(action.payload){
-          state.edges = action.payload;
-        }
-      },
-
-      removeEdge: (state, action) => {
-        if(action.payload) {
-          const CurrentEdges = state.edges;
-          let newEdges = CurrentEdges.filter((edge) => edge.id != action.payload);
-          state.edges = newEdges;
-        }
-      },
-      // Builder
-      setStatePanel: (state, action) => {
-        state.panelEditor = action.payload
-      },
-
       setEditorState: (state, action) => {
         state.editorState = action.payload
-      }
+      },
     },
 })
 
 export const { 
-  setNodes, addNode, updateNode, removeNode, onNodesChange, 
-  updateEdge, updateNodeData, removeEdge,
-  setStatePanel, setEditorState
-} = DiagramBuilderSlice.actions;
+  addNode, 
+  updateNode, 
+  updateNodeData,
+  removeNode, 
+  setEditorState
+} = ConservationBuilder.actions;
 
-export const initialNotes = (state) => state.diagram.nodes;
-export const initialEdges = (state) => state.diagram.edges;
+export const initialNotes = (state) => state.conservation.nodes;
+export const editorState = (state) => state.conservation.editorState;
 
-export const statePanel = (state) => state.diagram.panelEditor;
-export const stateDataPanel = (state) => state.diagram.editorState;
-
-export default DiagramBuilderSlice.reducer;
+export default ConservationBuilder.reducer;

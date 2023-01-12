@@ -62,7 +62,7 @@ const index = () => {
 
     async function HandleDeleteEntity (id) {
         setIsLoading(true);
-        await deleteEntity(id, data);
+        await deleteEntity(id);
         await HandleGetEntities();
         setIsLoading(false);
     }
@@ -74,8 +74,8 @@ const index = () => {
     }, [])
 
     useEffect(() => {
-        console.log(entities);
-    }, [entities])
+        console.log(entityDelete);
+    }, [entityDelete])
     
     
     return (
@@ -119,6 +119,7 @@ const index = () => {
                             // Create Modal
                             entityCreate && 
                             <CreateEntityModal 
+                                setIsLoading={setIsLoading}
                                 setEntityCreate={setEntityCreate}
                                 HandleCreateEntity={HandleCreateEntity}
                             />
@@ -127,6 +128,7 @@ const index = () => {
                             // Edit Modal
                             entityUpdate && 
                             <UpdateEntityModal 
+                                setIsLoading={setIsLoading}
                                 entityUpdate={entityUpdate}
                                 setEntityUpdate={setEntityUpdate}
                                 HandleUpdateEntity={HandleUpdateEntity}
@@ -136,6 +138,7 @@ const index = () => {
                             // Delete Dialogue 
                             entityDelete && 
                             <DialogDeleteEntity 
+                                setIsLoading={setIsLoading}
                                 entityDelete={entityDelete}
                                 setEntityDelete={setEntityDelete}
                                 HandleDeleteEntity={HandleDeleteEntity}

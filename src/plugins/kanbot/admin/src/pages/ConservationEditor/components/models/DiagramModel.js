@@ -12,7 +12,7 @@ export const DefaultTemplate = (id) => {
         {
           id: ``,
           title: "",
-          type: "success"
+          type: "primary"
         }
       ] 
     },

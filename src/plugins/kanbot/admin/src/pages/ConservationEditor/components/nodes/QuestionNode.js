@@ -1,38 +1,29 @@
 import React, { memo, useState } from 'react'
-import { NodeToolbar, Handle, Position } from 'reactflow';
 import { useDispatch } from 'react-redux';
 import { setStatePanel, setEditorState } from '../../../slice/diagram-panelEditor-slice';
+import { removeNode } from '../../../slice/diagram-builder-slice';
 import { Box, Typography, Stack, IconButton, Status } from '@strapi/design-system';
-import { Pencil, Information, Drag } from '@strapi/icons';
+import { Pencil, Information, Drag, Trash, Duplicate } from '@strapi/icons';
 import { TbArrowRampRight2 } from 'react-icons/tb'
 
-const DefaultNode = (node) => {
+const QuestionNode = ({ node }) => {
+
   const {id, data} = node;
   const [open, setOpen] = useState(false); 
-
   const dispatch = useDispatch();
-
+  
   const HandleOpenUpdateNode = () => {
     dispatch(setStatePanel(true));
     dispatch(setEditorState(node));
   }
 
+  const onDelete = () => {
+    dispatch(removeNode(id));
+  }
+
   return (
     <>
-       <Box padding={4} hasRadius background="neutral0" borderColor="neutral200" className="x_node_container">
-          <NodeToolbar className="x_node_toolbar" isVisible="true" position="right">
-              <IconButton 
-                onClick={HandleOpenUpdateNode}
-                icon={<Pencil />}
-              />
-            </NodeToolbar>
-            <Stack background="neutral0" padding={1} hasRadius spacing={4} horizontal marginBottom={2}>
-                <Status variant="primary" size="S" showBullet={false}> <Information /></Status>
-                <Typography variant="omega" fontWeight="bold">
-                    { data.title }
-                    { node.id }
-                </Typography>
-            </Stack>
+       <Box className="x_node_container">
             <Stack spacing={4} className="x_node_content">
               {
                 Array.isArray(data.response) 
@@ -42,8 +33,7 @@ const DefaultNode = (node) => {
                       <Stack spacing={3} padding={2} borderColor="neutral200" hasRadius>
                           <Stack spacing={2} horizontal>
                             <TbArrowRampRight2 size={16} color='#8d8d8d'/>
-                            <Typography variant="pi" fontWeight="bold">
-                              Xác thực { val.type == 'success' ? "hoàn tất" : "thất bại"}</Typography>
+                            <Typography variant="pi" fontWeight="bold">Thêm phản hồi</Typography>
                           </Stack>
                           <Status variant={val.type ? val.type : "secondary"} showBullet={false} className="x_node_case_item">
                               <Stack horizontal spacing={3} justifyContent="space-between">
@@ -55,11 +45,10 @@ const DefaultNode = (node) => {
                   )
                 })
               }
-              <Handle type="source" position={Position.Right} id={node.id}/>
             </Stack>
         </Box>
     </>
   )
 }
 
-export default memo(DefaultNode);
+export default memo(QuestionNode);

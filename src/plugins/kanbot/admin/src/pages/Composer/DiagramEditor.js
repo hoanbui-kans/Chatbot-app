@@ -29,8 +29,8 @@ import { createConservation } from '../../api/Conservation';
 import ChatUi from './components/ChatUi';
 
 import EditorEntity from './components/EditorPanel/EditorEntity';
-import EditorIntent from './components/EditorPanel/EditorIntent';
 import { findOneIntent } from '../../api/Intent';
+import Loading from '../../components/Loading';
 
 const index = () => {
 
@@ -39,24 +39,21 @@ const index = () => {
   const Nodes = useSelector(initialNotes);
   const Edges = useSelector(initialEdges);
 
-  // Title
-  const [editBot, setEditBot] = useState(false);
-  const [intent, setIntent] = useState('');
-
-  const [loading, setLoading] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
+  const [addNode, setAddNode] = useState(false);
 
   // Simulator chat
   const [simChat, setSimChat] = useState(false);
   
   // Intent
-  const [showIntentEditor, setShowIntentEditor] = useState(false);
+  const [intent, setIntent] = useState('');
 
   const HandleCreateResponse = async () => {
     const response = await createResponse(Edges);
   }
 
   const HandleCreateConservation = async () => {
-    setLoading(true);
+    setIsLoading(true);
     let Flow = [];
     Nodes.map((val, index) => {
         if(index > 0){
@@ -77,12 +74,8 @@ const index = () => {
       flow: Flow
     }
     await createConservation(data);
-    setLoading(false)
+    setIsLoading(false)
   }
-
-  useEffect(() => {
-    console.log(Nodes)
-  }, [Nodes])
 
   useEffect( async() => {
       if(!intent){
@@ -105,14 +98,13 @@ const index = () => {
                               Trở lại
                         </Link>
                           }
+                          secondaryAction={<Button onClick={() => setAddNode(true)}>+ Add node</Button>}
                           primaryAction={
                             <Stack spacing={3} horizontal>
                               <Button variant={simChat ? 'danger-light' : 'success-light'} onClick={() => { setSimChat(!simChat) }}>Thử nghiệm</Button>
                               <Button 
-                                loading={ loading == 'draft' ? true : false } 
                                 onClick={() => HandleCreateResponse('draft')} variant="secondary">Lưu nháp</Button>
                               <Button 
-                                loading={ loading == 'publish' ? true : false } 
                                 onClick={HandleCreateConservation}>Đăng</Button>
                             </Stack>
                           }
@@ -122,13 +114,15 @@ const index = () => {
                   <ContentLayout>
                     <Box background="neutral0" hasRadius boxshadow>
                       <ReactFlowProvider>
-                          <Flow />
+                          <Flow addNode={addNode} setAddNode={setAddNode}/>
                       </ReactFlowProvider>
+                      <EditorEntity />
                     </Box>
                   </ContentLayout>
+
                   { simChat && <Box className="simchat"><ChatUi title={'bot Ai'} setSimChat={setSimChat}/></Box> }
-                  <EditorEntity />
-                  { showIntentEditor && <EditorIntent showIntent={showIntent} HandleShowIntent={setShowIntentEditor} /> }
+                  { isloading && <Loading />}
+
         </Layout>
     </>
   )

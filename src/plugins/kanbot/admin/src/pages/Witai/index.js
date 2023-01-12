@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 import pluginId from '../../pluginId';
 
 import { 
@@ -17,12 +16,17 @@ import {
   ContentLayout 
 } from '@strapi/design-system';
 
-import BotTable from '../../components/Settings/BotTable';
+import WitaiTable from './components/WitaiTable';
+import CreateWitaiModal from './components/CreateWitaiModal';
+import UpdateWitaiModal from './components/CreateWitaiModal';
+import DialogDeleteWitai from './components/DialogDeleteWitai';
+
 import Plus from '@strapi/icons/Plus';
+
 import SizeNav from '../../components/SideNav';
 
 const HomePage = () => {
-  return <Layout sideNav={<SizeNav />}>
+  return <Layout>
             <HeaderLayout 
                 primaryAction={
                     <LinkButton 
@@ -39,7 +43,7 @@ const HomePage = () => {
                 endActions={""}
               />
               <ContentLayout>
-                <BotTable />
+                <WitaiTable />
               </ContentLayout>
         </Layout>;
 }

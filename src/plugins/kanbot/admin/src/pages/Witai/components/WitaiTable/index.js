@@ -26,7 +26,7 @@ import Pencil from '@strapi/icons/Pencil';
 import Trash from '@strapi/icons/Trash';
 import Plus from '@strapi/icons/Plus';
 
-const BotTable = () => {
+const index = () => {
   const ROW_COUNT = 6;
   const COL_COUNT = 10;
   const entry = {
@@ -117,4 +117,4 @@ const BotTable = () => {
   )
 }
 
-export default BotTable
+export default index

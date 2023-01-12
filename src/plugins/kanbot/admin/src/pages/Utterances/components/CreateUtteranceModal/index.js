@@ -1,30 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack} from '@strapi/design-system';
-import { TextInput, IconButton, AccordionGroup, Flex, Accordion, AccordionToggle, AccordionContent } from '@strapi/design-system';
+import { TextInput, IconButton, AccordionGroup, Flex, Accordion, AccordionToggle, AccordionContent, Select, Option } from '@strapi/design-system';
+import { findManyIntent } from '../../../../api/Intent';
+import { findManyEntity } from '../../../../api/Entity';
 import { Cross, Pencil, Trash } from '@strapi/icons';
 import Loading from '../../../../components/Loading';
 
-const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity }) => {
+const CreateModal = ({ setUtteranceCreate, HandleCreateUtterance }) => {
 
-  const [title, setTitle] = useState(entityUpdate.title);
-  const [options, setOptions] = useState(entityUpdate.keywords);
+  const [title, setTitle] = useState('');
+  const [options, setOptions] = useState([]);
+  const [entities, setEntities] = useState([]);
+  const [intents, setIntents] = useState([]);
+
   const keywordSchema = {
     keyword: '',
   };
 
   const HandleCreate = async () => {
-    setIsLoading(true);
     const keywords = options.filter((val) => val.keyword != '');
 
     const data = {
       title: title,
       keywords: keywords
     }
-    await HandleUpdateEntity(entityUpdate.id, data);
+    await HandleCreateUtterance(data);
     setTitle('');
     setOptions([]);
-    setEntityUpdate(false)
-    setIsLoading(false)
+    setEntityCreate(false)
   }
 
   const HandleUpdateKeyword = (index, keyword) => {
@@ -56,9 +59,20 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
     setExpandedID(s => s === id ? null : id);
   };
 
+  useEffect(async() => {
+    if(!entities.length) {
+      const getEntities = await findManyEntity();
+      setEntities(getEntities);
+    }
+    if(!intents.length) {
+      const getIntents = await findManyIntent();
+      setIntents(getIntents);
+    }
+  }, []);
+
   return (
     <>
-      <ModalLayout onClose={() => setEntityUpdate(false)} labelledBy="Tạo mục tiêu mới">
+      <ModalLayout onClose={() => setUtteranceCreate(false)} labelledBy="Tạo mục tiêu mới">
           <ModalHeader>
             <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
               Tạo trường dữ liệu mới
@@ -68,12 +82,21 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
             <Stack spacing={3}>
                 <Box>
                   <TextInput 
-                    placeholder="Nhập tiêu đề cho mục tiêu" 
-                    label="Tiêu đề" 
+                    placeholder="Nhập đoạn văn bản tin nhắn" 
+                    label="Đoạn văn bản tin nhắn" 
                     name="title" 
                     onChange={e => setTitle(e.target.value)} 
                     value={title} />
                 </Box>
+                {
+                  Array.isArray(intents) && intents.length ? 
+                    <Select label="Mục tiêu">
+                      {
+                        intents.map((val) => <Option value={val.id.toString()} key={val.id}>{val.title}</Option>)
+                      }
+                    </Select>
+                  :""
+                }
                 <Stack spacing={3}>
                 {
                     Array.isArray(options) && options.length ?
@@ -93,7 +116,7 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
                                     togglePosition="left" 
                                   />
                                   <AccordionContent>
-                                    <Box padding={3}>
+                                    <Stack padding={3} spacing={3}>
                                         <TextInput 
                                           style={{width: '100%'}}
                                           value={options[index].keyword}
@@ -102,7 +125,16 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
                                           label 
                                           name="content"
                                         />
-                                    </Box>
+                                        {
+                                          Array.isArray(entities) && entities.length ? 
+                                            <Select label="Mục tiêu">
+                                              {
+                                                entities.map((val) => <Option value={val.id.toString()} key={val.id}>{val.title}</Option>)
+                                              }
+                                            </Select>
+                                          :""
+                                        }
+                                    </Stack>
                                   </AccordionContent>
                             </Accordion>
                             )
@@ -111,12 +143,12 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
                     </AccordionGroup > : ""
                   }
                   <Box>
-                    <Button variant="secondary" onClick={HandleAddKeyWords}>+ Thêm từ khóa</Button>
+                    <Button variant="secondary" onClick={HandleAddKeyWords}>+ Thêm nhận dạng</Button>
                   </Box>
                 </Stack>
             </Stack>
           </ModalBody>
-          <ModalFooter startActions={<Button onClick={() => setEntityUpdate(false)} variant="tertiary">
+          <ModalFooter startActions={<Button onClick={() => setUtteranceCreate(false)} variant="tertiary">
                 Hủy
             </Button>} endActions={<Button onClick={HandleCreate}>Lưu</Button>} />
       </ModalLayout>
@@ -124,4 +156,4 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
   )
 }
 
-export default index
+export default CreateModal

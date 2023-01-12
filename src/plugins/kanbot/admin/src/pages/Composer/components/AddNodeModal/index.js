@@ -9,22 +9,32 @@ import {
     Grid,
     GridItem,
     Divider,
-    Popover 
+    Popover ,
+    ModalLayout,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
 } from '@strapi/design-system';
 
 import { useDispatch } from "react-redux";
 import { useReactFlow } from 'reactflow';
-import Envelop from '@strapi/icons/Envelop';
-import { ResponseTemplate } from '../../models/DiagramModel';
-import { Plus, Cross } from '@strapi/icons'
+import { ResponseTemplate, QuestionTemplate } from '../models/DiagramModel';
+import { Plus, Cross, Envelop } from '@strapi/icons'
 import { v4 as uuidv4 } from 'uuid';
-import { addNode } from '../../../../slice/diagram-builder-slice';
+import { addNode } from '../../../slice/diagram-builder-slice';
 
 const Node = [
     {
+        name: 'Mẫu câu hỏi',
+        icon: Envelop,
+        color: 'success-light',
+        template: QuestionTemplate
+    },
+    {
         name: 'Xác thực dữ liệu',
         icon: Envelop,
-        color: 'success-light'
+        color: 'success-light',
+        template: ResponseTemplate
     },
     {
         name: 'Hành động',
@@ -43,44 +53,38 @@ const Node = [
     }
 ]
 
-const CreateButton = () => {
-
-    const [showPicker, setShowPicker] = useState(false);
+const index = ({ setAddNode }) => {
 
     const dispatch = useDispatch();
     const reactFlowInstance  = useReactFlow();
 
     const nodes = reactFlowInstance.getNodes();
 
-
-    const addMoreNode = () => {
-        const newNode = ResponseTemplate(uuidv4());
+    const addMoreNode = (template) => {
+        const newNode = template(uuidv4());
         const lastNode = nodes[nodes.length - 1];
         let top = lastNode.position.y + lastNode.height;
         let right = lastNode.position.x + lastNode.width; 
         newNode.position = { x: right + 150, y: top };
         dispatch(addNode(newNode));
         reactFlowInstance.addNodes(newNode);
+        setAddNode(false);
     }
 
-    const [visible, setVisible] = useState(false);
     const buttonRef = useRef();
 
     return (
         <div className="x_create_node">
-           <Button ref={buttonRef} onClick={() => setVisible(s => !s)} startIcon={<Plus />}>Thêm trường dữ liệu</Button> 
-            {
-                visible && 
-                    <Popover centered source={buttonRef} spacing={16}>
-                        <Box background="neutral0" padding={3} className="x_picker_box">
-                        <Stack horizontal justifyContent="space-between">
-                            <Typography fontWeight="bold">Thêm trường dữ liệu cho đoạn hội thoại</Typography>
-                            <IconButton onClick={() => setVisible(s => !s)} label="Đóng" icon={<Cross/>} />
-                        </Stack>
-                        <Box paddingTop={4} paddingBottom={6}>
-                            <Divider />
-                        </Box>
-                        <Grid 
+           <Button ref={buttonRef} onClick={() => setAddNode(false)} startIcon={<Plus />}></Button> 
+            <ModalLayout onClose={() => setAddNode(false)} labelledBy="title">
+                <ModalHeader>
+                    <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
+                        Thêm trường dữ liệu
+                    </Typography>
+                </ModalHeader>
+                <ModalBody>
+                    <Typography fontWeight="bold">Thêm trường dữ liệu cho đoạn hội thoại</Typography>
+                    <Grid 
                             gap={{
                                 desktop: 5,
                                 tablet: 2,
@@ -90,7 +94,7 @@ const CreateButton = () => {
                                 Node.map((val, index) => {
                                     return (
                                         <GridItem col={6} s={6} xs={12}>
-                                            <Button startIcon={<Envelop />} onClick={addMoreNode} style={{height: 50, justifyContent: "start"}} variant={val.color} fullWidth>
+                                            <Button startIcon={<Envelop />} onClick={() => addMoreNode(val.template)} style={{height: 50, justifyContent: "start"}} variant={val.color} fullWidth>
                                                     <Stack horizontal shadow="shadow" gap={3}>
                                                         <Typography>{val.name}</Typography>
                                                     </Stack>
@@ -100,11 +104,10 @@ const CreateButton = () => {
                                 })
                             }
                         </Grid>
-                    </Box>
-                </Popover>
-            }
+                </ModalBody>
+            </ModalLayout>
         </div>
     )
 }
 
-export default CreateButton
+export default index

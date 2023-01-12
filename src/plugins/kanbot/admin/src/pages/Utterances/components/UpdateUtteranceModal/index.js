@@ -4,27 +4,25 @@ import { TextInput, IconButton, AccordionGroup, Flex, Accordion, AccordionToggle
 import { Cross, Pencil, Trash } from '@strapi/icons';
 import Loading from '../../../../components/Loading';
 
-const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity }) => {
+const index = ({ utteranceUpdate, setUtteranceUpdate, HandleUpdateUtterance }) => {
 
-  const [title, setTitle] = useState(entityUpdate.title);
-  const [options, setOptions] = useState(entityUpdate.keywords);
+  const [title, setTitle] = useState(utteranceUpdate.title);
+  const [options, setOptions] = useState(utteranceUpdate.keywords);
   const keywordSchema = {
     keyword: '',
   };
 
   const HandleCreate = async () => {
-    setIsLoading(true);
     const keywords = options.filter((val) => val.keyword != '');
 
     const data = {
       title: title,
       keywords: keywords
     }
-    await HandleUpdateEntity(entityUpdate.id, data);
+    await HandleUpdateUtterance(utteranceUpdate.id, data);
     setTitle('');
     setOptions([]);
-    setEntityUpdate(false)
-    setIsLoading(false)
+    setUtteranceUpdate(false)
   }
 
   const HandleUpdateKeyword = (index, keyword) => {
@@ -58,7 +56,7 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
 
   return (
     <>
-      <ModalLayout onClose={() => setEntityUpdate(false)} labelledBy="Tạo mục tiêu mới">
+      <ModalLayout onClose={() => setUtteranceUpdate(false)} labelledBy="Tạo mục tiêu mới">
           <ModalHeader>
             <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
               Tạo trường dữ liệu mới
@@ -116,7 +114,7 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
                 </Stack>
             </Stack>
           </ModalBody>
-          <ModalFooter startActions={<Button onClick={() => setEntityUpdate(false)} variant="tertiary">
+          <ModalFooter startActions={<Button onClick={() => setUtteranceUpdate(false)} variant="tertiary">
                 Hủy
             </Button>} endActions={<Button onClick={HandleCreate}>Lưu</Button>} />
       </ModalLayout>

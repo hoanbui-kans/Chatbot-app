@@ -16,7 +16,7 @@ import {
 
 import Information from '@strapi/icons/Information';
 
-import { getBotData, createBot } from '../../api/witAi';
+import { getBotData, createBot } from '../../../../api/witAi';
 
 const index = () => {
 
