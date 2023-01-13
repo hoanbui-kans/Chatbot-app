@@ -7,7 +7,7 @@ import { updateNodeData } from '../../../../slice/conservation-builder-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SelectResponse = ({ index, data, updateResponse, current }) => {
-
+    
     const [selection, setSeletion] = useState(current ? current.toString() : "");
 
     const HandleUpdateResponse = (e) => {

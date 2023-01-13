@@ -88,10 +88,10 @@ const index = () => {
 
     useEffect(() => {
         if(!intents.length){
-            HandleGetIntents ();
+            HandleGetIntents();
         }
         if(!entities.length){
-            HandleGetEntities ();
+            HandleGetEntities();
         }
     }, []);
 

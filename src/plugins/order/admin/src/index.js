@@ -14,7 +14,7 @@ export default {
       icon: Archive,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
-        defaultMessage: 'Order',
+        defaultMessage: 'Đơn hàng',
       },
       Component: async () => {
         const component = await import(/* webpackChunkName: "[request]" */ './pages/App');

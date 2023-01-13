@@ -1,35 +1,62 @@
-import { request } from "@strapi/helper-plugin";
+import { request } from '@strapi/helper-plugin';
 
-export const getBotData = async (id, token) => {
-  try {
-    const response = await request('https://api.wit.ai/apps/'+ id +'?v=20221114', {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    });
-    if(response.id){
-      return response;
-    } 
-    return false;
-  } catch (error) {
-    return false
-  }
+export const findManyWitai = async () => {
+    try {
+        const response = await request('/kanbot/witai/', {
+            method: "GET"
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
 }
 
-export const createBot = async (data) => {
-  try {
-    const response = await request('/kanbot/witai/create-bot/', {
-      method: "POST",
-      body: {
-        data: data
-      }
-    });
-    if(response.id){
-      return response;
-    } 
-    return false;
-  } catch (error) {
-    return false
-  }
+export const findOneWitai = async (id) => {
+    try {
+        const response = await request(`/kanbot/witai/${id}`, {
+            method: "GET"
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
+}
+
+export const createWitai = async (data) => {
+    try {
+        const response = await request(`/kanbot/witai/`, {
+            method: "POST",
+            body: {
+                data: data
+            }
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
+}
+
+export const updateWitai = async (id, data) => { 
+    try {
+        const response = await request(`/kanbot/witai/${id}`, {
+            method: "PUT",
+            body: {
+                data: data
+            }
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
+}
+
+export const deleteWitai = async (id) => {
+    try {
+        const response = await request(`/kanbot/witai/${id}`, {
+            method: "DELETE",
+        })
+        return response;
+    } catch (error) {
+        return false
+    }
 }

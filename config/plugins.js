@@ -3,6 +3,10 @@ module.exports = {
       enabled: true,
       resolve: './src/plugins/dashboard'
     },
+    'conservation': {
+      enabled: true,
+      resolve: './src/plugins/conservation'
+    },
     'product': {
       enabled: true,
       resolve: './src/plugins/product'

@@ -8,7 +8,9 @@
     "kind": "plugin",
     "displayName": "Dashboard"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react-chartjs-2": "^5.2.0"
+  },
   "author": {
     "name": "A Strapi developer"
   },

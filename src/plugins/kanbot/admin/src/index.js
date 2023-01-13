@@ -14,7 +14,7 @@ export default {
       icon: Cog,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
-        defaultMessage: 'Kanbot',
+        defaultMessage: 'AI Kanbot',
       },
       Component: async () => {
         const component = await import(/* webpackChunkName: "[request]" */ './pages/App');

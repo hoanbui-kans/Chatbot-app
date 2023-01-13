@@ -14,7 +14,7 @@ export default {
       icon: Dashboard,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
-        defaultMessage: 'Dashboard',
+        defaultMessage: 'Bảng thống kê',
       },
       Component: async () => {
         const component = await import(/* webpackChunkName: "[request]" */ './pages/App');

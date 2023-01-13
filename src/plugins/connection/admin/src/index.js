@@ -13,7 +13,7 @@ export default {
       icon: Apps,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
-        defaultMessage: 'Connection',
+        defaultMessage: 'Kết nối',
       },
       Component: async () => {
         const component = await import(/* webpackChunkName: "[request]" */ './pages/App');

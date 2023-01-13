@@ -14,7 +14,7 @@ export default {
       icon: ShoppingCart,
       intlLabel: {
         id: `${pluginId}.plugin.name`,
-        defaultMessage: 'Product',
+        defaultMessage: 'Sản phẩm',
       },
       Component: async () => {
         const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
