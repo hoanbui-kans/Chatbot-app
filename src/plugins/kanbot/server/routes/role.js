@@ -9,7 +9,7 @@ module.exports = {
     routes: [
       {
         method: 'GET',
-        path: '/role/',
+        path: '/:app_id/role/',
         handler: 'role.findManyRole',
         config: {
           policies: [],

@@ -21,9 +21,9 @@ import SideNav from '../../components/SideNav';
 import Loading from '../../components/Loading';
 
 import OrderTable from './components/OrderTable';
-import CreateOrderModal from './components/CreateOrderModal';
-import UpdateOrderModal from './components/UpdateOrderModal';
-import DialogDeleteOrder from './components/DialogDeleteOrder';
+import CreateOrder from './components/CreateOrder';
+import UpdateOrder from './components/UpdateOrder';
+import DialogDelete from './components/DialogDelete';
 
 import '../style.css'
 
@@ -79,72 +79,61 @@ const index = () => {
     
     return (
         <>
-        <Layout sideNav={<SideNav />}>
-                    <HeaderLayout 
-                        navigationAction={
-                            <Link 
-                                startIcon={<ArrowLeft />} 
-                                to={`/plugins/${pluginId}/settings`}>
-                                Trở lại
-                            </Link>
-                            }
-                            primaryAction={
-                                <Stack spacing={3} horizontal>
-                                    <Button variant="secondary" startIcon={<Pencil />}>
-                                        Tài liệu tham khảo
-                                    </Button>
-                                    <Button onClick={() => { setOrderCreate(true)} } variant="primary" startIcon={<Plus />}>
-                                        Thêm mới
-                                    </Button>
-                                </Stack>
-                            } 
-                            title="Trường dữ liệu"
-                            subtitle="Trường dữ liệu nhận dạng" 
-                            as="h2" 
-                            />
-                    <ContentLayout>
-                        {
-                            // Table
-                            Array.isArray(Orders) 
-                            && Orders.length 
-                            && <OrderTable 
-                                    Orders={Orders}
-                                    setOrderCreate={setOrderCreate}
-                                    setOrderUpdate={setOrderUpdate}
-                                    setOrderDelete={setOrderDelete}
-                                />
+        <Layout>
+                <HeaderLayout 
+                    navigationAction={
+                        <Link 
+                            startIcon={<ArrowLeft />} 
+                            to={`/plugins/${pluginId}/settings`}>
+                            Trở lại
+                        </Link>
                         }
-                        {
-                            // Create Modal
-                            OrderCreate && 
-                            <CreateOrderModal 
-                                setOrderCreate={setOrderCreate}
-                                HandleCreateOrder={HandleCreateOrder}
-                            />
-                        }
-                        {
-                            // Edit Modal
-                            OrderUpdate && 
-                            <UpdateOrderModal 
-                                OrderUpdate={OrderUpdate}
-                                setOrderUpdate={setOrderUpdate}
-                                HandleUpdateOrder={HandleUpdateOrder}
-                            />
-                        }
-                        {
-                            // Delete Dialogue 
-                            OrderDelete && 
-                            <DialogDeleteOrder 
-                                OrderDelete={OrderDelete}
-                                setOrderDelete={setOrderDelete}
-                                HandleDeleteOrder={HandleDeleteOrder}
-                            />
-                        }
-                    </ContentLayout>
-                    {
-                        isLoading && <Loading />
+                        primaryAction={
+                            <Stack spacing={3} horizontal>
+                                <Button variant="secondary" startIcon={<Pencil />}>
+                                    Tài liệu tham khảo
+                                </Button>
+                                <Button onClick={() => { setOrderCreate(true)} } variant="primary" startIcon={<Plus />}>
+                                    Thêm mới
+                                </Button>
+                            </Stack>
+                        } 
+                        title="Trường dữ liệu"
+                        subtitle="Trường dữ liệu nhận dạng" 
+                        as="h2" 
+                        />
+                <ContentLayout>
+                {
+                        // Create Modal
+                        OrderCreate ? 
+                        <CreateOrder
+                            setOrderCreate={setOrderCreate}
+                            HandleCreateOrder={HandleCreateOrder}
+                        />
+                        : OrderUpdate ? 
+                        <UpdateOrder 
+                            OrderUpdate={OrderUpdate}
+                            setOrderUpdate={setOrderUpdate}
+                            HandleUpdateOrder={HandleUpdateOrder}
+                        />
+                        : OrderDelete ? 
+                        <DialogDelete 
+                            OrderDelete={OrderDelete}
+                            setOrderDelete={setOrderDelete}
+                            HandleDeleteOrder={HandleDeleteOrder}
+                        />:
+                        <OrderTable 
+                            Orders={Orders}
+                            setOrderCreate={setOrderCreate}
+                            setOrderUpdate={setOrderUpdate}
+                            setOrderDelete={setOrderDelete}
+                        />
                     }
-            </Layout>
+                </ContentLayout>
+                {
+                    isLoading && <Loading />
+                }
+        </Layout>
     </>
   )
 }

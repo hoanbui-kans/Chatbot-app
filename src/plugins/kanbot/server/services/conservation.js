@@ -44,7 +44,15 @@ module.exports = ({ strapi }) => ({
         populate: populate
       });
     },
+    
+    async findOneByIntent (intent_name) {
+      return await strapi.db.query("plugin::kanbot.conservation").findOne({
+        where: {
 
+        },
+        populate: populate
+      });
+    },
     async findOne (id) {
       return await strapi.entityService.findOne("plugin::kanbot.conservation", id, {
         populate: populate

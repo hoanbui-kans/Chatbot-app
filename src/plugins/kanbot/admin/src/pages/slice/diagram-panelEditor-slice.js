@@ -12,9 +12,9 @@ const initialState = {
 
 export const fetchData = createAsyncThunk(
   'diagramEditor/fetchData',
-  async () => {
-    const entities = await findManyEntity();
-    const responses = await findManyResponse();
+  async (app_id) => {
+    const entities = await findManyEntity(app_id);
+    const responses = await findManyResponse(app_id);
     return {
       entities: entities ? entities : false,
       responses: responses ? responses : false

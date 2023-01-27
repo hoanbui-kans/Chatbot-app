@@ -21,7 +21,7 @@ import CreateWitaiModal from './components/CreateWitaiModal';
 import UpdateWitaiModal from './components/CreateWitaiModal';
 import DialogDeleteWitai from './components/DialogDeleteWitai';
 
-import { findManyWitai, findOneWitai , createWitai, updateWitai, deleteWitai } from '../../api/witai'
+import { findManyWitai, findOneWitai , createWitai, updateWitai, deleteWitai } from '../../api/witAi'
 
 import Plus from '@strapi/icons/Plus';
 
@@ -50,6 +50,7 @@ const HomePage = () => {
         setIsLoading(true);
         await createWitai(data);
         await HandleGetWitai();
+        setWitaiCreate(false);
         setIsLoading(false);
     }
 

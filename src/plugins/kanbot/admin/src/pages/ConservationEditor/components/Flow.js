@@ -10,7 +10,8 @@ import { initialNotes } from "../../slice/conservation-builder-slice";
 import { Pencil, Trash, Duplicate, Plus, ArrowDown, ArrowUp} from '@strapi/icons'
 import { setEditorState, editorState, updateNode } from "../../slice/conservation-builder-slice";
 import AddNodeModal from '../components/AddNodeModal'
-import EditorEntity from './EditorPanel/EditorEntity';
+import EditorPanel from './EditorPanel';
+import { useParams } from 'react-router-dom';
 
 import "../style.css";
 
@@ -30,46 +31,48 @@ const TemplateNode = ({ node }) => {
 
 const Flow = () => {
 
-  const dispatch = useDispatch();
-  const defaultNodes = useSelector(initialNotes);
-  const editNode = useSelector(editorState);
-  const [expanded, setExpanded] = useState(true);
-  const [addNode, setAddNode] = useState(false);
+    const {app_name, intent } = useParams();
+    const dispatch = useDispatch();
+    const defaultNodes = useSelector(initialNotes);
+    const editNode = useSelector(editorState);
+    const [expanded, setExpanded] = useState(true);
+    const [addNode, setAddNode] = useState(false);
+    const [isloading, setIsLoading] = useState(false);
+      // Intent
+      
+    const [appInfo, setAppInfo] = useState(false);
+    const [stateIntent, setStateIntent] = useState('');
 
-  useEffect(() => {
-    console.log(defaultNodes);
-  }, [defaultNodes]);
-
-  const HandleEditNode = (node) => {
-    dispatch(setEditorState(node));
-  }
-
-  const HandleDeleteNode = (index) => {
-    const newNode = defaultNodes.filter((val, _i) => index != _i);
-    dispatch(updateNode(newNode))
-  }
-
-  const HandleSortUp = (index) => {
-    const newNode = [...defaultNodes];
-    const PreIndex = newNode[index - 1];
-    const ChangeIndex = newNode[index];
-    if(index > 1){
-      newNode[index] = PreIndex;
-      newNode[index - 1] = ChangeIndex;
+    const HandleEditNode = (node) => {
+      dispatch(setEditorState(node));
     }
-    dispatch(updateNode(newNode))
-  }
 
-  const HandleSortDown = (index) => {
-    const newNode = [...defaultNodes];
-    const nextIndex = newNode[index + 1];
-    const ChangeIndex = newNode[index];
-    if(index > 0 && index < newNode.length - 1){
-      newNode[index] = nextIndex;
-      newNode[index + 1] = ChangeIndex;
+    const HandleDeleteNode = (index) => {
+      const newNode = defaultNodes.filter((val, _i) => index != _i);
+      dispatch(updateNode(newNode))
     }
-    dispatch(updateNode(newNode))
-  }
+
+    const HandleSortUp = (index) => {
+      const newNode = [...defaultNodes];
+      const PreIndex = newNode[index - 1];
+      const ChangeIndex = newNode[index];
+      if(index > 1){
+        newNode[index] = PreIndex;
+        newNode[index - 1] = ChangeIndex;
+      }
+      dispatch(updateNode(newNode))
+    }
+
+    const HandleSortDown = (index) => {
+      const newNode = [...defaultNodes];
+      const nextIndex = newNode[index + 1];
+      const ChangeIndex = newNode[index];
+      if(index > 0 && index < newNode.length - 1){
+        newNode[index] = nextIndex;
+        newNode[index + 1] = ChangeIndex;
+      }
+      dispatch(updateNode(newNode))
+    }
 
       return(
         <>
@@ -79,7 +82,7 @@ const Flow = () => {
                     defaultNodes.map((val, index) => {
                       const {id, data} = val;
                       return (
-                        <Box className="x_node_accordion">
+                        <Box className="x_node_accordion" key={index}>
                             <Accordion key={index} expanded={true} onToggle={() => setExpanded(val.id)} id={val.id} size="S">
                               <AccordionToggle 
                                   variant="secondary" 
@@ -116,8 +119,11 @@ const Flow = () => {
                   </Box>
               </Stack>
           </Box>
-          { addNode && <AddNodeModal setAddNode={setAddNode}/>}
-          { editNode && <EditorEntity stateEditor={editNode} HandleEditNode={HandleEditNode}/> }
+          { addNode ? <AddNodeModal setAddNode={setAddNode}/> : ""}
+          { editNode ? 
+              <EditorPanel
+                stateEditor={editNode} 
+                HandleEditNode={HandleEditNode}/> :"" }
         </>
       )
 } 

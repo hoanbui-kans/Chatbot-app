@@ -9,9 +9,9 @@ const populate = {
 }
 
 module.exports = ({ strapi }) => ({
-  async findMany (query) {
-    return await strapi.entityService.findMany("plugin::kanbot.intent", {
-      query: query,
+  async findMany(query) {
+    return await strapi.db.query("plugin::kanbot.intent").findMany({
+      where: query,
       populate: populate
     });
   },

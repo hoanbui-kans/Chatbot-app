@@ -16,7 +16,6 @@ import {
   Box,
   ContentLayout,
   Stack,
-  BaseHeaderLayout,
   Divider
 } from '@strapi/design-system';
 
@@ -24,36 +23,37 @@ import { ArrowLeft } from '@strapi/icons';
 import { createResponse } from '../../api/Response';
 import { createConservation } from '../../api/Conservation';
 
-import ChatUi from '../Composer/components/ChatUi';
-
-import EditorEntity from '../Composer/components/EditorPanel/EditorEntity';
-import AddNodeModal from  './components/AddNodeModal';
+import { findOneWitaiByAppName } from '../../api/witAi';
 
 import { findOneIntent } from '../../api/Intent';
+import { findManyEntity } from '../../api/Entity';
+import { findManyResponse } from '../../api/Response';
+
+import ChatUi from './components/ChatUi';
+import EditorPanel from './components/EditorPanel';
 import Loading from '../../components/Loading';
 import Flow from './components/Flow';
-import { Plus, Pencil } from '@strapi/icons';
+import { Plus } from '@strapi/icons';
 
 const index = () => {
 
-  const { id } = useParams();
-
+  const { app_name, intent } = useParams();
+  const [appInfo, setAppInfo] = useState(false);
   const [isloading, setIsLoading] = useState(false);
 
   // Simulator chat
   const [simChat, setSimChat] = useState(false);
 
-  // Intent
-  const [intent, setIntent] = useState('');
-
   const HandleCreateResponse = async () => {
     const response = await createResponse(Edges);
   }
+  async function HandleGetConservation () {
 
-  const HandleCreateConservation = async () => {
+  }
+
+  async function HandleCreateConservation (){
     setIsLoading(true);
     let Flow = [];
-    
     const data = {
       intent: intent,
       flow: Flow
@@ -62,45 +62,62 @@ const index = () => {
     setIsLoading(false)
   }
 
-  useEffect( async() => {
-      if(!intent){
-        const response = await findOneIntent(id);
-        if(response){
-          setIntent(response)
-        }
+  async function HandleGetApp(app_id) {
+      const App = await findOneWitaiByAppName(app_id);
+      if(App){
+          setAppInfo(App);
       }
-  }, [])
+  }
+
+  useEffect( async() => {
+      if(!appInfo){
+        await HandleGetApp(app_name);
+      }
+  }, [appInfo])
+  
 
   return (
     <>
             <Layout>
                 <Box background="neutral0">
-                      <BaseHeaderLayout navigationAction={
-                          <Link 
-                              startIcon={<ArrowLeft />} 
-                              to={`/plugins/${pluginId}/intents`}>
+                      <HeaderLayout 
+                        navigationAction={
+                            <Link 
+                                startIcon={<ArrowLeft />} 
+                                to={`/plugins/${pluginId}/${app_name}/intents/`}>
                                 Trở lại
-                          </Link>} 
-                          primaryAction={
-                            <Stack spacing={3} horizontal>
-                              <Button variant={simChat ? 'danger-light' : 'success-light'} onClick={() => { setSimChat(!simChat) }}>Thử nghiệm</Button>
-                              <Button 
-                                onClick={() => HandleCreateResponse('draft')} variant="secondary">Lưu nháp</Button>
-                              <Button 
-                                onClick={HandleCreateConservation}>Đăng</Button>
-                            </Stack>
-                          } 
-                          title={ intent ? intent.title : "Bot Ai"}
-                          as="h2"  />
+                            </Link>
+                            }
+                            primaryAction={
+                                <Stack spacing={3} horizontal>
+                                    <Button onClick={() => setSimChat(true)} variant="secondary">
+                                        Thử nghiệm
+                                    </Button>
+                                    <Button onClick={() => { HandleCreateConservation()} } variant="default" startIcon={<Plus />}>
+                                        Thêm mới
+                                    </Button>
+                                </Stack>
+                            } 
+                            title={ "Bot Ai"}
+                            subtitle="Trường dữ liệu nhận dạng" 
+                            as="h2" 
+                            />
                   </Box>
                   <Divider />
                   <ContentLayout>
-                      <Flow />
+                      <Flow appInfo={appInfo}/>
                   </ContentLayout>
 
-                  { simChat && <Box className="simchat"><ChatUi title={'bot Ai'} setSimChat={setSimChat}/></Box> }
-                  { isloading && <Loading />}
-                  <EditorEntity />
+                  { 
+                  simChat ? 
+                    <Box className="simchat">
+                      <ChatUi 
+                        appInfo={appInfo}
+                        title={'bot Ai'} 
+                        setSimChat={setSimChat}/>
+                    </Box> : ""
+                  }
+                  { isloading && <Loading /> }
         </Layout>
     </>
   )

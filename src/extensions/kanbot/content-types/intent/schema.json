@@ -18,8 +18,7 @@
       "unique": false
     },
     "name": {
-      "type": "uid",
-      "targetField": "title"
+      "type": "string"
     },
     "lookups": {
       "displayName": "lookups",
@@ -44,6 +43,12 @@
       "relation": "oneToMany",
       "target": "plugin::kanbot.conservation",
       "mappedBy": "intent"
+    },
+    "kanbot_witais": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.witai",
+      "inversedBy": "intents"
     }
   }
 }

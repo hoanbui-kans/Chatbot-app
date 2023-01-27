@@ -16,8 +16,6 @@ import {
 
 import Information from '@strapi/icons/Information';
 
-import { getBotData, createBot } from '../../../../api/witAi';
-
 const index = () => {
 
   const [content, setContent] = useState({
@@ -32,30 +30,6 @@ const index = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const HandleGetBotInfo = async (e) => {
-    e.preventDefault();
-    if( content.app_id.length == 0 || content.server_access_token.length == 0){
-      return false
-    }
-    const botInfo = await getBotData(content.app_id, content.server_access_token);
-      if(botInfo){
-        setContent({
-          ...content,
-          app_name: botInfo.name,
-          private: botInfo.private,
-          language: botInfo.lang,
-      });
-
-      setOpenModal(true)
-    }
-  }
-
-  const HandleCreateBot = async () => {
-    const bot = await createBot(content);
-    console.log(bot);
-    setOpenModal(prev => !prev);
-  }
-
   return (
     <>
       <Box
@@ -67,7 +41,6 @@ const index = () => {
 
         >
         <form
-          onSubmit={HandleGetBotInfo}
         >
           <Box paddingBottom={4}>
           <Box paddingBottom={4}>
@@ -186,7 +159,7 @@ const index = () => {
           <ModalFooter startActions={<Button onClick={() => setOpenModal(prev => !prev)} variant="tertiary">
                 Hủy
               </Button>} endActions={<>
-                <Button onClick={HandleCreateBot}>Lưu dữ liệu</Button>
+                <Button>Lưu dữ liệu</Button>
               </>} />
         </ModalLayout>}
     </>

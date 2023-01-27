@@ -1,8 +1,8 @@
 import { request } from '@strapi/helper-plugin';
 
-export const findManyIntent = async () => {
+export const findManyIntent = async (appId) => {
     try {
-        const response = await request('/kanbot/intent/', {
+        const response = await request(`/kanbot/intent/?kanbot_witais=${appId}`, {
             method: "GET"
         })
         return response;
@@ -11,18 +11,7 @@ export const findManyIntent = async () => {
     }
 }
 
-export const findOneIntent = async (id) => {
-    try {
-        const response = await request(`/kanbot/intent/${id}`, {
-            method: "GET"
-        })
-        return response;
-    } catch (error) {
-        return false
-    }
-}
-
-export const createIntent = async (data) => {
+export const createIntent = async ( token, data ) => {
     try {
         const response = await request(`/kanbot/intent/`, {
             method: "POST",
@@ -32,31 +21,20 @@ export const createIntent = async (data) => {
         })
         return response;
     } catch (error) {
-        return false
+        console.log(error)
     }
 }
 
-export const updateIntent = async (id, data) => {
+export const deleteIntent = async(data) => {
     try {
-        const response = await request(`/kanbot/intent/${id}`, {
-            method: "PUT",
+        const response = await request(`/kanbot/intent/${data.id}/`, {
+            method: "POST",
             body: {
                 data: data
             }
-        })
+        });
         return response;
     } catch (error) {
-        return false
-    }
-}
-
-export const deleteIntent = async (id) => {
-    try {
-        const response = await request(`/kanbot/intent/${id}`, {
-            method: "DELETE",
-        })
-        return response;
-    } catch (error) {
-        return false
+        console.log(error)
     }
 }

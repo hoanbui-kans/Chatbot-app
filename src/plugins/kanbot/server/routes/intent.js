@@ -17,15 +17,6 @@ module.exports =  {
         },
       },
       {
-        method: 'GET',
-        path: '/intent/:id',
-        handler: 'intent.findOneIntent',
-        config: {
-          policies: [],
-          auth: false,
-        },
-      },
-      {
         method: 'POST',
         path: '/intent/',
         handler: 'intent.createIntent',
@@ -35,17 +26,8 @@ module.exports =  {
         },
       },
       {
-        method: 'PUT',
-        path: '/intent/:id',
-        handler: 'intent.updateIntent',
-        config: {
-          policies: [],
-          auth: false,
-        },
-      },
-      {
-        method: 'DELETE',
-        path: '/intent/:id',
+        method: 'POST',
+        path: '/intent/:id/',
         handler: 'intent.deleteIntent',
         config: {
           policies: [],

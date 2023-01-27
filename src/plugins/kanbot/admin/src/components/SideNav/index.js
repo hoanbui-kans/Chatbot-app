@@ -20,29 +20,35 @@ const SizeNav = () => {
     width: 18,
     height: 18
   }
-  const links = [ {
-    id: 1,
+
+  const links = [ 
+    {
+      id: 'intents',
+      label: 'Chiến dịch',
+      icon: <Discuss style={iconSize} />,
+      to: 'intents'
+    }
+  ,{
+    id: 'entities',
     label: 'Trường dữ liệu',
     icon: <ChartCircle style={iconSize} />,
     to: 'entities'
   }, {
-    id: 2,
+    id: 'traits',
     label: 'Các đặc điểm',
     icon: <ChartBubble style={iconSize} />,
     to: 'traits',
   }, {
-    id: 3,
+    id: 'utterances',
     label: 'Cấu trúc câu',
     icon: <Message style={iconSize} />,
     to: 'utterances'
-  }];
+  }
+];
 
   return (
       <SubNav ariaLabel="Settings sub nav">
           <SubNavSections>
-            <SubNavLink to={`/plugins/${pluginId}/${app_name}/`} active={false} icon={<Discuss style={iconSize} />}>
-              Chiến dịch
-            </SubNavLink>
             <SubNavSection label="Cấu trúc dữ liệu">
               {links.map( link =>
                     <SubNavLink 

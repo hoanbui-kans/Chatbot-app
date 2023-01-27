@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack} from '@strapi/design-system';
 import { TextInput, Select, Option, Status } from '@strapi/design-system';
-import Drag from '@strapi/icons/Drag';
+import { Drag, Pencil } from '@strapi/icons';
 
-const CreateModal = ({ entities, setIntentCreate, HandleCreateIntent }) => {
+const CreateModal = ({ entities, isLoading, setIntentCreate, HandleCreateIntent }) => {
 
   const [title, setTitle] = useState('');
 
@@ -48,7 +48,8 @@ const CreateModal = ({ entities, setIntentCreate, HandleCreateIntent }) => {
                     label="Tiêu đề" 
                     name="title" 
                     onChange={e => setTitle(e.target.value)} 
-                    value={title} />
+                    value={title} 
+                  />
                 </Box>
                 {
                   Array.isArray(entities) && entities.length ? 
@@ -101,7 +102,14 @@ const CreateModal = ({ entities, setIntentCreate, HandleCreateIntent }) => {
           </ModalBody>
           <ModalFooter startActions={<Button onClick={() => setIntentCreate(false)} variant="tertiary">
                 Hủy
-              </Button>} endActions={<Button onClick={() => HandleCreate()}>Lưu</Button>} />
+              </Button>} 
+                  endActions={
+                    <Button 
+                      onClick={() => HandleCreate()} 
+                      loading={ isLoading == "create" ? true : false}>
+                        Lưu
+                    </Button>
+                  } />
       </ModalLayout>
     </>
   )

@@ -62,7 +62,7 @@ const index = ({ entities, setEntityCreate, setEntityUpdate, setEntityDelete }) 
                             <Td>
                                 <Flex>
                                     <IconButton onClick={() => setEntityUpdate(entry)} label="Chỉnh sửa" noBorder icon={<Pencil />} />
-                                    <IconButton onClick={() => setEntityDelete(entry.id)} label="Xóa" noBorder icon={<Trash />} />
+                                    <IconButton onClick={() => setEntityDelete(entry)} label="Xóa" noBorder icon={<Trash />} />
                                 </Flex>
                             </Td>
                             </Tr>)}

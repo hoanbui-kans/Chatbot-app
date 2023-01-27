@@ -23,7 +23,7 @@ const ResponseNode = ({node}) => {
       <Box className="x_node_container">
         <Stack spacing={3}>
             {
-              data.request && 
+              data.request ? 
                 <Stack hasRadius spacing={3}>
                     <Stack horizontal spacing={3}>
                         <TbArrowRampRight2 size={16} color='#8d8d8d'/>
@@ -37,16 +37,16 @@ const ResponseNode = ({node}) => {
                           </Typography>
                         </Stack>  
                     </Status>
-                </Stack>
+                </Stack> : ""
             }
             <Stack spacing={3} className="x_node_content">
                 <Stack spacing={1} className="x_node_case">
                 {
                     Array.isArray(data.response) 
                     && data.response.length 
-                    && data.response.map((val, index) => {
+                    ? data.response.map((val, index) => {
                         return (
-                          <Stack spacing={3}>
+                          <Stack key={index} spacing={3}>
                             <Stack horizontal spacing={3}>
                                 <TbArrowRampRight2 size={16} color='#8d8d8d'/>
                                 <Typography variant="pi" fontWeight="bold">{ val.type == 'success' ? "Hỏi người dùng" : "Xác thực thất bại"}</Typography>
@@ -59,7 +59,7 @@ const ResponseNode = ({node}) => {
                             </Status>
                         </Stack>
                       )
-                    })
+                    }) : ""
                   }
                 </Stack>   
             </Stack>

@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack, Tooltip, Textarea} from '@strapi/design-system';
+import React, { useState } from 'react'
+import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack, Textarea} from '@strapi/design-system';
 import { TextInput } from '@strapi/design-system';
-
+import slugify from 'slugify';
+  
 const CreateModal = ({ Witai, setWitaiCreate, HandleCreateWitai }) => {
 
-  const [title, setTitle] = useState('');
   const [content, setContent] = useState({
     title: "",
     description: "",
-    app_id: "",
-    server_access_token: ""
   });
-  const [updateWitai, setUpdateWitai] = useState([]);
 
   const HandleCreate = async () => {
-    const data = {
-      title: title,
-      Witai: updateWitai,
-    }
-    await HandleCreateWitai(data);
-    setTitle('');
-    setUpdateWitai([]);
+    await HandleCreateWitai(content);
+    setContent({
+      app_name: "",
+      description: "",
+    });
   }
 
   return (
@@ -37,8 +32,9 @@ const CreateModal = ({ Witai, setWitaiCreate, HandleCreateWitai }) => {
                       <TextInput 
                           label="Tiêu đề ứng dụng" 
                           name="app_title"
-                          onChange={e => setContent({...content, title: e.target.value})} 
-                          value={content.title} />
+                          hint="Nhập tiếng việt gạch chân không có dấu"
+                          onChange={e => setContent({...content, app_name: slugify(e.target.value)})} 
+                          value={content.app_name} />
                   </Box>
                   <Box>
                       <Textarea 

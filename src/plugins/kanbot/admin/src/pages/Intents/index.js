@@ -19,81 +19,89 @@ import { ArrowLeft, Pencil } from '@strapi/icons';
 import SideNav from '../../components/SideNav'
 import IntentsTable from './components/IntentsTable'
 import CreateIntentModal from './components/CreateIntentModal'
-import UpdateIntentModal from './components/UpdateIntentModal'
 import DialogDeleteIntent from './components/DialogDeleteIntent'
 
 import { 
     findManyIntent, 
     createIntent, 
-    updateIntent, 
     deleteIntent 
 } from '../../api/Intent';
 
+import { findOneWitaiByAppName } from '../../api/witAi';
 import { findManyEntity } from '../../api/Entity';
+import { useParams } from 'react-router-dom'; 
 import Loading from '../../components/Loading';
-
+import slugify from 'slugify';
 import '../style.css'
 
 const index = () => {
 
     const [entities, setEntities] = useState([]);
     const [intents, setIntents] = useState([]);
+    const [appInfo, setAppInfo] = useState(false);
     const [intentCreate, setIntentCreate] = useState(false);
-    const [intentUpdate, setIntentUpdate] = useState(false);
     const [intentDelete, setIntentDelete] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    async function HandleGetIntents () {
-        const response = await findManyIntent();
-        if(Array.isArray(response) && response.length){
+    const { app_name } = useParams();
+
+    async function HandleGetApp ( app_id ) {
+        const App = await findOneWitaiByAppName( app_id );
+        if(App){
+            setAppInfo(App);
+        }
+    }
+
+    async function HandleGetIntents (app_id) {
+        const response = await findManyIntent(app_id);
+        if(Array.isArray(response)){
             setIntents(response);
         }
     }
 
-    async function HandleCreateIntent (data) {
-        setIsLoading(true);
-        const response = await createIntent(data);
-        if(response){
-            HandleGetIntents();
-        }
+    async function HandleCreateIntent(data) {
+        setIsLoading("create");
+        data.kanbot_witais = appInfo.id;
+        data.name = slugify(
+            data.title, { 
+            replacement: '_',
+            locale: 'vi'
+        });
+        await createIntent( appInfo.server_access_token, data);
+        await HandleGetIntents(appInfo.id);
         setIntentCreate(false);
         setIsLoading(false);
     }
 
-    async function HandleUpdateIntent(id, data) {
-        setIsLoading(true);
-        const response = await updateIntent(id, data);
-        if(response){
-            HandleGetIntents();
-        }
+    async function HandleDeleteIntent (data) {
+        setIsLoading("delete");
+        data.kanbot_witais = appInfo.id;
+        await deleteIntent(data);
+        await HandleGetIntents(appInfo.id);
+        setIntentDelete(false);
         setIsLoading(false);
-    }
-
-    async function HandleDeleteIntent (id) {
-        setIsLoading(true);
-        const response = await deleteIntent(id);
-        setIsLoading(false);
-        if(response){
-            HandleGetIntents();
-        }
     }
 
     // Entities
-    async function HandleGetEntities(){
-        const response = await findManyEntity();
+    async function HandleGetEntities(app_id){
+        const response = await findManyEntity(app_id);
         if(Array.isArray(response) && response.length) {
             setEntities(response)
         }
     }
 
-    useEffect(() => {
-        if(!intents.length){
-            HandleGetIntents();
+    useEffect( async () => {
+        if(!appInfo){
+            await HandleGetApp(app_name);
+        } else {
+            if(!intents.length){
+                await HandleGetIntents(appInfo.id);
+            }
+            if(!entities.length){
+                await HandleGetEntities(appInfo.id);
+            }
         }
-        if(!entities.length){
-            HandleGetEntities();
-        }
-    }, []);
+    }, [appInfo]);
 
     return (
         <>
@@ -102,7 +110,7 @@ const index = () => {
                 navigationAction={
                     <Link 
                         startIcon={<ArrowLeft />} 
-                        to={`/plugins/${pluginId}/settings`}>
+                        to={`/plugins/${pluginId}`}>
                         Trở lại
                     </Link>
                     }
@@ -119,45 +127,32 @@ const index = () => {
                     title="Chiến dịch"
                     subtitle="Tạo cuộc hội thoại từ chiến dịch" 
                     as="h2" 
-                    />
+                />
             <ContentLayout>
+                <IntentsTable 
+                    intents={intents} 
+                    isLoading={isLoading}
+                    setIntentCreate={setIntentCreate}
+                    setIntentDelete={setIntentDelete}
+                /> 
                 {
-                    intents && 
-                    <IntentsTable 
-                        intents={intents} 
-                        setIntentCreate={setIntentCreate}
-                        setIntentDelete={setIntentDelete}
-                        setIntentUpdate={setIntentUpdate}
-                    />
-                }
-                {
-                    entities && intentCreate &&
+                    intentCreate ?
                     <CreateIntentModal 
                         entities={entities}
                         setIntentCreate={setIntentCreate}
                         HandleCreateIntent={HandleCreateIntent}
-                    />
+                    /> : ""
                 }
-                
                 {
-                    entities && intentUpdate && 
-                    <UpdateIntentModal 
-                        entities={entities}
-                        intentUpdate={intentUpdate}
-                        setIntentUpdate={setIntentUpdate}
-                        HandleUpdateIntent={HandleUpdateIntent}
-                    />
+                    intentDelete ?
+                    <DialogDeleteIntent 
+                        intentDelete={intentDelete}
+                        isLoading={isLoading}
+                        setIntentDelete={setIntentDelete}
+                        HandleDeleteIntent={HandleDeleteIntent}
+                    /> : ""
                 }
-
-                {
-                    intentDelete && 
-                    <DialogDeleteIntent HandleDeleteIntent={HandleDeleteIntent}/>
-                }
-                
                 </ContentLayout>
-                {
-                    isLoading && <Loading />
-                }
         </Layout>
     </>
   )

@@ -30,7 +30,7 @@ const QuestionNode = ({ node }) => {
                 && data.response.length 
                 && data.response.map((val, index) => {
                     return (
-                      <Stack spacing={3} padding={2} borderColor="neutral200" hasRadius>
+                      <Stack key={index} spacing={3} padding={2} borderColor="neutral200" hasRadius>
                           <Stack spacing={2} horizontal>
                             <TbArrowRampRight2 size={16} color='#8d8d8d'/>
                             <Typography variant="pi" fontWeight="bold">Thêm phản hồi</Typography>

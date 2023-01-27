@@ -8,6 +8,7 @@ const utterance = require('./utterance');
 const role = require('./role');
 const response = require('./response');
 const conservation = require('./conservation');
+const botsetting = require('./botsetting');
 
 module.exports = {
   witai,
@@ -18,4 +19,5 @@ module.exports = {
   role,
   response, 
   conservation,
+  botsetting
 }

@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "botsettings",
+  "info": {
+    "singularName": "botsetting",
+    "pluralName": "botsettings",
+    "displayName": "botsetting",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "app_title": {
+      "type": "string"
+    },
+    "app_name": {
+      "type": "uid",
+      "targetField": "app_title"
+    },
+    "access_token": {
+      "type": "string"
+    },
+    "client_token": {
+      "type": "string"
+    }
+  }
+}

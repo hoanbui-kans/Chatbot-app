@@ -2,15 +2,15 @@ import React from 'react'
 import { Dialog, DialogBody, DialogFooter, Button, Stack, Flex, Typography } from '@strapi/design-system';
 import { Trash,ExclamationMarkCircle } from '@strapi/icons'
 
-const index = ({ utteranceDelete, setUtteranceDelete, HandleDeleteUtterance }) => {
+const index = ({ WitaiDelete, setWitaiDelete, HandleDeleteWitai }) => {
 
   const HandleDelete = (e) => {
-    HandleDeleteUtterance(e);
-    setUtteranceDelete(false);
+    HandleDeleteWitai(e);
+    setWitaiDelete(false);
   }
   
   return (
-    <Dialog onClose={() => setEntityDelete(false)} title="Xóa nội dung" isOpen={utteranceDelete}>
+    <Dialog onClose={() => setWitaiDelete(false)} title="Xóa nội dung" isOpen={WitaiDelete}>
         <DialogBody icon={<ExclamationMarkCircle />}>
         <Stack spacing={2}>
             <Flex justifyContent="center">
@@ -19,8 +19,8 @@ const index = ({ utteranceDelete, setUtteranceDelete, HandleDeleteUtterance }) =
         </Stack>
         </DialogBody>
         <DialogFooter 
-            startAction={<Button onClick={() => setEntityDelete(false)} variant="tertiary">Hủy</Button>} 
-            endAction={<Button onClick={() => HandleDelete(utteranceDelete)} variant="danger-light" startIcon={<Trash />}> Xác nhận</Button>} />
+            startAction={<Button onClick={() => setWitaiDelete(false)} variant="tertiary">Hủy</Button>} 
+            endAction={<Button onClick={() => HandleDelete(WitaiDelete)} variant="danger-light" startIcon={<Trash />}> Xác nhận</Button>} />
     </Dialog>
   )
 }

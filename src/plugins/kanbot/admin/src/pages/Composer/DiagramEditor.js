@@ -94,7 +94,7 @@ const index = () => {
                     navigationAction={
                         <Link 
                             startIcon={<ArrowLeft />} 
-                            to={`/plugins/${pluginId}/intents`}>
+                            to={`/plugins/${pluginId}/intents/`}>
                               Trở lại
                         </Link>
                           }

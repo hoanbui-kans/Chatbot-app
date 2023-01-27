@@ -28,6 +28,18 @@ module.exports = ({ strapi }) => ({
       }
   },
 
+  async findOneWitAiByAppName (ctx) {
+        try {
+            ctx.body = await strapi
+            .plugin('kanbot')
+            .service('witai')
+            .findOneByName(ctx.params.appname);
+        } catch (err) {
+            console.log('err', err);
+            ctx.throw(500, err);
+        }
+    },
+
   async createWitAi (ctx) {
       try {
           ctx.body = await strapi

@@ -2,9 +2,9 @@
 const { Wit } = require('node-wit');
 
 class WitService {
-  constructor() {
+  constructor(token) {
       this.client = new Wit({
-        accessToken: 'IV32DLW5JLLMUGMEQGZACMY2GXEFNV4S',
+        accessToken: token,
       });
   }
 
@@ -13,7 +13,7 @@ class WitService {
     const { entities } = queryResult;
     const extractedEntities = {};
     Object.keys(entities).forEach((key) => {
-      if(entities[key][0].confidence > 0.7){
+      if(entities[key][0].confidence > 0.98){
         extractedEntities[key] = entities[key][0].value;
       }
     });

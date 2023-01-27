@@ -6,6 +6,7 @@ const trait = require('./trait');
 const utterance = require('./utterance');
 const response = require('./response');
 const conservation = require('./conservation');
+const botsetting = require('./botsetting');
 
 module.exports = {
   witai,
@@ -15,5 +16,7 @@ module.exports = {
   trait,
   utterance,
   response,
-  conservation
+  conservation,
+  botsetting
+
 }

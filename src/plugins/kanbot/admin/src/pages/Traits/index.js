@@ -15,7 +15,7 @@ import {
   ContentLayout,
   Stack
 } from '@strapi/design-system';
-
+import { useParams } from 'react-router-dom';
 import { ArrowLeft, Pencil } from '@strapi/icons';
 import SideNav from '../../components/SideNav'
 import Loading from '../../components/Loading';
@@ -25,7 +25,7 @@ import '../style.css'
 const index = () => {
 
     const [isLoading, setIsLoading] = useState(false);
-
+    const { app_name } = useParams();
 
     return (
         <>
@@ -34,7 +34,7 @@ const index = () => {
                         navigationAction={
                             <Link 
                                 startIcon={<ArrowLeft />} 
-                                to={`/plugins/${pluginId}/settings`}>
+                                to={`/plugins/${pluginId}`}>
                                 Trở lại
                             </Link>
                             }

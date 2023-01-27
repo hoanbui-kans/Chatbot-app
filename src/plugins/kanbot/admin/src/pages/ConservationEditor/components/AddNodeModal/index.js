@@ -66,18 +66,24 @@ const index = ({ setAddNode }) => {
                     </Typography>
                 </ModalHeader>
                 <ModalBody>
-                    <Typography fontWeight="bold">Thêm trường dữ liệu cho đoạn hội thoại</Typography>
-                    <Grid 
+                    <Stack spacing={3}>
+                        <Typography fontWeight="bold">Thêm trường dữ liệu cho đoạn hội thoại</Typography>
+                        <Grid 
                             gap={{
                                 desktop: 5,
                                 tablet: 2,
                                 mobile: 1
                             }}>
+
                             {
                                 Node.map((val, index) => {
                                     return (
-                                        <GridItem col={6} s={6} xs={12}>
-                                            <Button startIcon={<Envelop />} onClick={() => HandleAddNoteToFlow(val.template)} style={{height: 50, justifyContent: "start"}} variant={val.color} fullWidth>
+                                        <GridItem key={index} col={6} s={6} xs={12}>
+                                            <Button 
+                                                startIcon={<Envelop />} 
+                                                onClick={() => HandleAddNoteToFlow(val.template)} 
+                                                style={{height: 50, justifyContent: "start"}} 
+                                                variant={val.color} fullWidth>
                                                     <Stack horizontal shadow="shadow" gap={3}>
                                                         <Typography>{val.name}</Typography>
                                                     </Stack>
@@ -87,6 +93,7 @@ const index = ({ setAddNode }) => {
                                 })
                             }
                         </Grid>
+                    </Stack>
                 </ModalBody>
             </ModalLayout>
         </div>

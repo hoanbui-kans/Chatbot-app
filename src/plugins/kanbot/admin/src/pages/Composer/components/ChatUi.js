@@ -3,25 +3,30 @@ import { ChatContainer, ConversationHeader, Avatar, TypingIndicator, MessageSepa
 import { SendButton,InputToolbox, MessageInput, MessageList  } from '@chatscope/chat-ui-kit-react'
 
 import { initialNotes } from '../../slice/diagram-builder-slice';
-
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-
 import { useSelector, useDispatch } from 'react-redux';
 import { findOneResponse } from '../../../api/Response';
+import { v4 as uuidv4 } from 'uuid'; 
+import { postMessageConservation } from '../../../api/Conservation';
+import { useParams } from 'react-router-dom';
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 const ChatUi = ({title, setSimChat}) => {
     const dispatch = useDispatch();
+
     const [typing, setTyping] = useState(false);
     const [chatState, setChatState] = useState([]);
-
+    const [conservationState, setConservationState] = useState([]);
+    const sessionId = uuidv4();
     const nodes = useSelector(initialNotes);
- 
+    const params = useParams();
+
     useEffect(() => {
         setTyping(true);
         getDefaultResponse();
+        setConservationState((conservationState) => [...conservationState, nodes[0].id]);
         setTimeout(() => {
             setChatState((chatState) => [...chatState, {
-                message: "Xin chào Hoàn đẹp trai nhất quả đất, chúng tôi có thể giúp gì được cho bạn?",
+                message: "Xin chào, chúng tôi có thể giúp gì được cho bạn?",
                 sentTime: new Date(),
                 sender: title,
                 direction: "incoming",
@@ -32,15 +37,54 @@ const ChatUi = ({title, setSimChat}) => {
         }, 3000)
     }, [dispatch]);
 
-    const HandleAddMessage = (e) => {
+    const HandleAddMessage = async (message) => {
+        console.log(message);
+        setTyping(true);
         setChatState((chatState) => [...chatState, {
-            message: e,
+            message: message,
             sentTime: new Date(),
             sender: "user",
             direction: "outgoing",
             position: "last",
             type: "text"
         }]);
+        await HandleSendMessage({
+            "object": "page",
+            "entry": [
+                {
+                    "messaging": [
+                        {
+                            "sender": {
+                                "id": "user_" + sessionId
+                            },
+                            "recipient": {
+                                "id": "bot_" + sessionId
+                            },
+                            "message": {
+                                "id": sessionId,
+                                "text": message
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
+       setTimeout(() => {
+        setTyping(false);
+       }, 2000);
+    }
+
+    const HandleSendMessage = async (message) => {
+        const response = await postMessageConservation(message);
+        console.log(response);
+        // setChatState((chatState) => [...chatState, {
+        //     message: e,
+        //     sentTime: new Date(),
+        //     sender: "user",
+        //     direction: "ongoing",
+        //     position: "last",
+        //     type: "text"
+        // }]);
     }
 
     const getDefaultResponse = async () => {

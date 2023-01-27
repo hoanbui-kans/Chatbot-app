@@ -22,30 +22,31 @@ export const findOneUtterance = async (id) => {
     }
 }
 
-export const createUtterance = async (data) => {
+export const createUtterance = async (token, utterance) => {
     try {
+        const data = utterance.entities;
+        // Create witai Utterance
         const witUtterance = await request(`https://api.wit.ai/utterances?v=20221114`, {
             method: "POST",
             headers: {
-                Authorization: 'Bearer ZWSSBZQ76MJNGOTNDGFNUSTZWWYNQAEF'
+                Authorization: `Bearer ${token}`
             },
-            body: {
-                data: [{
-                    "text": "I want to fly to sfo",
-                    "intent": "Lead",
-                    "entities": [
-                      {
-                        "entity": "wit$location:location",
-                        "start": 17,
-                        "end": 20,
-                        "body": "sfo",
-                        "entities": []
-                      }
-                    ],
-                    "traits": []
-                  }]
-            }
-        })
+            body: [{
+                "text": "I want to fly to sfo",
+                "intent": "flight_request",
+                "entities": [
+                  {
+                    "entity": "wit$location:to",
+                    "start": 17,
+                    "end": 20,
+                    "body": "sfo",
+                    "entities": []
+                  }
+                ],
+                "traits": []
+              }]
+        });
+
         if(witUtterance.sent){
             const response = await request(`/kanbot/utterance/`, {
                 method: "POST",

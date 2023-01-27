@@ -1,0 +1,15 @@
+
+{
+  "kind": "singleType",
+  "collectionName": "botsettings",
+  "info": {
+    "singularName": "botsetting",
+    "pluralName": "botsettings",
+    "displayName": "botsetting"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}

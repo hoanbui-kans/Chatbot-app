@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box, Flex, Table, Thead, Tbody, TFooter, Th, Tr, Td, Link} from '@strapi/design-system';
 import { IconButton, Typography, VisuallyHidden, Badge, Stack  } from '@strapi/design-system';
-import { Plus, Pencil, Trash } from '@strapi/icons'
+import { Plus, Trash } from '@strapi/icons'
 import pluginId from '../../../../pluginId';
+import { useParams } from 'react-router-dom';
 
 const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) => {
-
+    const { app_name } = useParams();
     return (
         <>
             <Box background="neutral100">
@@ -33,32 +34,33 @@ const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) =
                         </Tr>
                         </Thead>
                         <Tbody>
-                        {intents.map((entry, index) => <Tr key={entry.id}>
-                            <Td>
-                                <Typography textColor="neutral800">{index + 1}</Typography>
-                            </Td>
-                            <Td>
-                                <Typography textColor="neutral800">
-                                    <Link to={`/plugins/${pluginId}/${entry.id}/composer`}>
-                                        { entry.title }
-                                    </Link>
-                                </Typography>
-                            </Td>
-                            <Td>
-                                <Stack horizontal spacing={3}>
-                                    <Badge>{entry.entities.length}</Badge>
-                                    <Typography variant="pi" textColor="neutral800">
-                                        Trường dữ liệu
+                        { 
+                            intents.map((entry, index) => <Tr key={entry.id}>
+                                <Td>
+                                    <Typography textColor="neutral800">{index + 1}</Typography>
+                                </Td>
+                                <Td>
+                                    <Typography textColor="neutral800">
+                                        <Link to={`/plugins/${pluginId}/${app_name}/intents/${entry.name}/composer`}>
+                                            { entry.title }
+                                        </Link>
                                     </Typography>
-                                </Stack>
-                            </Td>
-                            <Td>
-                                <Flex>
-                                    <IconButton onClick={() => setIntentUpdate(entry)} label="Chỉnh sửa" noBorder icon={<Pencil />} />
-                                    <IconButton onClick={() => setIntentDelete(entry.id)} label="Xóa" noBorder icon={<Trash />} />
-                                </Flex>
-                            </Td>
-                            </Tr>)}
+                                </Td>
+                                <Td>
+                                    <Stack horizontal spacing={3}>
+                                        <Badge>{entry.entities.length}</Badge>
+                                        <Typography variant="pi" textColor="neutral800">
+                                            Trường dữ liệu
+                                        </Typography>
+                                    </Stack>
+                                </Td>
+                                <Td>
+                                    <Flex>
+                                        <IconButton onClick={() => setIntentDelete(entry)} label="Xóa" noBorder icon={<Trash />} />
+                                    </Flex>
+                                </Td>
+                                </Tr>)
+                            }
                         </Tbody>
                     </Table>
                 </Box>

@@ -26,6 +26,15 @@ module.exports = {
       },
     },
     {
+      method: 'POST',
+      path: '/conservation/messaging/:app_id',
+      handler: 'conservation.incommingMessageSim',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
       method: 'GET',
       path: '/conservation/incomming-message/',
       handler: 'conservation.incommingMessage',
@@ -47,6 +56,15 @@ module.exports = {
       method: 'GET',
       path: '/conservation/:id',
       handler: 'conservation.findOneConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
+      path: '/conservation/intent/:id',
+      handler: 'conservation.findOneConservationByIntent',
       config: {
         policies: [],
         auth: false,

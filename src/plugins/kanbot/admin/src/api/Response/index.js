@@ -1,8 +1,8 @@
 import { request } from '@strapi/helper-plugin'
 
-export const findManyResponse = async () => {
+export const findManyResponse = async (app_name) => {
     try {
-        return await request('/kanbot/response/', {
+        return await request(`/kanbot/response/?kanbot_witais=${app_name}`, {
             method: "GET"
         });
     } catch (error) {
@@ -12,7 +12,7 @@ export const findManyResponse = async () => {
 
 export const findOneResponse = async (id) => {
     try {
-        return await request('/kanbot/response/' + id, {
+        return await request(`/kanbot/response/${id}`, {
             method: "GET"
         });
     } catch (error) {

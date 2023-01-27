@@ -25,6 +25,15 @@ module.exports = {
       },
     },
     {
+      method: 'GET',
+      path: '/witai/app/:appname',
+      handler: 'witai.findOneWitAiByAppName',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
+    {
       method: 'POST',
       path: '/witai/',
       handler: 'witai.createWitAi',

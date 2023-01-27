@@ -46,7 +46,7 @@ const config = {
       "app.components.LeftMenu.navbrand.title": "Kan solution",
       "app.components.LeftMenu.navbrand.workplace": "Bảng điều khiển",
       "Auth.form.welcome.subtitle": "Đăng nhập vào Kanbot",
-      "app.components.HomePage.welcome.again": "Hi Chloé!",
+      "app.components.HomePage.welcome.again": "Xin chào!",
       "content-type-builder.plugin.name": "Quản trị nội dung",
       "global.content-manager": "Quản lý dữ liệu",
       "upload.plugin.name": "Quản lý file",
@@ -65,21 +65,7 @@ const config = {
 
 const bootstrap = (app) => { 
   console.log(app);
-
-  app.addMenuLink({
-    to: `/admin`,
-    icon: Archive,
-    intlLabel: {
-      id: `home`,
-      defaultMessage: 'Ok',
-    },
-    Component: async () => {
-      const component = await import(/* webpackChunkName: "[request]" */ './extensions/admin/Home');
-
-      return component;
-    },
-  });
-
+  
   app.injectAdminComponent('tutorials', 'links', {
     name: 'content-top',
     Component: () => (

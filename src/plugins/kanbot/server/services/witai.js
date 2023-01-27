@@ -18,6 +18,15 @@ module.exports = ({ strapi }) => ({
        });
    },
 
+   async findOneByName(appname) {
+        const AppInfo =  await strapi.db.query("plugin::kanbot.witai").findOne({
+            where: { 
+                app_name: appname
+            }
+        });
+        return AppInfo;
+    },
+
    async create(data) {
        return await strapi.entityService.create("plugin::kanbot.witai", data);
    },

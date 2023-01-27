@@ -6,8 +6,7 @@ import { Cross } from "@strapi/icons"
 import LoadResponse from './components/loadResponse';
 import NewResponse from './components/newResponse';
 
-const EditorEntity = ({ stateEditor, HandleEditNode }) => {
-
+const EditorEntity = ({ responses, entities, stateEditor, HandleEditNode }) => {
     const [createResponse, setCreateResponse] = useState(false);
     const dispatch = useDispatch();
 
@@ -32,7 +31,10 @@ const EditorEntity = ({ stateEditor, HandleEditNode }) => {
                             </Stack>
                             {
                                 !createResponse && 
-                                <LoadResponse stateEditor={stateEditor} setCreateResponse={setCreateResponse}/>
+                                <LoadResponse 
+                                    stateEditor={stateEditor} 
+                                    setCreateResponse={setCreateResponse}
+                                />
                             }
                             <NewResponse setCreateResponse={setCreateResponse}/>
                         </Stack>

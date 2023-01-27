@@ -36,7 +36,7 @@ const index = ({ Witai, setWitaiCreate, setWitaiUpdate, setWitaiDelete }) => {
                               </Td>
                               <Td>
                                   <Typography textColor="neutral800">
-                                    <Link to={`/plugins/${pluginId}/${entry.app_name}`}>{entry.title}</Link>
+                                    <Link to={`/plugins/${pluginId}/${entry.app_name}/intents`}>{entry.app_name}</Link>
                                   </Typography>
                               </Td>
                               <Td>

@@ -17,9 +17,9 @@ const DefaultNode = ({ node }) => {
               {
                 Array.isArray(data.response) 
                 && data.response.length 
-                && data.response.map((val, index) => {
+                ? data.response.map((val) => {
                     return (
-                      <Stack spacing={3} padding={2} hasRadius>
+                      <Stack spacing={3} padding={2} hasRadius key={val.id}>
                           <Stack spacing={2} horizontal>
                             <TbArrowRampRight2 size={16} color='#8d8d8d'/>
                             <Typography variant="pi" fontWeight="bold">
@@ -33,7 +33,7 @@ const DefaultNode = ({ node }) => {
                           </Status>
                       </Stack>
                   )
-                })
+                }) : ""
               }
             </Stack>
         </Box>

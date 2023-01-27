@@ -30,6 +30,12 @@
       "relation": "manyToMany",
       "target": "plugin::kanbot.utterance",
       "mappedBy": "traits"
+    },
+    "kanbot_witais": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.witai",
+      "inversedBy": "traits"
     }
   }
 }

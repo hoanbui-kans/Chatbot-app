@@ -14,11 +14,10 @@
   "attributes": {
     "title": {
       "type": "string",
-      "unique": true
+      "unique": false
     },
     "name": {
-      "type": "uid",
-      "targetField": "title"
+      "type": "string"
     },
     "intents": {
       "type": "relation",
@@ -37,6 +36,12 @@
       "type": "component",
       "repeatable": true,
       "component": "kanbot.keywords"
+    },
+    "kanbot_witais": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.witai",
+      "inversedBy": "entities"
     }
   }
 }

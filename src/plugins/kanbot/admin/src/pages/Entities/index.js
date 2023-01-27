@@ -11,21 +11,22 @@ import {
   HeaderLayout, 
   Button, 
   Link,
-  Box,
   ContentLayout,
   Stack
 } from '@strapi/design-system';
 
 import { findManyEntity, createEntity, updateEntity, deleteEntity } from '../../api/Entity';
+import { findOneWitaiByAppName } from '../../api/witAi';
 import { ArrowLeft, Pencil, Plus } from '@strapi/icons';
 import SideNav from '../../components/SideNav';
 import Loading from '../../components/Loading';
 
 import EntityTable from './components/EntityTable';
-import CreateEntityModal from './components/CreateEntityModal';
-import UpdateEntityModal from './components/UpdateEntityModal';
-import DialogDeleteEntity from './components/DialogDeleteEntity';
+import CreateEntity from './components/CreateEntity';
+import UpdateEntity from './components/UpdateEntity';
+import DialogDelete from './components/DialogDelete';
 
+import { useParams } from 'react-router-dom';
 import '../style.css'
 
 const index = () => {
@@ -34,12 +35,21 @@ const index = () => {
     const [entityCreate, setEntityCreate] = useState(false);
     const [entityUpdate, setEntityUpdate] = useState(false);
     const [entityDelete, setEntityDelete] = useState(false);
+    const [appInfo, setAppInfo] = useState(false);
+    const { app_name } = useParams();
 
     const [isLoading, setIsLoading] = useState(false);
 
-    async function HandleGetEntities () {
+    async function HandleGetApp(app_id) {
+        const App = await findOneWitaiByAppName(app_id);
+        if(App){
+            setAppInfo(App);
+        }
+    }
+
+    async function HandleGetEntities (app_id) {
         setIsLoading(true);
-        const response = await findManyEntity();
+        const response = await findManyEntity(app_id);
         if(response){
             setEntities(response)
         }
@@ -47,36 +57,39 @@ const index = () => {
     }
 
     async function HandleCreateEntity (data) {
-        setIsLoading(true);
+        setIsLoading("create");
+        data.kanbot_witais = appInfo.id;
         await createEntity(data);
-        await HandleGetEntities();
+        await HandleGetEntities( appInfo.id );
         setIsLoading(false);
     }
 
-    async function HandleUpdateEntity (id, data) {
-        setIsLoading(true);
-        await updateEntity(id, data);
-        await HandleGetEntities();
+    async function HandleUpdateEntity (data) {
+        setIsLoading("update");
+        data.kanbot_witais = appInfo.id;
+        await updateEntity(data);
+        await HandleGetEntities( appInfo.id );
         setIsLoading(false);
     }
 
-    async function HandleDeleteEntity (id) {
-        setIsLoading(true);
-        await deleteEntity(id);
-        await HandleGetEntities();
+    async function HandleDeleteEntity (data) {
+        setIsLoading("delete");
+        data.kanbot_witais = appInfo.id;
+        await deleteEntity(entity);
+        await HandleGetIntent(appInfo.id);
+        setEntityDelete(false);
         setIsLoading(false);
     }
 
     useEffect( async () => {
-        if(!entities.length) {
-            await HandleGetEntities();
+        if(!appInfo){
+            await HandleGetApp(app_name);
+        } else {
+            if(!entities.length) {
+                await HandleGetEntities( appInfo.id );
+            }
         }
-    }, [])
-
-    useEffect(() => {
-        console.log(entityDelete);
-    }, [entityDelete])
-    
+    }, [appInfo])
     
     return (
         <>
@@ -85,7 +98,7 @@ const index = () => {
                         navigationAction={
                             <Link 
                                 startIcon={<ArrowLeft />} 
-                                to={`/plugins/${pluginId}/settings`}>
+                                to={`/plugins/${pluginId}`}>
                                 Trở lại
                             </Link>
                             }
@@ -105,41 +118,30 @@ const index = () => {
                             />
                     <ContentLayout>
                         {
-                            // Table
-                            Array.isArray(entities) 
-                            && entities.length 
-                            && <EntityTable 
-                                    entities={entities}
-                                    setEntityCreate={setEntityCreate}
-                                    setEntityUpdate={setEntityUpdate}
-                                    setEntityDelete={setEntityDelete}
-                                />
-                        }
-                        {
-                            // Create Modal
-                            entityCreate && 
-                            <CreateEntityModal 
-                                setIsLoading={setIsLoading}
+                            entityCreate ? 
+                            <CreateEntity
                                 setEntityCreate={setEntityCreate}
+                                isLoading={isLoading}
                                 HandleCreateEntity={HandleCreateEntity}
-                            />
-                        }
-                        {
-                            // Edit Modal
-                            entityUpdate && 
-                            <UpdateEntityModal 
-                                setIsLoading={setIsLoading}
+                            /> : entityUpdate ? 
+                            <UpdateEntity 
                                 entityUpdate={entityUpdate}
+                                isLoading={isLoading}
                                 setEntityUpdate={setEntityUpdate}
                                 HandleUpdateEntity={HandleUpdateEntity}
+                            /> :
+                            <EntityTable 
+                                entities={entities}
+                                setEntityCreate={setEntityCreate}
+                                setEntityUpdate={setEntityUpdate}
+                                setEntityDelete={setEntityDelete}
                             />
                         }
                         {
-                            // Delete Dialogue 
                             entityDelete && 
-                            <DialogDeleteEntity 
-                                setIsLoading={setIsLoading}
+                            <DialogDelete 
                                 entityDelete={entityDelete}
+                                isLoading={isLoading}
                                 setEntityDelete={setEntityDelete}
                                 HandleDeleteEntity={HandleDeleteEntity}
                             />

@@ -104,6 +104,84 @@ module.exports = ({ strapi }) => ({
       }
   },
 
+  async incommingMessageSim(ctx){
+    try {
+        const AppInfo = await strapi
+        .plugin('kanbot')
+        .service('witai')
+        .findOne(ctx.params.app_id);
+
+        const token = AppInfo.server_access_token;
+        if(!token) {
+          return ctx.body = {
+            message: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
+          }
+        }
+        // create client connect redis
+        const client = createClient(6379);
+        client.on('error', (err) => console.log('Redis Client Error', err));
+ 
+        await client.connect();
+
+        const Payload = ctx.request.body;
+        // get incoming message data
+        const incomingMessages = FacebookMessageParser.parsePayload(Payload.message);
+        const { sender, recipient, message } = incomingMessages[0];
+        if(!message) {
+          return ctx.body = 'no message'
+        }
+        const senderId = sender.id;
+        const recipientId = recipient.id;
+        const conservationId = senderId + '-' + recipientId;
+        // get avaiable conservation context
+        let context;
+        const RedisContext = await client.get(conservationId);
+        
+        if(RedisContext){
+          context = JSON.parse(RedisContext);
+        } else {
+          context = {
+            conservation: {
+              entities: {},
+              flow: {},
+              followUp: '',
+              complete: false,
+              exit: false
+            }
+          }
+        }
+
+        // create facebook message convervation handler
+        const nodes = Payload.nodes;
+        const handerFbMessage = new HandlerFacebookMessage(strapi, token, senderId, recipientId, context, nodes, message);
+        const responseContext = await handerFbMessage.responseMessage();
+        if(!responseContext){
+          return ctx.body = {
+            message: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
+          }
+        }
+        const { conservation } = responseContext;
+
+        let text = conservation.followUp;;
+
+        if(!conservation.complete) {
+          text = conservation.followUp;
+          await client.set( conservationId, JSON.stringify(responseContext));
+        } else {
+          await client.del( conservationId );
+        }
+      
+        // closing redis
+        await client.disconnect(); 
+        // fallback context
+        return ctx.body = {
+          message: text
+        }
+      } catch (err) {
+        ctx.throw(403, err);
+      }
+  },
+
   async findManyConservation(ctx) {
       try {
         ctx.body = await strapi.plugin('kanbot')
@@ -119,6 +197,16 @@ module.exports = ({ strapi }) => ({
         ctx.body = await strapi.plugin('kanbot')
                   .service('conservation')
                   .findOne(ctx.params.id);
+      } catch (error) {
+        ctx.throw(403, error)
+      }
+  },
+
+  async findOneConservationByIntent(ctx) {
+      try {
+        ctx.body = await strapi.plugin('kanbot')
+                  .service('conservation')
+                  .findOneByIntent(ctx.params.intent_name);
       } catch (error) {
         ctx.throw(403, error)
       }

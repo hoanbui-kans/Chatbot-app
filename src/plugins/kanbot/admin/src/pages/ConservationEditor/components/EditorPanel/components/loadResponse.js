@@ -4,12 +4,13 @@ import { Illo } from '../../../../../components/Illo';
 import { Plus } from '@strapi/icons'
 import { stateDataPanel, entityOptions, responseOptions, fetchData, stateLoading, setStatePanel } from '../../../../slice/diagram-panelEditor-slice';
 import { updateNodeData } from '../../../../slice/conservation-builder-slice';
+import { findOneWitaiByAppName } from '../../../../../api/witAi';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 const SelectResponse = ({ index, data, updateResponse, current }) => {
-    
-    const [selection, setSeletion] = useState(current ? current.toString() : "");
 
+    const [selection, setSeletion] = useState(current ? current.toString() : "");
     const HandleUpdateResponse = (e) => {
         const selectValue = data.find((val) => val.id == e);
         setSeletion(e);
@@ -59,27 +60,25 @@ const SelectEntity = ({ updateEntity, data, current }) => {
     )
 }
 
-const LoadResponse = ({ stateEditor, setCreateResponse }) => {
+const index = ({ stateEditor, setCreateResponse }) => {
 
     const dispatch = useDispatch();
     const loading = useSelector(stateLoading);
     const entities = useSelector(entityOptions);
     const responses = useSelector(responseOptions);
-    const [isLoading, setIsLoading] = useState(false)
-    
+    const [isLoading, setIsLoading] = useState(false);
+    const [appInfo, setAppInfo] = useState(false);
     const [updateState, setUpdateState] = useState(stateEditor.data);
+    const { app_name } = useParams();
 
-    useEffect(() => {
-        setUpdateState(stateEditor.data)
-    }, [stateEditor])
+    async function HandleGetApp(app_id) {
+        const App = await findOneWitaiByAppName(app_id);
+        if(App){
+            setAppInfo(App);
+        }
+    }
 
-    // Load response and entity data from server
-    useEffect(() => {
-        dispatch(fetchData());
-    }, [dispatch]);
-
-
-    const HandleUpdateEntity = (e) => {
+    function HandleUpdateEntity(e) {
         setUpdateState({ 
             ...updateState, 
             request: {
@@ -88,7 +87,7 @@ const LoadResponse = ({ stateEditor, setCreateResponse }) => {
         }})
     }
 
-    const handleupdateResponse = (_i, e) => {
+    function handleupdateResponse(_i, e) {
         const Response = [];
         updateState.response.map((val, index) => {
             if(index == _i){
@@ -104,7 +103,7 @@ const LoadResponse = ({ stateEditor, setCreateResponse }) => {
         setUpdateState({...updateState, response: Response})
     }
 
-    const HandleUpdateNodeData = () => {
+    function HandleUpdateNodeData() {
         setIsLoading(true);
         setTimeout(() => {
             dispatch(updateNodeData({ 
@@ -115,6 +114,18 @@ const LoadResponse = ({ stateEditor, setCreateResponse }) => {
             setIsLoading(false);
         }, 400);
     }
+
+    useEffect(() => {
+        setUpdateState(stateEditor.data)
+    }, [stateEditor])
+
+    useEffect( async() => {
+        if(!appInfo){
+          await HandleGetApp(app_name);
+        } else {
+            dispatch(fetchData(appInfo.id));
+        } 
+    }, [appInfo])
 
     return (
         <>
@@ -128,21 +139,25 @@ const LoadResponse = ({ stateEditor, setCreateResponse }) => {
                         Array.isArray(entities) 
                         && entities.length 
                         && updateState.request 
-                        && <SelectEntity updateEntity={HandleUpdateEntity} data={entities} current={updateState.request.id}/>
+                        ? <SelectEntity 
+                            updateEntity={HandleUpdateEntity} 
+                            data={entities} 
+                            current={updateState.request.id}
+                        /> : ""
                     }
                     {
                         Array.isArray(responses) && responses.length ? 
                             Array.isArray(updateState.response) && updateState.response.length ? 
-                            updateState.response.map((val, index) => {
-                                        return(
-                                            <SelectResponse 
-                                                index={index} 
-                                                updateResponse={handleupdateResponse} 
-                                                key={index} 
-                                                data={responses}
-                                                current={val.id}
-                                            />
-                                        )
+                                updateState.response.map((val, index) => {
+                                            return(
+                                                <SelectResponse 
+                                                    index={index} 
+                                                    updateResponse={handleupdateResponse} 
+                                                    key={index} 
+                                                    data={responses}
+                                                    current={val.id}
+                                                />
+                                            )
                                     })
                                 : ""
                         : 
@@ -164,4 +179,4 @@ const LoadResponse = ({ stateEditor, setCreateResponse }) => {
   )
 }
 
-export default memo(LoadResponse) 
+export default index

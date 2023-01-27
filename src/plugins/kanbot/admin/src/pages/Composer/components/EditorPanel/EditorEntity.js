@@ -8,7 +8,7 @@ import { Cross } from "@strapi/icons"
 import LoadResponse from './components/loadResponse';
 import NewResponse from './components/newResponse';
 
-const EditorEntity = () => {
+const EditorEntity = ({ entities, responses }) => {
 
     const [createResponse, setCreateResponse] = useState(false);
     const editorData = useSelector(stateDataPanel);
@@ -41,7 +41,11 @@ const EditorEntity = () => {
                             </Stack>
                             {
                                 !createResponse && 
-                                <LoadResponse setCreateResponse={setCreateResponse}/>
+                                <LoadResponse 
+                                    entities={entities}
+                                    responses={responses}
+                                    setCreateResponse={setCreateResponse}
+                                />
                             }
                             <NewResponse setCreateResponse={setCreateResponse}/>
                         </Stack>

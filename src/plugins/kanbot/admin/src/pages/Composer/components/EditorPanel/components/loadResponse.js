@@ -59,13 +59,11 @@ const SelectEntity = ({ updateEntity, data, current }) => {
     )
 }
 
-const LoadResponse = ({ setCreateResponse }) => {
-
+const index = ({ entities, responses, setCreateResponse }) => {
+    console.log('entities', entities);
     const dispatch = useDispatch();
     const loading = useSelector(stateLoading);
     const stateEditor = useSelector(stateDataPanel);
-    const entities = useSelector(entityOptions);
-    const responses = useSelector(responseOptions);
     const [isLoading, setIsLoading] = useState(false)
     
     const [updateState, setUpdateState] = useState(stateEditor.data);
@@ -73,12 +71,6 @@ const LoadResponse = ({ setCreateResponse }) => {
     useEffect(() => {
         setUpdateState(stateEditor.data)
     }, [stateEditor])
-
-    // Load response and entity data from server
-    useEffect(() => {
-        dispatch(fetchData());
-    }, [dispatch]);
-
 
     const HandleUpdateEntity = (e) => {
         setUpdateState({ 
@@ -91,7 +83,7 @@ const LoadResponse = ({ setCreateResponse }) => {
 
     const handleupdateResponse = (_i, e) => {
         const Response = [];
-        updateState.response.map((val, index) => {
+        updateState.response.map((val) => {
             if(index == _i){
                 Response.push({
                     ...val,
@@ -165,4 +157,4 @@ const LoadResponse = ({ setCreateResponse }) => {
   )
 }
 
-export default memo(LoadResponse) 
+export default index

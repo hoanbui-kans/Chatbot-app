@@ -35,6 +35,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::kanbot.response"
+    },
+    "kanbot_witais": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.witai",
+      "inversedBy": "conservations"
     }
   }
 }

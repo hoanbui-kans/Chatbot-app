@@ -20,6 +20,12 @@
       "relation": "manyToMany",
       "target": "plugin::kanbot.entity",
       "inversedBy": "kanbot_roles"
+    },
+    "kanbot_witais": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::kanbot.witai",
+      "inversedBy": "roles"
     }
   }
 }

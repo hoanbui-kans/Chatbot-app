@@ -1,30 +1,27 @@
 import React, { useState } from 'react'
 import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack} from '@strapi/design-system';
-import { TextInput, IconButton, AccordionGroup, Flex, Accordion, AccordionToggle, AccordionContent } from '@strapi/design-system';
+import { TextInput, IconButton, AccordionGroup, Accordion, AccordionToggle, AccordionContent } from '@strapi/design-system';
 import { Cross, Pencil, Trash } from '@strapi/icons';
-import Loading from '../../../../components/Loading';
 
-const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity }) => {
+const CreateModal = ({ setOrderCreate, HandleCreateOrder }) => {
 
-  const [title, setTitle] = useState(entityUpdate.title);
-  const [options, setOptions] = useState(entityUpdate.keywords);
+  const [title, setTitle] = useState('');
+  const [options, setOptions] = useState([]);
   const keywordSchema = {
     keyword: '',
   };
 
   const HandleCreate = async () => {
-    setIsLoading(true);
     const keywords = options.filter((val) => val.keyword != '');
 
     const data = {
       title: title,
       keywords: keywords
     }
-    await HandleUpdateEntity(entityUpdate.id, data);
+    await HandleCreateOrder(data);
     setTitle('');
     setOptions([]);
-    setEntityUpdate(false)
-    setIsLoading(false)
+    setOrderCreate(false)
   }
 
   const HandleUpdateKeyword = (index, keyword) => {
@@ -58,7 +55,7 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
 
   return (
     <>
-      <ModalLayout onClose={() => setEntityUpdate(false)} labelledBy="Tạo mục tiêu mới">
+      <ModalLayout onClose={() => setOrderCreate(false)} labelledBy="Tạo mục tiêu mới">
           <ModalHeader>
             <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
               Tạo trường dữ liệu mới
@@ -116,7 +113,7 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
                 </Stack>
             </Stack>
           </ModalBody>
-          <ModalFooter startActions={<Button onClick={() => setEntityUpdate(false)} variant="tertiary">
+          <ModalFooter startActions={<Button onClick={() => setOrderCreate(false)} variant="tertiary">
                 Hủy
             </Button>} endActions={<Button onClick={HandleCreate}>Lưu</Button>} />
       </ModalLayout>
@@ -124,4 +121,4 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
   )
 }
 
-export default index
+export default CreateModal
