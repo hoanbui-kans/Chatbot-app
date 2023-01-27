@@ -4,10 +4,22 @@
  *  service
  */
 
+const populate = {
+    intent: true,
+    entities: {
+        populate: {
+            entity: true,
+            keyword: true
+        }
+    },
+    traits: true,
+};
+
 module.exports = ({strapi}) => ({
     async findMany(query) {
-        return await strapi.entityService.findMany("plugin::kanbot.utterance", {
-            query: query
+        return await strapi.db.query("plugin::kanbot.utterance").findMany({
+            where: query,
+            populate: populate
         });
     },
 

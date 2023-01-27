@@ -17,6 +17,16 @@ module.exports = ({ strapi }) => ({
           ctx.throw(500, err);
       }
   },
+  async findOneIntent (ctx){
+    try {
+        ctx.body = await strapi
+        .plugin('kanbot')
+        .service('intent')
+        .findOne(ctx.params.id);
+    } catch (err) {
+        ctx.throw(500, err);
+    }
+  },
   async createIntent (ctx) {
       try {
         const request = ctx.request.body;

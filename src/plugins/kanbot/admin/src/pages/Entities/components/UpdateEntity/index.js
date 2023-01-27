@@ -4,7 +4,7 @@ import { TextInput, IconButton, AccordionGroup, Flex, Accordion, AccordionToggle
 import { Cross, Pencil, Trash } from '@strapi/icons';
 import Loading from '../../../../components/Loading';
 
-const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity }) => {
+const index = ({ entityUpdate, isLoading, setEntityUpdate, HandleUpdateEntity }) => {
 
   const [title, setTitle] = useState(entityUpdate.title);
   const [options, setOptions] = useState(entityUpdate.keywords);
@@ -13,7 +13,6 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
   };
 
   const HandleUpdate = async () => {
-    setIsLoading(true);
     const keywords = options.filter((val) => val.keyword != '');
     const data = {
       ...entityUpdate,
@@ -103,7 +102,9 @@ const index = ({ setIsLoading, entityUpdate, setEntityUpdate, HandleUpdateEntity
                   <Button onClick={() => setEntityUpdate(false)} variant="tertiary">
                       Hủy
                   </Button>
-                  <Button onClick={HandleUpdate}>Lưu</Button>
+                  <Button 
+                    onClick={HandleUpdate}
+                    loading={isLoading == 'update' ? true : false}>Lưu</Button>
             </Stack>
       </Stack>
     </>

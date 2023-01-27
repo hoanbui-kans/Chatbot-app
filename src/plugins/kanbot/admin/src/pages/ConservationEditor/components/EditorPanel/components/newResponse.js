@@ -4,12 +4,28 @@ import { Typography, Stack, Button, Grid, GridItem, Box }  from '@strapi/design-
 import MessagesController from '../templates/messagesController';
 import ChoicesController from '../templates/choicesController';
 import TemplateController from '../templates/templateController';
-
+import { findOneWitaiByAppName } from '../../../../../api/witAi';
+import { useParams } from 'react-router-dom';
 import { Message, Puzzle, PicturePlus} from '@strapi/icons'
 
 const NewResponse = ({ setCreateResponse }) => {
 
+    const { app_name } = useParams();
     const [type, setType] = useState(false);
+    const [appInfo, setAppInfo] = useState(false);
+
+    async function HandleGetApp(app_name) {
+        const App = await findOneWitaiByAppName(app_name);
+        if(App){
+            setAppInfo(App);
+        }
+    }
+
+    useEffect( async() => {
+        if(!appInfo){
+          await HandleGetApp(app_name);
+        }
+    }, [appInfo])
 
     useEffect(() => {
         setCreateResponse(type)
@@ -19,7 +35,10 @@ const NewResponse = ({ setCreateResponse }) => {
         case 'messages':
             return(
                 <>
-                    <MessagesController goBack={() => setType(false)}/>
+                    <MessagesController 
+                        appInfo={appInfo}
+                        goBack={() => setType(false)}
+                    />
                 </>
             )
             break;

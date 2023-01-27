@@ -2,7 +2,6 @@ import React from 'react'
 import { Box, Flex, Table, Thead, Tbody, TFooter, Th, Tr, Td} from '@strapi/design-system';
 import { IconButton, Typography, VisuallyHidden, Badge, Stack  } from '@strapi/design-system';
 import { Plus, Pencil, Trash } from '@strapi/icons'
-import Loading from '../../../../components/Loading';
 
 const index = ({ utterances, setUtteranceCreate, setUtteranceUpdate, setUtteranceDelete }) => {
 
@@ -42,11 +41,10 @@ const index = ({ utterances, setUtteranceCreate, setUtteranceUpdate, setUtteranc
                                 <Typography textColor="neutral800">{index + 1}</Typography>
                             </Td>
                             <Td>
-                                <Typography textColor="neutral800">{entry.title}</Typography>
+                                <Typography textColor="neutral800">{entry.message}</Typography>
                             </Td>
                             <Td>
                                 <Stack horizontal spacing={3}>
-                                    <Badge>{entry.intents.length}</Badge>
                                     <Typography variant="pi" textColor="neutral800">
                                         Trường dữ liệu
                                     </Typography>
@@ -54,7 +52,6 @@ const index = ({ utterances, setUtteranceCreate, setUtteranceUpdate, setUtteranc
                             </Td>
                             <Td>
                                 <Stack horizontal spacing={3}>
-                                    <Badge>{entry.keywords.length}</Badge>
                                     <Typography variant="pi" textColor="neutral800">
                                         Từ khóa
                                     </Typography>
@@ -63,7 +60,7 @@ const index = ({ utterances, setUtteranceCreate, setUtteranceUpdate, setUtteranc
                             <Td>
                                 <Flex>
                                     <IconButton onClick={() => setUtteranceUpdate(entry)} label="Chỉnh sửa" noBorder icon={<Pencil />} />
-                                    <IconButton onClick={() => setUtteranceDelete(entry.id)} label="Xóa" noBorder icon={<Trash />} />
+                                    <IconButton onClick={() => setUtteranceDelete(entry)} label="Xóa" noBorder icon={<Trash />} />
                                 </Flex>
                             </Td>
                             </Tr>)}

@@ -35,7 +35,7 @@ export const createEntity = async (data) => {
     }
 }
 
-export const updateEntity = async (token, entity) => {
+export const updateEntity = async (entity) => {
     try {
         await request(`/kanbot/entity/${entity.id}`, {
             method: "PUT",
@@ -43,30 +43,9 @@ export const updateEntity = async (token, entity) => {
                 data: entity
             }
         });
-        let Keywords = [];
-        entity.keywords.map((val) => {
-            let synonyms = [val.keyword];
-            Keywords.push({
-                keyword: val.keyword,
-                synonyms: synonyms
-            })
-        })
-        await request(`https://api.wit.ai/entities/${entity.name}?v=20221114`, {
-            method: "PUT",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type":" application/json"
-            },
-            body: {
-                "name": entity.name,
-                "roles": [ entity.name ],
-                "lookups": ["free-text", "keywords"],
-                "keywords": Keywords
-            }
-        });
     } catch (error) {
         return false
-    }
+    } 
 }
 
 export const deleteEntity = async (token, entity) => {

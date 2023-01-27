@@ -1,8 +1,8 @@
 import { request } from '@strapi/helper-plugin'
 
-export const findManyResponse = async (app_name) => {
+export const findManyResponse = async (app_id) => {
     try {
-        return await request(`/kanbot/response/?kanbot_witais=${app_name}`, {
+        return await request(`/kanbot/response/?kanbot_witais=${app_id}`, {
             method: "GET"
         });
     } catch (error) {

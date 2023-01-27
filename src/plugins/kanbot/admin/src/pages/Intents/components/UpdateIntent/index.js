@@ -3,19 +3,21 @@ import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, B
 import { TextInput, Select, Option, Status } from '@strapi/design-system';
 import { Drag, Pencil } from '@strapi/icons';
 
-const CreateModal = ({ entities, isLoading, setIntentCreate, HandleCreateIntent }) => {
+const CreateModal = ({ entities, isLoading, intentUpdate, setIntentUpdate, HandleUpdateIntent }) => {
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(intentUpdate.title);
+
+  console.log(intentUpdate);
 
   const [updateEntities, setUpdateEntities] = useState([]);
-  const [EntitiesSelected, setEntitiesSelected] = useState([]);
+  const [EntitiesSelected, setEntitiesSelected] = useState(intentUpdate.entities);
 
   const HandleCreate = async () => {
     const data = {
       title: title,
       entities: updateEntities,
     }
-    await HandleCreateIntent(data);
+    await HandleUpdateIntent(intentUpdate.id, data);
     setTitle('');
     setUpdateEntities([]);
   }
@@ -34,13 +36,10 @@ const CreateModal = ({ entities, isLoading, setIntentCreate, HandleCreateIntent 
 
   return (
     <>
-      <ModalLayout onClose={() => setIntentCreate(false)} labelledBy="Tạo mục tiêu mới">
-          <ModalHeader>
+    <Stack borderColor="neutral200" hasRadius background='neutral0' padding={3} spacing={3}>
             <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
               Tạo mục tiêu mới
             </Typography>
-          </ModalHeader>
-          <ModalBody>
             <Stack spacing={3}>
                 <Box>
                   <TextInput 
@@ -99,18 +98,17 @@ const CreateModal = ({ entities, isLoading, setIntentCreate, HandleCreateIntent 
                   : ""
                 }
             </Stack>
-          </ModalBody>
-          <ModalFooter startActions={<Button onClick={() => setIntentCreate(false)} variant="tertiary">
+            <Stack horizontal spacing={3}>
+            <Button onClick={() => setIntentUpdate(false)} variant="tertiary">
                 Hủy
-              </Button>} 
-                  endActions={
-                    <Button 
-                      onClick={() => HandleCreate()} 
-                      loading={ isLoading == "create" ? true : false}>
-                        Lưu
-                    </Button>
-                  } />
-      </ModalLayout>
+              </Button>
+              <Button 
+                onClick={() => HandleCreate()} 
+                loading={ isLoading == "create" ? true : false}>
+                  Lưu
+              </Button>
+            </Stack>
+        </Stack>
     </>
   )
 }

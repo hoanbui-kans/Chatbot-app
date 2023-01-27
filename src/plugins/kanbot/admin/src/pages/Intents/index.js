@@ -16,21 +16,24 @@ import {
 } from '@strapi/design-system';
 
 import { ArrowLeft, Pencil } from '@strapi/icons';
-import SideNav from '../../components/SideNav'
-import IntentsTable from './components/IntentsTable'
-import CreateIntentModal from './components/CreateIntentModal'
-import DialogDeleteIntent from './components/DialogDeleteIntent'
+import SideNav from '../../components/SideNav';
+
+import IntentsTable from './components/IntentsTable';
+import CreateIntent from './components/CreateIntent';
+import UpdateIntent from './components/UpdateIntent';
+import DeleteIntent from './components/DeleteIntent';
 
 import { 
     findManyIntent, 
     createIntent, 
-    deleteIntent 
+    deleteIntent, 
+    updateIntent
 } from '../../api/Intent';
 
 import { findOneWitaiByAppName } from '../../api/witAi';
 import { findManyEntity } from '../../api/Entity';
 import { useParams } from 'react-router-dom'; 
-import Loading from '../../components/Loading';
+
 import slugify from 'slugify';
 import '../style.css'
 
@@ -39,8 +42,11 @@ const index = () => {
     const [entities, setEntities] = useState([]);
     const [intents, setIntents] = useState([]);
     const [appInfo, setAppInfo] = useState(false);
+
     const [intentCreate, setIntentCreate] = useState(false);
+    const [intentUpdate, setIntentUpdate] = useState(false);
     const [intentDelete, setIntentDelete] = useState(false);
+
     const [isLoading, setIsLoading] = useState(false);
 
     const { app_name } = useParams();
@@ -70,6 +76,15 @@ const index = () => {
         await createIntent( appInfo.server_access_token, data);
         await HandleGetIntents(appInfo.id);
         setIntentCreate(false);
+        setIsLoading(false);
+    }
+
+    async function HandleUpdateIntent (id, data) {
+        setIsLoading("update");
+        data.kanbot_witais = appInfo.id;
+        await updateIntent(id, data);
+        await HandleGetIntents(appInfo.id);
+        setIntentDelete(false);
         setIsLoading(false);
     }
 
@@ -128,24 +143,34 @@ const index = () => {
                     subtitle="Tạo cuộc hội thoại từ chiến dịch" 
                     as="h2" 
                 />
-            <ContentLayout>
-                <IntentsTable 
-                    intents={intents} 
-                    isLoading={isLoading}
-                    setIntentCreate={setIntentCreate}
-                    setIntentDelete={setIntentDelete}
-                /> 
+            <ContentLayout> 
                 {
                     intentCreate ?
-                    <CreateIntentModal 
+                    <CreateIntent 
+                        isLoading={isLoading}
                         entities={entities}
                         setIntentCreate={setIntentCreate}
                         HandleCreateIntent={HandleCreateIntent}
-                    /> : ""
+                    /> :                    
+                    intentUpdate ?
+                    <UpdateIntent 
+                        isLoading={isLoading}
+                        entities={entities}
+                        intentUpdate={intentUpdate}
+                        setIntentUpdate={setIntentUpdate}
+                        HandleUpdateIntent={HandleUpdateIntent}
+                    /> :               
+                    <IntentsTable 
+                        intents={intents} 
+                        isLoading={isLoading}
+                        setIntentUpdate={setIntentUpdate}
+                        setIntentCreate={setIntentCreate}
+                        setIntentDelete={setIntentDelete}
+                    />
                 }
                 {
                     intentDelete ?
-                    <DialogDeleteIntent 
+                    <DeleteIntent 
                         intentDelete={intentDelete}
                         isLoading={isLoading}
                         setIntentDelete={setIntentDelete}

@@ -1,8 +1,8 @@
 import { request } from '@strapi/helper-plugin';
 
-export const findManyUtterance = async () => {
+export const findManyUtterance = async (app_id) => {
     try {
-        const response = await request('/kanbot/utterance/', {
+        const response = await request(`/kanbot/utterance/?kanbot_witais=${app_id}`, {
             method: "GET"
         })
         return response;
@@ -22,42 +22,15 @@ export const findOneUtterance = async (id) => {
     }
 }
 
-export const createUtterance = async (token, utterance) => {
+export const createUtterance = async (data) => {
     try {
-        const data = utterance.entities;
-        // Create witai Utterance
-        const witUtterance = await request(`https://api.wit.ai/utterances?v=20221114`, {
+        const response = await request(`/kanbot/utterance/`, {
             method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            body: [{
-                "text": "I want to fly to sfo",
-                "intent": "flight_request",
-                "entities": [
-                  {
-                    "entity": "wit$location:to",
-                    "start": 17,
-                    "end": 20,
-                    "body": "sfo",
-                    "entities": []
-                  }
-                ],
-                "traits": []
-              }]
+            body: {
+                data: data
+            }
         });
-
-        if(witUtterance.sent){
-            const response = await request(`/kanbot/utterance/`, {
-                method: "POST",
-                body: {
-                    data: data
-                }
-            })
-            return response;
-        } else {
-            return false
-        }
+        return response
     } catch (error) {
         return false
     }

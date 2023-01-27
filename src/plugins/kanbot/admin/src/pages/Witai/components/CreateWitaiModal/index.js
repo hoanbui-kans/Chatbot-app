@@ -3,7 +3,7 @@ import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, B
 import { TextInput } from '@strapi/design-system';
 import slugify from 'slugify';
   
-const CreateModal = ({ Witai, setWitaiCreate, HandleCreateWitai }) => {
+const index = ({ setWitaiCreate, HandleCreateWitai }) => {
 
   const [content, setContent] = useState({
     title: "",
@@ -16,6 +16,7 @@ const CreateModal = ({ Witai, setWitaiCreate, HandleCreateWitai }) => {
       app_name: "",
       description: "",
     });
+    setWitaiCreate(false);
   }
 
   return (
@@ -54,4 +55,4 @@ const CreateModal = ({ Witai, setWitaiCreate, HandleCreateWitai }) => {
   )
 }
 
-export default CreateModal
+export default index

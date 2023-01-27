@@ -37,9 +37,10 @@ import { Plus } from '@strapi/icons';
 
 const index = () => {
 
-  const { app_name, intent } = useParams();
-  const [appInfo, setAppInfo] = useState(false);
+  const {app_name, intent_id} = useParams();
+  const [AppInfo, setAppInfo] = useState(false);
   const [isloading, setIsLoading] = useState(false);
+  const [conservationIntent, setConservationIntent] = useState(false);
 
   // Simulator chat
   const [simChat, setSimChat] = useState(false);
@@ -47,6 +48,7 @@ const index = () => {
   const HandleCreateResponse = async () => {
     const response = await createResponse(Edges);
   }
+
   async function HandleGetConservation () {
 
   }
@@ -69,11 +71,22 @@ const index = () => {
       }
   }
 
-  useEffect( async() => {
-      if(!appInfo){
-        await HandleGetApp(app_name);
+  async function HandleGetIntent(app_id){
+    const response = await findOneIntent(intent_id);
+    if(response){
+      setConservationIntent(response);
+    }
+  }
+
+  useEffect( async () => {
+      if(!AppInfo){
+          await HandleGetApp(app_name);
+      } else {
+          if(!conservationIntent){
+            HandleGetIntent(AppInfo.id);
+          }
       }
-  }, [appInfo])
+  }, [AppInfo])
   
 
   return (
@@ -105,14 +118,14 @@ const index = () => {
                   </Box>
                   <Divider />
                   <ContentLayout>
-                      <Flow appInfo={appInfo}/>
+                      <Flow appInfo={AppInfo}/>
                   </ContentLayout>
 
                   { 
                   simChat ? 
                     <Box className="simchat">
                       <ChatUi 
-                        appInfo={appInfo}
+                        appInfo={AppInfo}
                         title={'bot Ai'} 
                         setSimChat={setSimChat}/>
                     </Box> : ""

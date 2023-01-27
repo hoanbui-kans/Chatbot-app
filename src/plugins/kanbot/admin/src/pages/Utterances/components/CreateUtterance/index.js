@@ -6,35 +6,46 @@ import { TextInput, IconButton, AccordionGroup, Accordion,
 import { Pencil, Trash } from '@strapi/icons';
 import Highlighter from "react-highlight-words";
 
-const index = ({ intents, entities, setUtteranceCreate, HandleCreateUtterance }) => {
+const index = ({ intents, entities, isLoading, setUtteranceCreate, HandleCreateUtterance }) => {
 
-  const [title, setTitle] = useState('');
-  const [options, setOptions] = useState([]);
+  const [message, setMessage] = useState('');
+  const [intent, setIntent] = useState({
+    id: "",
+    title: "",
+    name: ""
+  });
+  const [options, setOptions] = useState([]); 
+  const [highlightText, setHigtlightText] = useState([]);
 
   const keywordSchema = {
-    keyword: '',
+    entity: {
+      id: "",
+      title: "",
+      name: ""
+    },
+    keyword: {
+      start: "",
+      end: "",
+      body: ""
+    },
   };
 
-  const HandleCreate = async () => {
-    const keywords = options.filter((val) => val.keyword != '');
-
+  async function HandleCreate () {
+    const filterKeywords = options.filter((val) => val.keyword.body != '' && val.entity != '');
     const data = {
-      title: title,
-      keywords: keywords
+      message: message,
+      intent: intent,
+      entities: filterKeywords
     }
     await HandleCreateUtterance(data);
-    setTitle('');
-    setOptions([]);
-    setEntityCreate(false)
+    setUtteranceCreate(false)
   }
 
-  const HandleUpdateKeyword = (index, keyword) => {
+  const HandleUpdateKeyword = (index, option) => {
     let newOptions = [];
     options.map((val, _i) => {
       if(index == _i){
-        newOptions.push({
-          keyword: keyword
-        })
+        newOptions.push(option)
       } else {
         newOptions.push(val)
       }
@@ -57,26 +68,107 @@ const index = ({ intents, entities, setUtteranceCreate, HandleCreateUtterance })
     setExpandedID(s => s === id ? null : id);
   };
 
+  useEffect(() => {
+    let Keywords = [];
+    if(Array.isArray(options) && options.length){
+      options.map((val) => {
+        Keywords.push(val.keyword.body);
+      })
+    }
+    setHigtlightText(Keywords);
+    console.log(options);
+  }, [options])
+
+  // Complex example
+  const findChunksAtBeginningOfWords = ({
+    autoEscape,
+    caseSensitive,
+    sanitize,
+    searchWords,
+    textToHighlight
+  }) => {
+    const chunks = [];
+    const textLow = textToHighlight.toLowerCase();
+    // Add chunks for every searchWord
+    const UpdateOptions = [];
+
+    let indexOptions = 0;
+
+    searchWords.forEach(sw => {
+      const lw = sw.toLowerCase()
+      const indexInWord = textLow.indexOf(lw);
+      const start = indexInWord;
+      const end = indexInWord + sw.length;
+      let newOptions = options;
+
+      if(start != -1){
+        newOptions[indexOptions].keyword = {
+            ...newOptions[indexOptions].keyword,
+            start: start,
+            end: end
+        }
+        chunks.push({
+          body: sw,
+          start: start,
+          end: end
+        });
+      } else {
+        newOptions[indexOptions].keyword = {
+            ...newOptions[indexOptions].keyword,
+            start: 0,
+            end: 0
+        }
+        chunks.push({
+          body: sw,
+          start: 0,
+          end: 0
+        });
+      }
+      setOptions(newOptions);
+      indexOptions++;
+    });
+
+    console.log('chunks', chunks)
+    return chunks;
+  };
+
   return (
     <>
        <Stack borderColor="neutral200" hasRadius background='neutral0' padding={3} spacing={3}>
               <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
-                Tạo trường dữ liệu mới
+                Tạo cấu trúc câu thoại mới
               </Typography>
-              <Box>
+                {
+                  message !== '' ?    
+                  <Box borderColor="neutral200" hasRadius background='neutral100' padding={3} spacing={3}>             
+                      <Highlighter
+                        highlightClassName="hightlightTxt"
+                        searchWords={highlightText}
+                        autoEscape={true}
+                        textToHighlight={message}
+                        findChunks={findChunksAtBeginningOfWords}
+                      />
+                  </Box>
+                  : ""
+                }
+              <Stack spacing={3}>
                 <TextInput 
                   placeholder="Nhập đoạn văn bản tin nhắn" 
                   label="Đoạn văn bản tin nhắn" 
                   name="title" 
-                  onChange={e => setTitle(e.target.value)} 
-                  value={title} />
-              </Box>
+                  onChange={e => setMessage(e.target.value)} 
+                  value={message} />
+              </Stack>
               {
                 Array.isArray(intents) && intents.length ? 
-                  <Select label="Mục tiêu">
-                    {
-                      intents.map((val) => <Option value={val.id.toString()} key={val.id}>{val.title}</Option>)
-                    }
+                  <Select 
+                    label="Xác minh cho chiến dịch" 
+                    value={intent.id} 
+                    onChange={(e) => setIntent({
+                      id: e,
+                      name: intents.find((val) => val.id == e).name
+                    })}>
+                    { intents.map((val) => <Option value={val.id.toString()} key={val.id}>{val.title}</Option>) }
                   </Select>
                 :""
               }
@@ -95,22 +187,29 @@ const index = ({ intents, entities, setUtteranceCreate, HandleCreateUtterance })
                                     <IconButton onClick={() => HandleDeleteKeyword(index)} label="Xóa" icon={<Trash />} />
                                   </Stack>
                                   } 
-                                  title={options[index].keyword ? options[index].keyword : "Từ khóa"} 
+                                  title={options[index].keyword.body ? options[index].keyword.body : "Từ khóa"} 
                                   togglePosition="left" 
                                 />
                                 <AccordionContent>
                                   <Stack padding={3} spacing={3}>
                                       <TextInput 
                                         style={{width: '100%'}}
-                                        value={options[index].keyword}
-                                        onChange={(e) => HandleUpdateKeyword(index, e.target.value)}
+                                        value={val.keyword.body}
+                                        onChange={(e) => HandleUpdateKeyword(index, {...val, keyword: { ...val.keyword, body: e.target.value}})}
                                         placeholder="Nhập từ khóa" 
-                                        label 
+                                        label="Từ khóa cho đoạn văn bản" 
                                         name="content"
                                       />
                                       {
                                         Array.isArray(entities) && entities.length ? 
-                                          <Select label="Mục tiêu">
+                                          <Select 
+                                            label="Mục tiêu" 
+                                            value={options[index].entity.id} 
+                                            onChange={(e) => HandleUpdateKeyword(index, {...val, 
+                                              entity: {
+                                                id: e,
+                                                name: entities.find((val) => val.id == e).name
+                                              }})}>
                                             {
                                               entities.map((val) => <Option value={val.id.toString()} key={val.id}>{val.title}</Option>)
                                             }
@@ -135,7 +234,10 @@ const index = ({ intents, entities, setUtteranceCreate, HandleCreateUtterance })
                     variant="tertiary">
                       Hủy
                   </Button>
-                  <Button onClick={HandleCreate}>Lưu</Button>
+                  <Button 
+                  onClick={HandleCreate}
+                  loading={isLoading == 'create' ? true : false}
+                  >Lưu</Button>
               </Stack>
           </Stack>
     </>

@@ -24,7 +24,7 @@ const App = () => {
       <Switch>
         <Route path={`/plugins/${pluginId}`} component={WitAi} exact />
         <Route path={`/plugins/${pluginId}/:app_name/intents`} component={Intents} exact />
-        <Route path={`/plugins/${pluginId}/:app_name/intents/:intent/composer`} component={ConservationEditor} exact />
+        <Route path={`/plugins/${pluginId}/:app_name/intents/:intent_id/composer`} component={ConservationEditor} exact />
         <Route path={`/plugins/${pluginId}/:app_name/entities`} component={Entities} exact />
         <Route path={`/plugins/${pluginId}/:app_name/traits`} component={Traits} exact />
         <Route path={`/plugins/${pluginId}/:app_name/utterances`} component={Utterances} exact />

@@ -147,9 +147,6 @@ const index = () => {
                             />
                         }
                     </ContentLayout>
-                    {
-                        isLoading && <Loading />
-                    }
             </Layout>
     </>
   )

@@ -1,11 +1,11 @@
 import React from 'react'
 import { Box, Flex, Table, Thead, Tbody, TFooter, Th, Tr, Td, Link} from '@strapi/design-system';
 import { IconButton, Typography, VisuallyHidden, Badge, Stack  } from '@strapi/design-system';
-import { Plus, Trash } from '@strapi/icons'
+import { Plus, Trash, Pencil } from '@strapi/icons'
 import pluginId from '../../../../pluginId';
 import { useParams } from 'react-router-dom';
 
-const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) => {
+const index = ({ intents, setIntentCreate, setIntentUpdate, setIntentDelete }) => {
     const { app_name } = useParams();
     return (
         <>
@@ -41,7 +41,7 @@ const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) =
                                 </Td>
                                 <Td>
                                     <Typography textColor="neutral800">
-                                        <Link to={`/plugins/${pluginId}/${app_name}/intents/${entry.name}/composer`}>
+                                        <Link to={`/plugins/${pluginId}/${app_name}/intents/${entry.id}/composer`}>
                                             { entry.title }
                                         </Link>
                                     </Typography>
@@ -57,6 +57,7 @@ const index = ({ intents, setIntentCreate, setIntentDelete, setIntentUpdate }) =
                                 <Td>
                                     <Flex>
                                         <IconButton onClick={() => setIntentDelete(entry)} label="Xóa" noBorder icon={<Trash />} />
+                                        <IconButton onClick={() => setIntentUpdate(entry)} label="Sửa" noBorder icon={<Pencil />} />
                                     </Flex>
                                 </Td>
                                 </Tr>)

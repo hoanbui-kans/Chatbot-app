@@ -38,18 +38,19 @@ const index = () => {
 
     const { app_name } = useParams();
 
-    const [utterances, setUtterances] = useState([]);
     const [utteranceCreate, setUtteranceCreate] = useState(false);
     const [utteranceUpdate, setUtteranceUpdate] = useState(false);
     const [utteranceDelete, setUtteranceDelete] = useState(false);
 
+    const [utterances, setUtterances] = useState([]);
     const [entities, setEntities] = useState([]);
     const [intents, setIntents] = useState([]);
+    
     const [appInfo, setAppInfo] = useState(false);
 
-    async function HandleGetUtterances () {
+    async function HandleGetUtterances(app_id) {
         setIsLoading(true);
-        const response = await findManyUtterance();
+        const response = await findManyUtterance(app_id);
         if(response){
             setUtterances(response)
         }
@@ -57,23 +58,26 @@ const index = () => {
     }
 
     async function HandleCreateUtterance (data) {
-        setIsLoading(true);
+        setIsLoading('create');
+        data.kanbot_witais = appInfo.id;
         await createUtterance(data);
-        await HandleGetUtterances();
+        await HandleGetUtterances(appInfo.id);
         setIsLoading(false);
     }
 
     async function HandleUpdateUtterance (id, data) {
-        setIsLoading(true);
+        setIsLoading('update');
+        data.kanbot_witais = appInfo.id;
         await updateUtterance(id, data);
-        await HandleGetUtterances();
+        await HandleGetUtterances(appInfo.id);
         setIsLoading(false);
     }
 
     async function HandleDeleteUtterance (id) {
-        setIsLoading(true);
+        setIsLoading('delete');
+        data.kanbot_witais = appInfo.id;
         await deleteUtterance(id);
-        await HandleGetUtterances();
+        await HandleGetUtterances(appInfo.id);
         setIsLoading(false);
     }
 
@@ -95,7 +99,6 @@ const index = () => {
 
     async function HandleGetApp ( app_name ) {
         const App = await findOneWitaiByAppName( app_name );
-        console.log('App', app_name);
         if(App){
             setAppInfo(App);
         }
@@ -145,14 +148,18 @@ const index = () => {
                     <ContentLayout>
                     { 
                         utteranceCreate ? 
-                        <CreateUtterance
+                        <CreateUtterance 
                             intents={intents}
                             entities={entities}
+                            isLoading={isLoading}
                             setUtteranceCreate={setUtteranceCreate}
                             HandleCreateUtterance={HandleCreateUtterance}
                         />
                         : utteranceUpdate ?
                         <UpdateUtterance
+                            intents={intents}
+                            entities={entities}
+                            isLoading={isLoading}
                             utteranceUpdate={utteranceUpdate}
                             setUtteranceUpdate={setUtteranceUpdate}
                             HandleUpdateUtterance={HandleUpdateUtterance}
@@ -172,7 +179,6 @@ const index = () => {
                         />
                     }
                     </ContentLayout>
-                    { isLoading && <Loading />}
             </Layout>
     </>
   )

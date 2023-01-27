@@ -60,7 +60,7 @@ const HandleEditMessage = ({ index, messages, updateMessages, deleteMessages }) 
 }
 
 
-const MessagesController = ({ goBack }) => {
+const MessagesController = ({ appInfo, goBack }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [title, setTitle] = useState("");
@@ -70,8 +70,9 @@ const MessagesController = ({ goBack }) => {
 
     const HandleCreateMessage = async () => {
         const data = {
-            "title": title,
-                "type": [
+            kanbot_witais: appInfo.id,
+            title: title,
+                type: [
                     {
                         "__component": "kanbot.message",
                         "messages": messages
@@ -137,7 +138,6 @@ const MessagesController = ({ goBack }) => {
                         placeholder="Nhập tiêu đề..." 
                         label="Tiêu đề" 
                         name="title" 
-                        error={title.length > 5 ? 'Content is too long' : undefined} 
                         onChange={e => setTitle(e.target.value)} 
                         value={title}/>
                 </Box>

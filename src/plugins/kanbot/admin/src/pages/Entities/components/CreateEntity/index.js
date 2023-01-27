@@ -7,7 +7,7 @@ import { TextInput } from '@strapi/design-system';
 import slugify from 'slugify';
 import { Pencil, Trash } from '@strapi/icons';
 
-const index = ({ setEntityCreate, HandleCreateEntity }) => {
+const index = ({ setEntityCreate, isLoading, HandleCreateEntity }) => {
 
   const [title, setTitle] = useState('');
   const [options, setOptions] = useState([]);
@@ -66,14 +66,14 @@ const index = ({ setEntityCreate, HandleCreateEntity }) => {
           <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
             Tạo trường dữ liệu mới
           </Typography>
-          <Box>
+          <Stack background="neutral0" padding={3} spacing={3} borderColor="neutral200" hasRadius>
               <TextInput 
                 placeholder="Nhập tiêu đề cho trường dữ liệu" 
                 label="Tiêu đề" 
                 name="title" 
                 onChange={e => setTitle(e.target.value)} 
                 value={title} />
-                <Stack padding={3} spacing={3}>
+                <Stack spacing={3}> 
                     {
                         Array.isArray(options) && options.length ?
                           <AccordionGroup>
@@ -113,12 +113,14 @@ const index = ({ setEntityCreate, HandleCreateEntity }) => {
                         <Button variant="secondary" onClick={HandleAddKeyWords}>+ Thêm từ khóa</Button>
                       </Box>
                 </Stack>
-            </Box>
+            </Stack>
             <Stack spacing={3} horizontal>
                 <Button onClick={() => setEntityCreate(false)} variant="tertiary">
                     Hủy
                 </Button>
-                <Button onClick={HandleCreate}>Lưu</Button>
+                <Button 
+                  onClick={HandleCreate}
+                  loading={isLoading == 'create' ? true : false}>Tạo mới</Button>
             </Stack>
       </Stack>
     </>

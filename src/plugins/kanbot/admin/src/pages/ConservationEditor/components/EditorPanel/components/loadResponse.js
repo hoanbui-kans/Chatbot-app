@@ -71,8 +71,8 @@ const index = ({ stateEditor, setCreateResponse }) => {
     const [updateState, setUpdateState] = useState(stateEditor.data);
     const { app_name } = useParams();
 
-    async function HandleGetApp(app_id) {
-        const App = await findOneWitaiByAppName(app_id);
+    async function HandleGetApp(app_name) {
+        const App = await findOneWitaiByAppName(app_name);
         if(App){
             setAppInfo(App);
         }
