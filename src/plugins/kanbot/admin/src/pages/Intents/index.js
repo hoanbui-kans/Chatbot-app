@@ -84,7 +84,7 @@ const index = () => {
         data.kanbot_witais = appInfo.id;
         await updateIntent(id, data);
         await HandleGetIntents(appInfo.id);
-        setIntentDelete(false);
+        setIntentUpdate(false);
         setIsLoading(false);
     }
 

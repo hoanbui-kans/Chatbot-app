@@ -10,6 +10,8 @@ import ChartCircle from '@strapi/icons/ChartCircle';
 import Discuss from '@strapi/icons/Discuss';
 import Message from '@strapi/icons/Message';
 import ChartBubble from '@strapi/icons/ChartBubble';
+import ManyToMany from '@strapi/icons/ManyToMany';
+import File from '@strapi/icons/File';
 import { useParams } from 'react-router-dom';
 
 const SizeNav = () => {
@@ -25,13 +27,13 @@ const SizeNav = () => {
     {
       id: 'intents',
       label: 'Chiến dịch',
-      icon: <Discuss style={iconSize} />,
+      icon: <ManyToMany style={iconSize} />,
       to: 'intents'
     }
   ,{
     id: 'entities',
     label: 'Trường dữ liệu',
-    icon: <ChartCircle style={iconSize} />,
+    icon: <File style={iconSize} />,
     to: 'entities'
   }, {
     id: 'traits',
@@ -43,6 +45,11 @@ const SizeNav = () => {
     label: 'Cấu trúc câu',
     icon: <Message style={iconSize} />,
     to: 'utterances'
+  }, {
+    id: 'response',
+    label: 'Mẫu câu trả lời',
+    icon: <Discuss style={iconSize} />,
+    to: 'response'
   }
 ];
 

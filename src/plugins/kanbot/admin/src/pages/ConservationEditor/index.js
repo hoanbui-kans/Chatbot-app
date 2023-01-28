@@ -106,8 +106,8 @@ const index = () => {
                                     <Button onClick={() => setSimChat(true)} variant="secondary">
                                         Thử nghiệm
                                     </Button>
-                                    <Button onClick={() => { HandleCreateConservation()} } variant="default" startIcon={<Plus />}>
-                                        Thêm mới
+                                    <Button onClick={() => { HandleCreateConservation()} } variant="default">
+                                        Lưu
                                     </Button>
                                 </Stack>
                             } 

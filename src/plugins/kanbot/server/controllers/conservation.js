@@ -113,8 +113,8 @@ module.exports = ({ strapi }) => ({
 
         const token = AppInfo.server_access_token;
         if(!token) {
-          return ctx.body = {
-            message: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
+          return ctx.body = { 
+            message: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ - " + ctx.params.app_id
           }
         }
         // create client connect redis
@@ -126,7 +126,7 @@ module.exports = ({ strapi }) => ({
         const Payload = ctx.request.body;
         // get incoming message data
         const incomingMessages = FacebookMessageParser.parsePayload(Payload.message);
-        const { sender, recipient, message } = incomingMessages[0];
+        const { sender, recipient, message } = incomingMessages[0]; 
         if(!message) {
           return ctx.body = 'no message'
         }
@@ -146,6 +146,7 @@ module.exports = ({ strapi }) => ({
               flow: {},
               followUp: '',
               complete: false,
+              next: true,
               exit: false
             }
           }
@@ -174,9 +175,7 @@ module.exports = ({ strapi }) => ({
         // closing redis
         await client.disconnect(); 
         // fallback context
-        return ctx.body = {
-          message: text
-        }
+        return ctx.body = conservation;
       } catch (err) {
         ctx.throw(403, err);
       }

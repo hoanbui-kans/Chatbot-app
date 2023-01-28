@@ -61,6 +61,7 @@ const index = () => {
         data.kanbot_witais = appInfo.id;
         await createEntity(data);
         await HandleGetEntities( appInfo.id );
+        setEntityCreate(false);
         setIsLoading(false);
     }
 
@@ -69,6 +70,7 @@ const index = () => {
         data.kanbot_witais = appInfo.id;
         await updateEntity(data);
         await HandleGetEntities( appInfo.id );
+        setEntityUpdate(false);
         setIsLoading(false);
     }
 

@@ -1,15 +1,10 @@
-import React, { memo, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { Box, Typography, Stack, IconButton, Status } from '@strapi/design-system';
-import { Pencil, Information, Drag } from '@strapi/icons';
+import React, { memo } from 'react'
+import { Box, Typography, Stack, Status } from '@strapi/design-system';
+import { Drag } from '@strapi/icons';
 import { TbArrowRampRight2 } from 'react-icons/tb'
-import { setEditorState } from '../../../slice/conservation-builder-slice';
 
 const DefaultNode = ({ node }) => {
-
   const {id, data} = node;
-  const dispatch = useDispatch();
-
   return (
     <>
        <Box className="x_node_container">
@@ -23,7 +18,8 @@ const DefaultNode = ({ node }) => {
                           <Stack spacing={2} horizontal>
                             <TbArrowRampRight2 size={16} color='#8d8d8d'/>
                             <Typography variant="pi" fontWeight="bold">
-                              Xác thực { val.type == 'success' ? "hoàn tất" : "thất bại"}</Typography>
+                              Xác thực { val.type }
+                            </Typography>
                           </Stack>
                           <Status variant={val.type ? val.type : "secondary"} showBullet={false} className="x_node_case_item">
                               <Stack horizontal spacing={3} justifyContent="space-between">

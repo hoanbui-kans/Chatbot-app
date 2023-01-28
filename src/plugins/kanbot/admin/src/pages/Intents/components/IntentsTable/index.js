@@ -34,32 +34,32 @@ const index = ({ intents, setIntentCreate, setIntentUpdate, setIntentDelete }) =
                         </Tr>
                         </Thead>
                         <Tbody>
-                        { 
-                            intents.map((entry, index) => <Tr key={entry.id}>
-                                <Td>
-                                    <Typography textColor="neutral800">{index + 1}</Typography>
-                                </Td>
-                                <Td>
-                                    <Typography textColor="neutral800">
-                                        <Link to={`/plugins/${pluginId}/${app_name}/intents/${entry.id}/composer`}>
-                                            { entry.title }
-                                        </Link>
-                                    </Typography>
-                                </Td>
-                                <Td>
-                                    <Stack horizontal spacing={3}>
-                                        <Badge>{entry.entities.length}</Badge>
-                                        <Typography variant="pi" textColor="neutral800">
-                                            Trường dữ liệu
+                            { 
+                                intents.map((entry, index) => <Tr key={entry.id}>
+                                    <Td>
+                                        <Typography textColor="neutral800">{index + 1}</Typography>
+                                    </Td>
+                                    <Td>
+                                        <Typography textColor="neutral800">
+                                            <Link to={`/plugins/${pluginId}/${app_name}/intents/${entry.id}/composer`}>
+                                                { entry.title }
+                                            </Link>
                                         </Typography>
-                                    </Stack>
-                                </Td>
-                                <Td>
-                                    <Flex>
-                                        <IconButton onClick={() => setIntentDelete(entry)} label="Xóa" noBorder icon={<Trash />} />
-                                        <IconButton onClick={() => setIntentUpdate(entry)} label="Sửa" noBorder icon={<Pencil />} />
-                                    </Flex>
-                                </Td>
+                                    </Td>
+                                    <Td>
+                                        <Stack horizontal spacing={3}>
+                                            <Badge>{entry.entities.length}</Badge>
+                                            <Typography variant="pi" textColor="neutral800">
+                                                Trường dữ liệu
+                                            </Typography>
+                                        </Stack>
+                                    </Td>
+                                    <Td>
+                                        <Flex>
+                                            <IconButton onClick={() => setIntentUpdate(entry)} label="Sửa" noBorder icon={<Pencil />} />
+                                            <IconButton onClick={() => setIntentDelete(entry)} label="Xóa" noBorder icon={<Trash />} />
+                                        </Flex>
+                                    </Td>
                                 </Tr>)
                             }
                         </Tbody>

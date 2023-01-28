@@ -14,7 +14,7 @@ import EditorPanel from './EditorPanel';
 import { useParams } from 'react-router-dom';
 
 import "../style.css";
-
+ 
 const TemplateNode = ({ node }) => {
   switch(node.type){
     case 'default-template': 
@@ -114,7 +114,7 @@ const Flow = () => {
                   }
                   <Box>
                     <Button className="x_add_node_button" onClick={() => setAddNode(true)} startIcon={<Plus />}>
-                      Add node
+                      Thêm trường dữ liệu
                     </Button>
                   </Box>
               </Stack>

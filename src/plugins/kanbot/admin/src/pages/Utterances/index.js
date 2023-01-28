@@ -21,7 +21,7 @@ import Loading from '../../components/Loading';
 
 import UtteranceTable from './components/UtteranceTable';
 import CreateUtterance from './components/CreateUtterance';
-import DialogDeleteUtterance from './components/DialogDeleteUtterance';
+import DeleteUtterance from './components/DeleteUtterance';
 import UpdateUtterance from './components/UpdateUtterance';
 
 import { findOneWitaiByAppName } from '../../api/witAi';
@@ -146,6 +146,12 @@ const index = () => {
                             as="h2" 
                             />
                     <ContentLayout>
+                    <UtteranceTable 
+                        utterances={utterances}
+                        setUtteranceCreate={setUtteranceCreate}
+                        setUtteranceUpdate={setUtteranceUpdate}
+                        setUtteranceDelete={setUtteranceDelete}
+                    />
                     { 
                         utteranceCreate ? 
                         <CreateUtterance 
@@ -154,8 +160,10 @@ const index = () => {
                             isLoading={isLoading}
                             setUtteranceCreate={setUtteranceCreate}
                             HandleCreateUtterance={HandleCreateUtterance}
-                        />
-                        : utteranceUpdate ?
+                        /> : ""
+                    }
+                    {
+                        utteranceUpdate ?
                         <UpdateUtterance
                             intents={intents}
                             entities={entities}
@@ -163,20 +171,16 @@ const index = () => {
                             utteranceUpdate={utteranceUpdate}
                             setUtteranceUpdate={setUtteranceUpdate}
                             HandleUpdateUtterance={HandleUpdateUtterance}
-                        />
-                        : utteranceDelete ?
-                        <DialogDeleteUtterance 
+                        /> :""
+                    }
+                    {
+                        utteranceDelete ?
+                        <DeleteUtterance 
                             isLoading={isLoading}
                             utteranceDelete={utteranceDelete}
                             setUtteranceDelete={setUtteranceDelete}
                             HandleDeleteUtterance={HandleDeleteUtterance}
-                        /> :
-                        <UtteranceTable 
-                            utterances={utterances}
-                            setUtteranceCreate={setUtteranceCreate}
-                            setUtteranceUpdate={setUtteranceUpdate}
-                            setUtteranceDelete={setUtteranceDelete}
-                        />
+                        /> : ""
                     }
                     </ContentLayout>
             </Layout>

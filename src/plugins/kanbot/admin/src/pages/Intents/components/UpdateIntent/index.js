@@ -18,8 +18,6 @@ const CreateModal = ({ entities, isLoading, intentUpdate, setIntentUpdate, Handl
       entities: updateEntities,
     }
     await HandleUpdateIntent(intentUpdate.id, data);
-    setTitle('');
-    setUpdateEntities([]);
   }
 
   useEffect(() => {
@@ -33,6 +31,13 @@ const CreateModal = ({ entities, isLoading, intentUpdate, setIntentUpdate, Handl
     setEntitiesSelected(selected);
   }, [updateEntities]);
 
+  useEffect(() => {
+    if(Array.isArray(EntitiesSelected) && EntitiesSelected.length){
+      EntitiesSelected.map((val) => {
+        setUpdateEntities((updateEntities) => [...updateEntities, val.id.toString()])
+      })
+    }
+  }, []);
 
   return (
     <>
@@ -78,13 +83,13 @@ const CreateModal = ({ entities, isLoading, intentUpdate, setIntentUpdate, Handl
                             {
                               EntitiesSelected.map((val) => {
                                 return (
-                                  <Stack horizontal spacing={3} padding={2} hasRadius borderColor="neutral200">
+                                  <Stack key={val.id} horizontal spacing={3} padding={2} hasRadius borderColor="neutral200">
                                       <Status variant="success" size="S" showBullet={false}>
                                         <Typography variant="pi">
                                           <Drag style={{width: 12, height: 12}}/>
                                         </Typography>
                                       </Status>
-                                      <Typography fontWeight="bold">{val.title}</Typography>
+                                      <Typography fontWeight="bold">{val.title}</Typography> 
                                   </Stack>
                                 )
                               })
@@ -104,7 +109,7 @@ const CreateModal = ({ entities, isLoading, intentUpdate, setIntentUpdate, Handl
               </Button>
               <Button 
                 onClick={() => HandleCreate()} 
-                loading={ isLoading == "create" ? true : false}>
+                loading={ isLoading == "update" ? true : false}>
                   Lưu
               </Button>
             </Stack>

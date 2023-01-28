@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import { ChatContainer, ConversationHeader, Avatar, TypingIndicator, MessageSeparator, Message} from '@chatscope/chat-ui-kit-react'
 import { SendButton,InputToolbox, MessageInput, MessageList  } from '@chatscope/chat-ui-kit-react'
 
-import { initialNotes } from '../../slice/diagram-builder-slice';
+import { initialNotes } from '../../slice/conservation-builder-slice';
 import { v4 as uuidv4 } from 'uuid';
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
@@ -19,9 +19,10 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
     const [typing, setTyping] = useState(false);
     const [chatState, setChatState] = useState([]);
     const [conservationState, setConservationState] = useState([]);
+
     const nodes = useSelector(initialNotes);
 
-    const { intent, app_name } = useParams();
+    const { intent_id, app_name } = useParams();
 
     async function HandleNewMessage() {
         setChatState([]);
@@ -30,7 +31,7 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
         setConservationState((conservationState) => [...conservationState, nodes[0].id]);
         setTimeout(() => {
             setChatState((chatState) => [...chatState, {
-                message: "Xin chào, chúng tôi có thể giúp gì được cho bạn?",
+                message: "Xin chào, để thử nghiệm thực tế cuộc trò chuyện, vui lòng nhắn nội dung câu hỏi liên quan đến cuộc trò chuyện này",
                 sentTime: new Date(),
                 sender: title,
                 direction: "incoming",
@@ -42,7 +43,9 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
     }
 
     async function HandleAddMessage(message) {
+
         setTyping(true);
+
         setChatState((chatState) => [...chatState, {
             message: message,
             sentTime: new Date(),
@@ -52,17 +55,20 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
             type: "text"
         }]);
 
-        await HandleSendMessage({
+        const sender = "user_" + app_name + "_" + intent_id;
+        const recipient = "bot_" + app_name + "_" + intent_id;
+
+        const messageSent = {
             "object": "page",
             "entry": [
                 {
                     "messaging": [
                         {
                             "sender": {
-                                "id": "user_" + app_name + "_" + intent
+                                "id": sender
                             },
                             "recipient": {
-                                "id": "bot_" + app_name + "_" + intent
+                                "id": recipient
                             },
                             "message": {
                                 "id": uuidv4(), 
@@ -72,20 +78,27 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
                     ]
                 }
             ]
-        });
+        };
+        await HandleSendMessage(messageSent, nodes, appInfo);
         setTyping(false);
     }
 
-    async function HandleSendMessage (message) {
+    async function HandleSendMessage (message, nodes, appInfo) {
         const response = await postMessageConservation(message, nodes, appInfo);
+
         setChatState((chatState) => [...chatState, {
-            message: response.message,
+            message: response.followUp,
             sentTime: new Date(),
             sender: "user",
             direction: "ongoing",
             position: "last",
             type: "text"
         }]);
+
+        // if(response.next){ 
+        //     setTyping(true);
+        //     await HandleSendMessage(message, nodes, appInfo);
+        // }
     }
 
     async function HandleRefreshConservation(){

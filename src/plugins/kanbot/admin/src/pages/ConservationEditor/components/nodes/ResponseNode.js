@@ -22,23 +22,6 @@ const ResponseNode = ({node}) => {
   return (
       <Box className="x_node_container">
         <Stack spacing={3}>
-            {
-              data.request ? 
-                <Stack hasRadius spacing={3}>
-                    <Stack horizontal spacing={3}>
-                        <TbArrowRampRight2 size={16} color='#8d8d8d'/>
-                        <Typography variant="pi" fontWeight="bold">Người dùng đề cập</Typography>
-                    </Stack>
-                    <Status variant={'neutral'} showBullet={false} className="x_node_case_item">
-                        <Stack horizontal spacing={3} justifyContent="space-between">
-                          <Drag size={16} color='#8d8d8d'/>
-                          <Typography variant="pi" fontWeight="bold">
-                            { data.request.title ? data.request.title : "Người dùng đề cập" }
-                          </Typography>
-                        </Stack>  
-                    </Status>
-                </Stack> : ""
-            }
             <Stack spacing={3} className="x_node_content">
                 <Stack spacing={1} className="x_node_case">
                 {
