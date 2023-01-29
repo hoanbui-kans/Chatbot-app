@@ -68,32 +68,7 @@ class ConservationService {
   static intentProductQuery(context){
     const { conservation } = context;
     const { entities } = conservation;
-
-    if(!entities['product:product']){
-      context.conservation.followUp = 'Xin chào, chúng tôi có bán điện thoại di động, bạn muốn mua điện thoại nào?';
-      return context;
-    } 
-
-    if(!entities['wit$contact:contact']){
-      context.conservation.followUp = 'Cho mình xin tên của bạn được không?';
-      return context;
-    } 
-
-    if(!entities['wit$location:location']){
-      context.conservation.followUp = 'Bạn đang ở đâu?';
-      return context;
-    } 
-
-    if(!entities['payment:paymentMethod']){
-      context.conservation.followUp = 'Bạn muốn thanh toán bằng cách nào?';
-      return context;
-    } 
-
-    console.log(context.conservation);
     
-    context.conservation.followUp = `Cám ơn ${entities['wit$contact:contact']}, đơn hàng của bạn đã được đặt thành công!`;
-    context.conservation.complete = true;
-
     return context
   }
 }

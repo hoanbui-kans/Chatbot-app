@@ -14,6 +14,7 @@ import ConservationEditor from '../ConservationEditor';
 import Intents from '../Intents';
 import Entities from '../Entities';
 import Traits from '../Traits';
+import Response from '../Response';
 import Utterances from '../Utterances';
 import { Provider } from 'react-redux';
 import { store } from '../store';
@@ -27,6 +28,7 @@ const App = () => {
         <Route path={`/plugins/${pluginId}/:app_name/intents/:intent_id/composer`} component={ConservationEditor} exact />
         <Route path={`/plugins/${pluginId}/:app_name/entities`} component={Entities} exact />
         <Route path={`/plugins/${pluginId}/:app_name/traits`} component={Traits} exact />
+        <Route path={`/plugins/${pluginId}/:app_name/responses`} component={Response} exact />
         <Route path={`/plugins/${pluginId}/:app_name/utterances`} component={Utterances} exact />
         <Route component={NotFound} />
       </Switch>

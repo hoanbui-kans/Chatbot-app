@@ -49,7 +49,7 @@ const SizeNav = () => {
     id: 'response',
     label: 'Mẫu câu trả lời',
     icon: <Discuss style={iconSize} />,
-    to: 'response'
+    to: 'responses'
   }
 ];
 

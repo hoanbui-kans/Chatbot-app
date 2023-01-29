@@ -52,13 +52,8 @@ export const updateResponse = async (id, data) => {
 
 export const deleteResponse = async (id) => {
     try {
-        return await request('/kanbot/response/', {
+        return await request(`/kanbot/response/${id}`, {
             method: "DELETE",
-            body: {
-                data: {
-                    id: id
-                }
-            }
         });
     } catch (error) {
         return false
