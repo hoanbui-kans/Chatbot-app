@@ -97,6 +97,15 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: 'DELETE',
+      path: '/conservation/messaging/:id',
+      handler: 'conservation.deteteMessageConservation',
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
     
   ]
 };

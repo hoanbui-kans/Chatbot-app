@@ -74,12 +74,8 @@ export const deleteConservation = async (id) => {
 
 export const clearConservation = async (conservation) => {
     try {
-        const response = await request(`/kanbot/conservation/messaging/?clear=${conservation}`, {
-            method: "POST",
-            body: {
-                message: message,
-                nodes: nodes
-            }
+        const response = await request(`/kanbot/conservation/messaging/${conservation}`, {
+            method: "DELETE",
         })
         return response;
     } catch (error) {

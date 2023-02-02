@@ -7,7 +7,6 @@ import { Pencil, Trash } from '@strapi/icons';
 import Highlighter from "react-highlight-words";
 
 const index = ({ intents, entities, isLoading, utteranceUpdate, setUtteranceUpdate, HandleUpdateUtterance }) => {
-  console.log(utteranceUpdate);
   const [message, setMessage] = useState(utteranceUpdate.message);
   const [intent, setIntent] = useState({
     id: utteranceUpdate.intent.id.toString(),
@@ -116,42 +115,41 @@ const index = ({ intents, entities, isLoading, utteranceUpdate, setUtteranceUpda
     const UpdateOptions = [];
 
     let indexOptions = 0;
-
-    searchWords.forEach(sw => {
-      const lw = sw.toLowerCase()
-      const indexInWord = textLow.indexOf(lw);
-      const start = indexInWord;
-      const end = indexInWord + sw.length;
-      let newOptions = options;
-
-      if(start != -1){
-        newOptions[indexOptions].keyword = {
-            ...newOptions[indexOptions].keyword,
+    if(Array.isArray(options) && options.length){
+      searchWords.forEach(sw => {
+        const lw = sw.toLowerCase()
+        const indexInWord = textLow.indexOf(lw);
+        const start = indexInWord;
+        const end = indexInWord + sw.length;
+        let newOptions = options;
+  
+        if(start != -1){
+          newOptions[indexOptions].keyword = {  
+              ...newOptions[indexOptions].keyword,
+              start: start,
+              end: end
+          }
+          chunks.push({
+            body: sw,
             start: start,
             end: end
-        }
-        chunks.push({
-          body: sw,
-          start: start,
-          end: end
-        });
-      } else {
-        newOptions[indexOptions].keyword = {
-            ...newOptions[indexOptions].keyword,
+          });
+        } else {
+          newOptions[indexOptions].keyword = {
+              ...newOptions[indexOptions].keyword,
+              start: 0,
+              end: 0
+          }
+          chunks.push({
+            body: sw,
             start: 0,
             end: 0
+          });
         }
-        chunks.push({
-          body: sw,
-          start: 0,
-          end: 0
-        });
-      }
-      setOptions(newOptions);
-      indexOptions++;
-    });
-
-    console.log('chunks', chunks)
+        setOptions(newOptions);
+        indexOptions++;
+      });
+    }
     return chunks;
   };
 

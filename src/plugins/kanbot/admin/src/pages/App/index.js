@@ -16,6 +16,7 @@ import Entities from '../Entities';
 import Traits from '../Traits';
 import Response from '../Response';
 import Utterances from '../Utterances';
+import DiagramEditor from '../Composer/DiagramEditor';
 import { Provider } from 'react-redux';
 import { store } from '../store';
 
@@ -26,6 +27,7 @@ const App = () => {
         <Route path={`/plugins/${pluginId}`} component={WitAi} exact />
         <Route path={`/plugins/${pluginId}/:app_name/intents`} component={Intents} exact />
         <Route path={`/plugins/${pluginId}/:app_name/intents/:intent_id/composer`} component={ConservationEditor} exact />
+        <Route path={`/plugins/${pluginId}/:app_name/intents/:intent_id/diagram-editor`} component={DiagramEditor} exact />
         <Route path={`/plugins/${pluginId}/:app_name/entities`} component={Entities} exact />
         <Route path={`/plugins/${pluginId}/:app_name/traits`} component={Traits} exact />
         <Route path={`/plugins/${pluginId}/:app_name/responses`} component={Response} exact />

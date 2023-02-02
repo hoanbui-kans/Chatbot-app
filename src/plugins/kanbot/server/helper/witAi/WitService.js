@@ -9,9 +9,9 @@ class WitService {
   }
 
   async query(text) {
+    
     const queryResult = await this.client.message(text);
     const { entities, intents } = queryResult;
-
     const extractedEntities = {};
     Object.keys(entities).forEach((key) => {
       if(entities[key][0].confidence > 0.98){
@@ -20,7 +20,6 @@ class WitService {
     });
 
     let extractedIntents = {};
-    console.log('queryResult', queryResult);
     if(Array.isArray(intents) && intents.length){
       extractedIntents = intents.find((val) => val.confidence)
     }

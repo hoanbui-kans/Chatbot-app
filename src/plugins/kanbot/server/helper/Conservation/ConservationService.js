@@ -6,9 +6,12 @@ class ConservationService {
       return context;
     }
 
-    const { intent, entities } = await (new WitService(WitToken)).query(text);
-
-    context.conservation.entities = { ...context.conservation.entities, ...entities };
+    const { intents, entities } = await (new WitService(WitToken)).query(text);
+    
+    context.conservation = {
+      intents: intents,
+      entities: { ...context.conservation.entities, ...entities }
+    }
     
     if(Object.keys(entities).length !== 0) {
       return ConservationService.intentQuery(context, nodes);
@@ -23,7 +26,7 @@ class ConservationService {
 
     const { conservation } = context;
     const { entities, flow } = conservation;
-
+    console.log('flow:', flow);
     let request = [];
 
     if(Object.keys(flow).length !== 0){
@@ -58,8 +61,6 @@ class ConservationService {
           return context;
         }
       } else {
-        context.conservation.followUp = `Cám ơn ${entities['wit$contact:contact']}, đơn hàng của bạn đã được đặt thành công!`;
-        context.conservation.complete = true;
         return context
       }
     }

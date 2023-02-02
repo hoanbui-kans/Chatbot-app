@@ -9,7 +9,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { findOneResponse } from '../../../api/Response';
 import { useParams } from 'react-router-dom';
-import { postMessageConservation } from '../../../api/Conservation';
+import { postMessageConservation, clearConservation } from '../../../api/Conservation';
 import { IconButton, Stack } from '@strapi/design-system';
 import { Cross, Rotate } from '@strapi/icons';
 
@@ -25,6 +25,12 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
     const { intent_id, app_name } = useParams();
 
     async function HandleNewMessage() {
+
+        const sender = "user_" + app_name + "_" + intent_id;
+        const recipient = "bot_" + app_name + "_" + intent_id;
+        
+        await clearConservation(`${sender}-${recipient}`);
+
         setChatState([]);
         setTyping(true);
         getDefaultResponse();

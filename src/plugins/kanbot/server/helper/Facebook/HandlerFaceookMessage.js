@@ -27,13 +27,13 @@ class HandlerFacebookMessage {
       const strapi = this.strapi;
       const context = await ConservationService.run(strapi, WitToken, WitService, messageText, nodes, redisContext);
       const { conservation } = context;
-      const { entities } = conservation;
+      const { entities, intents } = conservation;
 
       let text = '';
       if(!conservation.complete){
         text = conservation.followUp;
       } else {
-        const ReservationResult = ConservationService.intentProductQuery(context);
+        const ReservationResult = ConservationService.intentQuery(context);
         return ReservationResult;
       }
       return context;

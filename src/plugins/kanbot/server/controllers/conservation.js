@@ -141,6 +141,7 @@ module.exports = ({ strapi }) => ({
           context = JSON.parse(RedisContext);
         } else {
           context = {
+            intents: {},
             conservation: {
               entities: {},
               flow: {},
@@ -179,6 +180,21 @@ module.exports = ({ strapi }) => ({
       } catch (err) {
         ctx.throw(403, err);
       }
+  },
+
+  async deteteMessageConservation(ctx){
+    try {
+      // create client connect redis
+      const client = createClient(6379);
+      client.on('error', (err) => console.log('Redis Client Error', err));
+      await client.connect();
+      await client.del( ctx.params.id );
+      // closing redis
+      await client.disconnect(); 
+      return ctx.body = ctx.params.id;
+    } catch (error) {
+      ctx.throw(403, error)
+    }
   },
 
   async findManyConservation(ctx) {

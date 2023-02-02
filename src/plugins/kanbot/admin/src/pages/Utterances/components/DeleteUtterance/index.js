@@ -10,7 +10,7 @@ const index = ({ utteranceDelete, setUtteranceDelete, HandleDeleteUtterance }) =
   }
   
   return (
-    <Dialog onClose={() => setEntityDelete(false)} title="Xóa nội dung" isOpen={utteranceDelete}>
+    <Dialog onClose={() => setUtteranceDelete(false)} title="Xóa nội dung" isOpen={utteranceDelete}>
         <DialogBody icon={<ExclamationMarkCircle />}>
         <Stack spacing={2}>
             <Flex justifyContent="center">
@@ -19,7 +19,7 @@ const index = ({ utteranceDelete, setUtteranceDelete, HandleDeleteUtterance }) =
         </Stack>
         </DialogBody>
         <DialogFooter 
-            startAction={<Button onClick={() => setEntityDelete(false)} variant="tertiary">Hủy</Button>} 
+            startAction={<Button onClick={() => setUtteranceDelete(false)} variant="tertiary">Hủy</Button>} 
             endAction={<Button onClick={() => HandleDelete(utteranceDelete)} variant="danger-light" startIcon={<Trash />}> Xác nhận</Button>} />
     </Dialog>
   )
