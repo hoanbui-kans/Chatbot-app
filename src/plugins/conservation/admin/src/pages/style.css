@@ -46,3 +46,9 @@
 .hightlightTxt:nth-child(9){
     background: #00cec9;
 }
+
+.uploadBox > label {
+    width: 100%;
+    padding: 50px;
+    border: 1px dashed #d5d5d5;
+}

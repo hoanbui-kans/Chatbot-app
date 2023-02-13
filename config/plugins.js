@@ -1,25 +1,26 @@
 module.exports = {
-    'dashboard': {
+    ckeditor5: true,
+   dashboard: {
       enabled: true,
       resolve: './src/plugins/dashboard'
     },
-    'product': {
+    product: {
       enabled: true,
       resolve: './src/plugins/product'
     },
-    'order': {
+    order: {
       enabled: true,
       resolve: './src/plugins/order'
     },
-    'conservation': {
+    conservation: {
       enabled: true,
       resolve: './src/plugins/conservation'
     },
-    'kanbot': {
+    kanbot: {
       enabled: true,
       resolve: './src/plugins/kanbot'
     },
-    'connection': {
+    connection: {
       enabled: true,
       resolve: './src/plugins/connection'
     }

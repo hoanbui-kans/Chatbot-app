@@ -35,6 +35,8 @@ import { findManyEntity } from '../../api/Entity';
 import { useParams } from 'react-router-dom'; 
 
 import slugify from 'slugify';
+import AssetsManager from '../../components/AssetsManager';
+
 import '../style.css'
 
 const index = () => {
@@ -144,6 +146,8 @@ const index = () => {
                     as="h2" 
                 />
             <ContentLayout> 
+                
+                <AssetsManager />
                 {
                     intentCreate ?
                     <CreateIntent 

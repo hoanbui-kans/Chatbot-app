@@ -35,7 +35,8 @@ const index = ({ intents, setIntentCreate, setIntentUpdate, setIntentDelete }) =
                         </Thead>
                         <Tbody>
                             { 
-                                intents.map((entry, index) => <Tr key={entry.id}>
+                                intents.map((entry, index) => 
+                                <Tr key={entry.id}>
                                     <Td>
                                         <Typography textColor="neutral800">{index + 1}</Typography>
                                     </Td>
