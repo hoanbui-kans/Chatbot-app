@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_order_product_infos",
+  "info": {
+    "displayName": "product info"
+  },
+  "options": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::product.product"
+    },
+    "description": {
+      "type": "string"
+    },
+    "qty": {
+      "type": "integer",
+      "min": 1
+    },
+    "total": {
+      "type": "float"
+    }
+  }
+}

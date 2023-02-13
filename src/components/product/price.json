@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_product_prices",
+  "info": {
+    "displayName": "price"
+  },
+  "options": {},
+  "attributes": {
+    "regular_price": {
+      "type": "float"
+    },
+    "sale_price": {
+      "type": "float"
+    }
+  }
+}

@@ -8,7 +8,24 @@
     "kind": "plugin",
     "displayName": "Conservation"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^1.9.9",
+    "@reduxjs/toolkit": "^1.9.1",
+    "axios": "^1.2.3",
+    "fb-messenger-bot-api": "^4.4.0",
+    "node-wit": "^6.5.1",
+    "openai": "^3.1.0",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-highlight-words": "^0.18.0",
+    "react-icons": "^4.7.1",
+    "react-indiana-drag-scroll": "^2.2.0",
+    "react-redux": "^8.0.5",
+    "react-toastify": "^9.1.1",
+    "reactflow": "^11.4.0",
+    "redis": "^4.5.1",
+    "slugify": "^1.6.5",
+    "uuid": "^9.0.0"
+  },
   "author": {
     "name": "A Strapi developer"
   },

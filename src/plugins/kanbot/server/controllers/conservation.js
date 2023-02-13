@@ -6,6 +6,8 @@
 const { FacebookMessagingAPIClient, ValidateWebhook, FacebookMessageParser } = require("fb-messenger-bot-api");
 const { createClient } = require('redis');
 const HandlerFacebookMessage = require("../helper/Facebook/HandlerFaceookMessage");
+const { Configuration, OpenAIApi } = require("openai");
+
 
 module.exports = ({ strapi }) => ({
 
@@ -32,6 +34,7 @@ module.exports = ({ strapi }) => ({
 
         // create client connect redis
         const client = createClient(6379);
+        
         client.on('error', (err) => console.log('Redis Client Error', err));
 
         await client.connect();
@@ -41,6 +44,10 @@ module.exports = ({ strapi }) => ({
         const { sender, recipient, message } = incomingMessages[0];
         if(!message) {
           return ctx.body = 'no message'
+        }
+
+        ctx.body= {
+          message: message
         }
         const senderId = sender.id;
         const recipientId = recipient.id;
@@ -106,35 +113,58 @@ module.exports = ({ strapi }) => ({
 
   async incommingMessageSim(ctx){
     try {
-        const AppInfo = await strapi
-        .plugin('kanbot')
-        .service('witai')
-        .findOne(ctx.params.app_id);
-
-        const token = AppInfo.server_access_token;
-        if(!token) {
-          return ctx.body = { 
-            message: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ - " + ctx.params.app_id
-          }
-        }
+        const token = process.env.WITAI_BOT_CLIENT_TOKEN;
         // create client connect redis
         const client = createClient(6379);
+
         client.on('error', (err) => console.log('Redis Client Error', err));
  
         await client.connect();
 
         const Payload = ctx.request.body;
-        // get incoming message data
+
         const incomingMessages = FacebookMessageParser.parsePayload(Payload.message);
         const { sender, recipient, message } = incomingMessages[0]; 
-        if(!message) {
-          return ctx.body = 'no message'
+
+        const configuration = new Configuration({
+          apiKey: process.env.OPENAI_API_KEY,
+        });
+
+        const openai = new OpenAIApi(configuration);
+
+        const completion = await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: message.text,
+          temperature: 0.7,
+          max_tokens: 999,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        });
+
+        if(completion.data.choices){
+          return ctx.body = {
+            followUp: completion.data.choices[0].text
+          } 
+        } else {
+          return ctx.body = {
+            followUp: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
+          }
         }
+
+        return ctx.body = {
+          followUp: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
+        }
+
+        return ctx.body = {
+          message: response
+        }
+
         const senderId = sender.id;
         const recipientId = recipient.id;
         const conservationId = senderId + '-' + recipientId;
         // get avaiable conservation context
-        let context;
+        // let context;
         const RedisContext = await client.get(conservationId);
         
         if(RedisContext){
@@ -178,6 +208,7 @@ module.exports = ({ strapi }) => ({
         // fallback context
         return ctx.body = conservation;
       } catch (err) {
+        console.log(err);
         ctx.throw(403, err);
       }
   },

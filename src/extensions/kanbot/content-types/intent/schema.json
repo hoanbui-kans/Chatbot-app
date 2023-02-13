@@ -38,12 +38,6 @@
       "target": "plugin::kanbot.utterance",
       "mappedBy": "intent"
     },
-    "conservations": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::kanbot.conservation",
-      "mappedBy": "intent"
-    },
     "kanbot_witais": {
       "type": "relation",
       "relation": "manyToMany",

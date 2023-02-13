@@ -3,10 +3,6 @@ module.exports = {
       enabled: true,
       resolve: './src/plugins/dashboard'
     },
-    'conservation': {
-      enabled: true,
-      resolve: './src/plugins/conservation'
-    },
     'product': {
       enabled: true,
       resolve: './src/plugins/product'
@@ -14,6 +10,10 @@ module.exports = {
     'order': {
       enabled: true,
       resolve: './src/plugins/order'
+    },
+    'conservation': {
+      enabled: true,
+      resolve: './src/plugins/conservation'
     },
     'kanbot': {
       enabled: true,

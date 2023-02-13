@@ -1,3 +1,9 @@
 'use strict';
 
-module.exports = {};
+const product = require('./product');
+const attribute = require('./attribute');
+
+module.exports = {
+  product,
+  attribute
+};

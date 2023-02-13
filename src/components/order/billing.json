@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_order_billings",
+  "info": {
+    "displayName": "billing"
+  },
+  "options": {},
+  "attributes": {
+    "billing_name": {
+      "type": "string"
+    },
+    "billing_email": {
+      "type": "email"
+    },
+    "billing_phone": {
+      "type": "string"
+    },
+    "billing_detail_address": {
+      "type": "string"
+    },
+    "billing_ward": {
+      "type": "string"
+    },
+    "billing_district": {
+      "type": "string"
+    },
+    "billing_city": {
+      "type": "string"
+    }
+  }
+}

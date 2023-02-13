@@ -15,25 +15,41 @@
     "title": {
       "type": "string"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "title"
-    },
-    "total": {
-      "type": "biginteger",
-      "min": "0"
-    },
-    "billing_info": {
-      "displayName": "billing",
+    "product_info": {
+      "displayName": "product info",
       "type": "component",
       "repeatable": true,
-      "component": "order-info.billing"
+      "component": "order.product-info"
     },
-    "kanbot_witais": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::kanbot.witai",
-      "inversedBy": "orders"
+    "billing": {
+      "displayName": "billing",
+      "type": "component",
+      "repeatable": false,
+      "component": "order.billing"
+    },
+    "order_status": {
+      "type": "enumeration",
+      "enum": [
+        "Pending",
+        "Processing",
+        "Shipped",
+        "Delivered",
+        "Cancelled",
+        "On Hold",
+        "Returned",
+        "Refunded",
+        "Partially Shipped",
+        "Completed"
+      ]
+    },
+    "shipping": {
+      "displayName": "shipping",
+      "type": "component",
+      "repeatable": false,
+      "component": "order.shipping"
+    },
+    "recipent_id": {
+      "type": "uid"
     }
   }
 }

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_product_variants",
+  "info": {
+    "displayName": "variant",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "price": {
+      "type": "component",
+      "repeatable": false,
+      "component": "product.price"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}
