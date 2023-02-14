@@ -15,19 +15,24 @@ export const getFiles = async () => {
 }
 
 export const uploadFile = async (files) => {
-
-    const formData = new FormData();
-
-    Array.from(files).forEach((file, index) => {
-        formData.append(`file_${index}`, file);
+    console.log('files', files);
+    Array.from(files).forEach(async (file, index) => {
+        const formData = new FormData();
+        formData.append(`files`, file);
+        try {
+            const response = await request('/upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                body: formData
+            });
+            return response;
+    
+        } catch (error) {
+            console.log(error)
+        }
     });
-
-
-    const response = await request('/upload', {
-        method: 'POST',
-        body: formData
-    });
-    return response;
 }
 
 export const deleteFile = async (id) => {

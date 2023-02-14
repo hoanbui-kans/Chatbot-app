@@ -1,15 +1,19 @@
-import React, { useState, useEffect  } from 'react'
+import React, { useState, useEffect, useRef  } from 'react'
 import {  Stack, Typography, Flex } from '@strapi/design-system';
 import { FileUploader } from 'react-drag-drop-files';
+import { request } from '@strapi/helper-plugin';
+import axios from 'axios';
 
 const index = ({ HandleUploadAsset }) => {
+
   const fileTypes = ["JPG", "PNG", "GIF"];
   const [files, setFiles] = useState(null);
+  const formRef = useRef(null);
 
   const handleChange = async (files) => {
+    setFiles(files);
     await HandleUploadAsset(files);
   };
-
 
   return (
    <>
