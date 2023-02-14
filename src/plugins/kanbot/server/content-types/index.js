@@ -1,23 +1,15 @@
 'use strict';
 
-const witai = require('./witai');
-const intent = require('./intent');
-const entity = require('./entity');
-const trait = require('./trait');
+const bot = require('./bot');
+const botsetting = require('./botsetting');
 const utterance = require('./utterance');
-const role = require('./role');
 const response = require('./response');
 const conservation = require('./conservation');
-const botsetting = require('./botsetting');
 
 module.exports = {
-  witai,
-  intent,
-  entity,
-  trait,
+  botsetting,
   utterance,
-  role,
   response, 
   conservation,
-  botsetting
+  bot
 }

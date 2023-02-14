@@ -12,10 +12,10 @@ module.exports = {
       enabled: true,
       resolve: './src/plugins/order'
     },
-    conservation: {
-      enabled: true,
-      resolve: './src/plugins/conservation'
-    },
+    // conservation: {
+    //   enabled: true,
+    //   resolve: './src/plugins/conservation'
+    // },
     kanbot: {
       enabled: true,
       resolve: './src/plugins/kanbot'
@@ -23,5 +23,14 @@ module.exports = {
     connection: {
       enabled: true,
       resolve: './src/plugins/connection'
-    }
+    },
+    upload: {
+      config: {
+        providerOptions: {
+          localServer: {
+            maxage: 300000
+          },
+        },
+      },
+    },
   }

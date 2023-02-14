@@ -1,11 +1,9 @@
 import React, { memo, useState, useEffect } from 'react'
-import { ChatContainer, ConversationHeader, Avatar, TypingIndicator, MessageSeparator, Message} from '@chatscope/chat-ui-kit-react'
-import { SendButton, InputToolbox, MessageInput, MessageList  } from '@chatscope/chat-ui-kit-react'
+import { ChatContainer, ConversationHeader, TypingIndicator, Message} from '@chatscope/chat-ui-kit-react'
+import { MessageInput, MessageList } from '@chatscope/chat-ui-kit-react'
 
 import { initialNotes } from '../../slice/conservation-builder-slice';
 import { v4 as uuidv4 } from 'uuid';
-
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { findOneResponse } from '../../../api/Response';
@@ -13,6 +11,8 @@ import { useParams } from 'react-router-dom';
 import { postMessageConservation, clearConservation } from '../../../api/Conservation';
 import { IconButton, Stack } from '@strapi/design-system';
 import { Cross, Rotate } from '@strapi/icons';
+
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 const ChatUi = ({ appInfo, title, setSimChat }) => {
 

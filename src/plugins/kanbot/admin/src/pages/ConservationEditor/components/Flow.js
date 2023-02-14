@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // Node Template
 import DefaultNode from "./nodes/DefaultNode";
 import ResponseNode from "./nodes/ResponseNode";
@@ -7,11 +7,12 @@ import { Box, Stack, Button, Accordion, AccordionContent, AccordionToggle, IconB
 
 import { useDispatch, useSelector } from "react-redux";
 import { initialNotes } from "../../slice/conservation-builder-slice";
-import { Pencil, Trash, Duplicate, Plus, ArrowDown, ArrowUp} from '@strapi/icons'
+import { Pencil, Trash, Plus, ArrowDown, ArrowUp} from '@strapi/icons'
 import { setEditorState, editorState, updateNode } from "../../slice/conservation-builder-slice";
 import AddNodeModal from '../components/AddNodeModal'
 import EditorPanel from './EditorPanel';
 import { useParams } from 'react-router-dom';
+import ResponseEditor from "./ResponseEditor";
 
 import "../style.css";
  
@@ -119,11 +120,14 @@ const Flow = () => {
                   </Box>
               </Stack>
           </Box>
+
+          <ResponseEditor />
           { addNode ? <AddNodeModal setAddNode={setAddNode}/> : ""}
           { editNode ? 
               <EditorPanel
                 stateEditor={editNode} 
                 HandleEditNode={HandleEditNode}/> :"" }
+
         </>
       )
 } 

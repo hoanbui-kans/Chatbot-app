@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
-import { DefaultTemplate } from "../Composer/components/models/DiagramModel";
+import { DefaultTemplate } from "../ConservationEditor/components/models/DiagramModel";
 
 const initialState = {
   nodes: [

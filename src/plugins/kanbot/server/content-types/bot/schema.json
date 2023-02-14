@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "bots",
+  "info": {
+    "singularName": "bot",
+    "pluralName": "bots",
+    "displayName": "bot"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}

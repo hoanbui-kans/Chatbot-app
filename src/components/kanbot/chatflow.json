@@ -6,11 +6,6 @@
   },
   "options": {},
   "attributes": {
-    "entity": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::kanbot.entity"
-    },
     "success_response": {
       "type": "relation",
       "relation": "oneToOne",

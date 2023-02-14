@@ -4,11 +4,27 @@ import pluginId from './pluginId';
 import Initializer from './components/Initializer';
 import PluginIcon from './components/PluginIcon';
 import Cog from '@strapi/icons/Cog';
+import Message from '@strapi/icons/Message';
 
 const name = pluginPkg.strapi.name;
 
 export default {
   register(app) {
+
+    app.addMenuLink({
+      to: `/plugins/conservation`,
+      icon: Message,
+      intlLabel: {
+        id: `conservation`,
+        defaultMessage: 'Cuộc hội thoại',
+      },
+      Component: async () => {
+        const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
+        return component;
+      },
+      permissions: [],
+    });
+
     app.addMenuLink({
       to: `/plugins/${pluginId}`,
       icon: Cog,
@@ -21,14 +37,9 @@ export default {
 
         return component;
       },
-      permissions: [
-        // Uncomment to set the permissions of the plugin here
-        // {
-        //   action: '', // the action name should be plugin::plugin-name.actionType
-        //   subject: null,
-        // },
-      ],
+      permissions: [],
     });
+
     app.registerPlugin({
       id: pluginId,
       initializer: Initializer,

@@ -14,30 +14,6 @@
   "attributes": {
     "message": {
       "type": "text"
-    },
-    "intent": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::kanbot.intent",
-      "inversedBy": "utterances"
-    },
-    "entities": {
-      "displayName": "entities",
-      "type": "component",
-      "repeatable": true,
-      "component": "kanbot.entities"
-    },
-    "traits": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::kanbot.trait",
-      "inversedBy": "utterances"
-    },
-    "kanbot_witais": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::kanbot.witai",
-      "inversedBy": "utterances"
     }
   }
 }

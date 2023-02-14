@@ -32,12 +32,6 @@
         "kanbot.templates"
       ],
       "max": 1
-    },
-    "kanbot_witais": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::kanbot.witai",
-      "inversedBy": "responses"
     }
   }
 }

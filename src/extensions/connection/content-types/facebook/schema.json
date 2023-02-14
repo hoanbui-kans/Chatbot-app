@@ -27,12 +27,6 @@
     },
     "page_token": {
       "type": "string"
-    },
-    "kanbot_witai": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::kanbot.witai",
-      "inversedBy": "facebooks"
     }
   }
 }

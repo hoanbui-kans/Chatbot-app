@@ -30,11 +30,11 @@
       "relation": "oneToOne",
       "target": "plugin::kanbot.response"
     },
-    "kanbot_witais": {
+    "bot": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::kanbot.witai",
-      "inversedBy": "conservations"
+      "relation": "manyToOne",
+      "target": "plugin::kanbot.bot",
+      "inversedBy": "kanbot_conservations"
     }
   }
 }

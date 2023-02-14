@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bots",
+  "info": {
+    "singularName": "bot",
+    "pluralName": "bots",
+    "displayName": "bot",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "kanbot_conservations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::kanbot.conservation",
+      "mappedBy": "bot"
+    }
+  }
+}

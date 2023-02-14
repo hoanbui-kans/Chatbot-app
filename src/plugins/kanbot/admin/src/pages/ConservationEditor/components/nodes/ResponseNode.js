@@ -1,13 +1,16 @@
-import React from 'react'
-import { Box, Typography, Stack, Status  } from '@strapi/design-system';
+import React, { useState } from 'react'
+import { Box, Typography, Stack, Status, Select, Option  } from '@strapi/design-system';
 import { useDispatch } from 'react-redux';
 import { removeNode } from '../../../slice/diagram-builder-slice';
 import { setStatePanel, setEditorState } from '../../../slice/diagram-panelEditor-slice';
 import { TbArrowRampRight2 } from 'react-icons/tb'
 import { Drag } from '@strapi/icons';
+import { Entities } from '../models/EntitiesModel';
 
 const ResponseNode = ({node}) => {
+
   const { id, data } = node;
+  const [entity, setEntity] = useState("");
   const dispatch = useDispatch();
 
   const HandleOpenUpdateNode = () => {
@@ -19,11 +22,20 @@ const ResponseNode = ({node}) => {
     dispatch(removeNode(id));
   }
 
+  const handleChangeEntity = (entity) => {
+    setEntity(entity)
+  }
+
   return (
       <Box className="x_node_container">
         <Stack spacing={3}>
             <Stack spacing={3} className="x_node_content">
                 <Stack spacing={1} className="x_node_case">
+                  <Select value={entity} onChange={handleChangeEntity} label="Kiểu dữ liệu" placeholder="Lựa chọn kiểu dữ liệu xác thực">
+                    {
+                      Entities.map((val) => <Option key={val.id} value={val.name}>{val.label}</Option>)
+                    }
+                  </Select>
                 {
                     Array.isArray(data.response) 
                     && data.response.length 
