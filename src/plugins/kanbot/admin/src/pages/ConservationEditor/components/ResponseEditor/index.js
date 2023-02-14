@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { 
     Typography, Button, Box, Stack, 
     ModalLayout, ModalHeader, ModalBody,
-    TextInput, IconButton, AccordionGroup, Accordion,    
-    AccordionToggle, AccordionContent, Select, Option, Textarea   
+    IconButton, AccordionGroup, Accordion,    
+    AccordionToggle, AccordionContent, Select, 
+    Option, Textarea, ModalFooter, Status   
 } from '@strapi/design-system';
 
 import { Pencil, Trash } from '@strapi/icons';
@@ -12,47 +13,26 @@ import { BillingField, ShippingField, ProductField } from '../models/OrderModel'
 import { ProductModel } from '../models/ProductModel';
 
 import Highlighter from "react-highlight-words";
+import { findAll } from "highlight-words-core";
 
-const index = ({ intents }) => {
+const index = ({ updateNode }) => {
 
   const [message, setMessage] = useState('');
 
   const [options, setOptions] = useState([]); 
   const [highlightText, setHigtlightText] = useState([]);
 
-  const keywordSchema = {
-    entity: {
-      id: "",
-      title: "",
-      name: ""
-    },
-    keyword: {
-      start: "",
-      end: "",
-      body: ""
-    },
-  };
+  const HandleAddKeyToMessage = (e) => {
+    setMessage((message) => message + ' ' + e)
+  }
 
-
-  const HandleUpdateKeyword = (index, option) => {
-    let newOptions = [];
-    options.map((val, _i) => {
-      if(index == _i){
-        newOptions.push(option)
-      } else {
-        newOptions.push(val)
-      }
-    });
-    setOptions(newOptions);
+  const HandleUpdateKeyword = (e) => {
+    setOptions(e);
   }
 
   const HandleDeleteKeyword = (index) => {
     let newOption = options.filter((val, _i) => _i != index);
     setOptions(newOption);
-  }
-
-  const HandleAddKeyWords = () => {
-    setOptions((options) => [...options, keywordSchema]);
   }
 
   const [expandedID, setExpandedID] = useState(null);
@@ -65,68 +45,18 @@ const index = ({ intents }) => {
     let Keywords = [];
     if(Array.isArray(options) && options.length){
       options.map((val) => {
-        Keywords.push(val.keyword.body);
+        Keywords.push(`{${val}}`);
       })
     }
     setHigtlightText(Keywords);
-    console.log(options);
   }, [options])
-
-  // Complex example
-  const findChunksAtBeginningOfWords = ({
-    autoEscape,
-    caseSensitive,
-    sanitize,
-    searchWords,
-    textToHighlight
-  }) => {
-    const chunks = [];
-    const textLow = textToHighlight.toLowerCase();
-    // Add chunks for every searchWord
-    const UpdateOptions = [];
-
-    let indexOptions = 0;
-
-    searchWords.forEach(sw => {
-      const lw = sw.toLowerCase()
-      const indexInWord = textLow.indexOf(lw);
-      const start = indexInWord;
-      const end = indexInWord + sw.length;
-      let newOptions = options;
-
-      if(start != -1){
-        newOptions[indexOptions].keyword = {
-            ...newOptions[indexOptions].keyword,
-            start: start,
-            end: end
-        }
-        chunks.push({
-          body: sw,
-          start: start,
-          end: end
-        });
-      } else {
-        newOptions[indexOptions].keyword = {
-            ...newOptions[indexOptions].keyword,
-            start: 0,
-            end: 0
-        }
-        chunks.push({
-          body: sw,
-          start: 0,
-          end: 0
-        });
-      }
-      setOptions(newOptions);
-      indexOptions++;
-    });
-    return chunks;
-  };
 
   const [type, setType] = useState('ecommerce');
 
   return (
     <>
+      {
+        updateNode &&
         <ModalLayout labelledBy="title">
                     <ModalHeader>
                       <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">
@@ -139,11 +69,10 @@ const index = ({ intents }) => {
                         message !== '' ?    
                         <Box borderColor="neutral200" hasRadius background='neutral100' padding={3} spacing={3}>             
                             <Highlighter
-                              highlightClassName="hightlightTxt"
-                              searchWords={highlightText}
-                              autoEscape={true}
-                              textToHighlight={message}
-                              findChunks={findChunksAtBeginningOfWords}
+                                highlightClassName="hightlightTxt"
+                                searchWords={options.map((val) => `{${val}}`)}
+                                autoEscape={false}
+                                textToHighlight={message}
                             />
                         </Box>
                         : ""
@@ -157,56 +86,58 @@ const index = ({ intents }) => {
                         value={message} />
                     </Stack>
                     <Stack spacing={3}>
-                    {
-                        Array.isArray(options) && options.length ?
-                          <AccordionGroup>
+                        <Select label="Dữ liệu đầu vào">
+                            <Option>Sản phẩm</Option>
+                            <Option>Dịch vụ</Option>
+                            <Option>Thông tin đơn hàng</Option>
+                        </Select>
+                        {
+                          Array.isArray(options) && options.length ?
+                          <Stack horizontal spacing={1}>
                             {
                               options.map((val, index) => {
                                 return(
-                                  <Accordion expanded={expandedID === `acc-${index}`} onToggle={handleToggle(`acc-${index}`)} id={`acc-${index}`} size="S">
-                                  <AccordionToggle 
-                                        action={
-                                        <Stack horizontal spacing={2}>
-                                          <IconButton onClick={handleToggle(`acc-${index}`)} label="Chỉnh sửa" icon={<Pencil />} />
-                                          <IconButton onClick={() => HandleDeleteKeyword(index)} label="Xóa" icon={<Trash />} />
-                                        </Stack>
-                                        } 
-                                        title={`{${options[index].keyword.body ? options[index].keyword.body : "Từ khóa"}}`} 
-                                        togglePosition="left" 
-                                      />
-                                      <AccordionContent>
-                                        <Stack padding={3} spacing={3}>
-                                            {
-                                                type == 'ecommerce' ?
-                                                    <Select 
-                                                        label="Chọn dữ liệu" 
-                                                        value={val.keyword.body}
-                                                        onChange={(e) => HandleUpdateKeyword(index, {...val, keyword: { ...val.keyword, body: e}})}>
-                                                        {
-                                                            ProductModel.map((_val, _index) => {
-                                                                return(
-                                                                    <Option key={_index} value={_val.name}>{_val.label}</Option>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Select>
-                                                    : ""
-                                            }
-                                        </Stack>
-                                      </AccordionContent>
-                                </Accordion>
+                                  <Button 
+                                    size="S" 
+                                    key={index} 
+                                    padding={3} 
+                                    variant="secondary"
+                                    onClick={() => HandleAddKeyToMessage(`{${val}}`)}
+                                    >
+                                    {`{${val}}`}
+                                  </Button>
                                 )
                               })
                             }
-                        </AccordionGroup > : ""
-                      }
-                      <Box>
-                        <Button variant="secondary" onClick={HandleAddKeyWords}>+ Thêm nhận dạng</Button>
-                      </Box>
+                          </Stack> : ""
+                        }
+                        {
+                            type == 'ecommerce' ?
+                                <Select 
+                                    label="Chọn dữ liệu" 
+                                    value={options}
+                                    onClear={() => setOptions([])}
+                                    multi withTags
+                                    onChange={(e) => HandleUpdateKeyword(e)}>
+                                    {
+                                        ProductModel.map((_val, _index) => {
+                                            return(
+                                                <Option key={_index} value={_val.name}>{_val.label}</Option>
+                                            )
+                                        })
+                                    }
+                            </Select>
+                            : ""
+                        }
                     </Stack>
                 </Stack>
             </ModalBody>
+            <ModalFooter 
+              startActions={<Button variant="tertiary">Hủy</Button>} 
+              endActions={<Button>Cập nhật</Button>} 
+            />
         </ModalLayout>
+      }
     </>
   )
 }

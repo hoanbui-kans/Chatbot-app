@@ -11,6 +11,12 @@
     background: white;
 }
 
+.hightlightTxt {
+    font-size: 80%;
+    padding: 2px 4px;
+    border-radius: 0.35rem;
+}
+
 .hightlightTxt:nth-child(1){
     background: #74b9ff;
 }
