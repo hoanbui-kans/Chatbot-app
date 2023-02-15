@@ -18,9 +18,9 @@ class HandlerFacebookMessage {
 
   async processMessage () {
     try {
+
       const messageText = this.localizeMessage(this.message);
       const redisContext = this.context;
-
       const context = await ConservationService.run(WitService, messageText, redisContext);
       const { conservation } = context;
       const { entities } = conservation;
@@ -34,7 +34,6 @@ class HandlerFacebookMessage {
       }
       return context;
     } catch (error) {
-      console.log('error', error);
       return null
     }
   }

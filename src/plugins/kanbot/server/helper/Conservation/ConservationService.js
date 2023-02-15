@@ -3,12 +3,38 @@ const OpenAiService = require('../OpenAi/OpenAiService');
 class ConservationService {
 
   static async run(WitService, text, context){
+
+    const OpenAi = new OpenAiService();
+
     if(!text){
       context.conservation.followUp = 'Hey back!';
       return context;
     }
+
     const { intents, entities } = await (new WitService()).query(text);
-    context.conservation = {
+
+    if(entities){
+      const finder = Object.keys(entities);
+
+      if(Array.isArray(finder) && finder.length){
+        let resonse = ''
+        switch((finder[0])){
+            case 'greeting:greeting': 
+              resonse = await OpenAi.completion(`Hãy chào khách hàng với tư cách là nhân viên tư vấn trực tuyến bằng trí tuệ nhân tạo AI tạo bởi Kan solution cho khách hàng`);
+              context.conservation.followUp = resonse;
+              return context
+            break;
+            case 'wit$search_query:search_query': 
+              resonse = await OpenAi.completion(`Hãy thông báo kết quả truy vấn: ${text} của khách hàng bằng kết quả không có gì cho khách hàng`);
+              context.conservation.followUp = resonse;
+              return context
+            break; 
+            default: 
+        }
+      }
+    }
+
+    context.conservation = {  
       intents: intents,
       entities: { ...context.conservation.entities, ...entities }
     }
@@ -16,8 +42,6 @@ class ConservationService {
       return ConservationService.intentQuery(context);
     }
     
-    const OpenAi = new OpenAiService();
-
     const completion = await OpenAi.completion(`Hãy thông báo cho khách hàng rằng họ cần hỏi thông tin về sản phẩm và dịch vụ, tin nhắn của họ ${text} là khó hiểu`);
     context.conservation.followUp = completion;
 

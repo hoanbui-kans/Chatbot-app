@@ -12,6 +12,7 @@
     "@chatscope/chat-ui-kit-react": "^1.9.9",
     "@reduxjs/toolkit": "^1.9.1",
     "axios": "^1.2.3",
+    "chatgpt": "^4.4.0",
     "fb-messenger-bot-api": "^4.4.0",
     "html-react-parser": "^3.0.9",
     "node-wit": "^6.5.1",

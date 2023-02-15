@@ -147,6 +147,7 @@ module.exports = ({ strapi }) => ({
             conservation: {
               entities: {},
               flow: ConservatioFlow.flow,
+              messages: [message],
               followUp: '',
               complete: false,
               next: true,
