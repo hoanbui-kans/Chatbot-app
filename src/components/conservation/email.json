@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_conservation_emails",
+  "info": {
+    "displayName": "email",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "message": {
+      "type": "text"
+    },
+    "success": {
+      "type": "text"
+    },
+    "error": {
+      "type": "text"
+    }
+  }
+}

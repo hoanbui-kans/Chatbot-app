@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_conservation_products",
+  "info": {
+    "displayName": "product"
+  },
+  "options": {},
+  "attributes": {
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::product.product"
+    },
+    "message": {
+      "type": "text"
+    }
+  }
+}

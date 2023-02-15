@@ -244,20 +244,12 @@ button#onboarding {
 }
 
 .x_node_case_item{
-    padding: 10px;
+    padding: 5px 7px;
     border: 1px solid var(--x-border-color);
     position: relative;
     border-radius: 4px;
     margin-bottom: 10px;
-    font-size: 12px;
     display: block;
-}
-
-.x_node_case_item span{
-    display: flex;
-    align-items: center;
-    column-gap: 10px;
-    width: 100%;
 }
 
 .x_diagram_components_title{

@@ -10,7 +10,6 @@ const name = pluginPkg.strapi.name;
 
 export default {
   register(app) {
-
     app.addMenuLink({
       to: `/plugins/conservation`,
       icon: Message,

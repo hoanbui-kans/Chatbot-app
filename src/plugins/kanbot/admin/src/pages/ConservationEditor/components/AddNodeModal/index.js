@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Puzzle, List, Picture, Store, Slideshow, ShoppingCart, Folder, Information, Magic, Clock, Star, Phone } from '@strapi/icons';
+
 import ListNode from '../nodes/ListNode';
 import PictureNode from '../nodes/PictureNode';
 import StoreNode from '../nodes/StoreNode';
@@ -27,7 +28,7 @@ import ServiceNode from '../nodes/ServiceNode';
 import DetailProductNode from '../nodes/DetailProductNode';
 import OrderInfoNode from '../nodes/OrderInfoNode';
 import InforNode from '../nodes/InforNode';
-import CreateOrderNode from '../nodes/CreateOrderNode';
+import OrderCreateNode from '../nodes/OrderCreateNode';
 import WaitingNode from '../nodes/WaitingNode';
 import RatingNode from '../nodes/RatingNode';
 import PuzzleNode from '../nodes/PuzzleNode';
@@ -94,7 +95,7 @@ const Node = [
         description: 'Tạo đơn hàng trên dữ liệu khách hàng đã đề cập trước đó',
         icon: Magic,
         color: 'danger-light',
-        template: CreateOrderNode
+        template: OrderCreateNode
     },
     {
         name: 'Đợi',

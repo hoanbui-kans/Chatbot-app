@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { postMessageConservation, clearConservation } from '../../../api/Conservation';
 import { IconButton, Stack } from '@strapi/design-system';
 import { Cross, Rotate } from '@strapi/icons';
+import parser from 'html-react-parser';
 
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
@@ -18,6 +19,7 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
 
     const dispatch = useDispatch();
 
+    const [value, setValue ] = useState(""); 
     const [typing, setTyping] = useState(false);
     const [chatState, setChatState] = useState([]);
     const [conservationState, setConservationState] = useState([]);
@@ -25,6 +27,8 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
     const nodes = useSelector(initialNotes);
 
     const { intent_id, app_name } = useParams();
+
+    const cleanedResponse = (response) => response.replace(/\n/g, " ");
 
     async function HandleNewMessage() {
 
@@ -51,11 +55,10 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
     }
 
     async function HandleAddMessage(message) {
-
+        setValue("");
         setTyping(true);
-
         setChatState((chatState) => [...chatState, {
-            message: message,
+            message: parser(cleanedResponse(message)),
             sentTime: new Date(),
             sender: "user",
             direction: "outgoing",
@@ -87,26 +90,34 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
                 }
             ]
         };
-        await HandleSendMessage(messageSent, nodes, appInfo);
+        await HandleSendMessage(messageSent);
         setTyping(false);
     }
 
-    async function HandleSendMessage (message, nodes, appInfo) {
-        const response = await postMessageConservation(message, nodes, appInfo);
+    async function HandleSendMessage (message) {
 
-        setChatState((chatState) => [...chatState, {
-            message: response.followUp,
-            sentTime: new Date(),
-            sender: "user",
-            direction: "ongoing",
-            position: "last",
-            type: "text"
-        }]);
+        const response = await postMessageConservation(message);
 
-        if(response.next){ 
-            setTyping(true);
-            await HandleSendMessage(message, nodes, appInfo);
+        if(response){
+            const { message, next } = response;
+
+            if(message){
+                setChatState((chatState) => [...chatState, {
+                    message: parser(message),
+                    sentTime: new Date(),
+                    sender: "user",
+                    direction: "ongoing",
+                    position: "last",
+                    type: "text"
+                }]);
+            }
+    
+            if(response.next){ 
+                setTyping(true);
+                await HandleSendMessage(message);
+            }
         }
+
     }
 
     async function HandleRefreshConservation(){
@@ -126,35 +137,46 @@ const ChatUi = ({ appInfo, title, setSimChat }) => {
         <div style={{
             height: "100%"
             }}>
-            <ChatContainer>
-                <ConversationHeader>
-                    <ConversationHeader.Content userName={title} info="Đang hoạt động" />   
-                    <ConversationHeader.Actions>
-                        <Stack horizontal spacing={2}>
-                            <IconButton 
-                                onClick={HandleRefreshConservation}
-                                icon={<Rotate />} label="Làm mới" />
-                            <IconButton 
-                                icon={<Cross />} 
-                                label="Đóng"  
-                                onClick={() => setSimChat(false)}
-                            />
-                        </Stack>
-                    </ConversationHeader.Actions>          
-                </ConversationHeader> 
-                <MessageList typingIndicator={ typing ? <TypingIndicator content={`${title} đang nhập`} /> : false}>
-                        {
-                            Array.isArray(chatState) 
-                            && chatState.length 
-                            ? chatState.map((val, index) => {
-                                return(
-                                    <Message key={index} model={val} />
-                                )
-                            }) : ""
-                        }
-                </MessageList>
-                <MessageInput onSend={HandleAddMessage}  placeholder="Nhập nội dung của bạn" sendButton={true} attachButton={false} />
-            </ChatContainer>
+                <ChatContainer>
+                    <ConversationHeader>
+                        <ConversationHeader.Content userName={title} info="Đang hoạt động" />   
+                        <ConversationHeader.Actions>
+                            <Stack horizontal spacing={2}>
+                                <IconButton 
+                                    onClick={HandleRefreshConservation}
+                                    icon={<Rotate />} label="Làm mới" />
+                                <IconButton 
+                                    icon={<Cross />} 
+                                    label="Đóng"  
+                                    onClick={() => setSimChat(false)}
+                                />
+                            </Stack>
+                        </ConversationHeader.Actions>          
+                    </ConversationHeader> 
+                    <MessageList typingIndicator={ typing ? <TypingIndicator content={`${title} đang nhập`} /> : false}>
+                            {
+                                Array.isArray(chatState) 
+                                && chatState.length 
+                                ? chatState.map((val, index) => {
+                                    return(
+                                        <Message key={index} model={val} />
+                                    )
+                                }) : ""
+                            }
+                    </MessageList>
+                    <MessageInput 
+                        onSend={HandleAddMessage}  
+                        placeholder="Nhập nội dung của bạn" 
+                        sendButton={true} 
+                        attachButton={false} 
+                        onChange={(val) => setValue(val)} 
+                        value={value}
+                        onPaste={(evt) => {
+                            evt.preventDefault();
+                            setValue(evt.clipboardData.getData("text"));
+                        }}
+                    />
+                </ChatContainer>
             </div>
         </>
   )

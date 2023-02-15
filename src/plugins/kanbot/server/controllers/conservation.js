@@ -6,8 +6,6 @@
 const { FacebookMessagingAPIClient, ValidateWebhook, FacebookMessageParser } = require("fb-messenger-bot-api");
 const { createClient } = require('redis');
 const HandlerFacebookMessage = require("../helper/Facebook/HandlerFaceookMessage");
-const { Configuration, OpenAIApi } = require("openai");
-
 
 module.exports = ({ strapi }) => ({
 
@@ -42,6 +40,7 @@ module.exports = ({ strapi }) => ({
         // get incoming message data
         const incomingMessages = FacebookMessageParser.parsePayload(ctx.request.body);
         const { sender, recipient, message } = incomingMessages[0];
+
         if(!message) {
           return ctx.body = 'no message'
         }
@@ -52,11 +51,12 @@ module.exports = ({ strapi }) => ({
         const senderId = sender.id;
         const recipientId = recipient.id;
         const conservationId = senderId + '-' + recipientId;
+
         // get page access token
         const { page_token } = await strapi
-        .plugin('connection')
-        .service('facebook')
-        .findOneByPageId(recipientId);
+              .plugin('connection')
+              .service('facebook')
+              .findOneByPageId(recipientId);
 
         // get avaiable conservation context
         let context;
@@ -117,56 +117,28 @@ module.exports = ({ strapi }) => ({
         // create client connect redis
         const client = createClient(6379);
 
-        client.on('error', (err) => console.log('Redis Client Error', err));
+        client.on('error', (err) => {
+          ctx.throw(err);
+        });
  
         await client.connect();
+
+        const ConservatioFlow = await strapi.plugin('kanbot').service('conservation').findOne(ctx.params.id);
 
         const Payload = ctx.request.body;
 
         const incomingMessages = FacebookMessageParser.parsePayload(Payload.message);
+
         const { sender, recipient, message } = incomingMessages[0]; 
-
-        const configuration = new Configuration({
-          apiKey: process.env.OPENAI_API_KEY,
-        });
-
-        const openai = new OpenAIApi(configuration);
-
-        const completion = await openai.createCompletion({
-          model: "text-davinci-003",
-          prompt: message.text,
-          temperature: 0.7,
-          max_tokens: 999,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0,
-        });
-
-        if(completion.data.choices){
-          return ctx.body = {
-            followUp: completion.data.choices[0].text
-          } 
-        } else {
-          return ctx.body = {
-            followUp: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
-          }
-        }
-
-        return ctx.body = {
-          followUp: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
-        }
-
-        return ctx.body = {
-          message: response
-        }
 
         const senderId = sender.id;
         const recipientId = recipient.id;
         const conservationId = senderId + '-' + recipientId;
-        // get avaiable conservation context
+
         // let context;
         const RedisContext = await client.get(conservationId);
-        
+        let context;
+
         if(RedisContext){
           context = JSON.parse(RedisContext);
         } else {
@@ -174,7 +146,7 @@ module.exports = ({ strapi }) => ({
             intents: {},
             conservation: {
               entities: {},
-              flow: {},
+              flow: ConservatioFlow.flow,
               followUp: '',
               complete: false,
               next: true,
@@ -183,15 +155,16 @@ module.exports = ({ strapi }) => ({
           }
         }
 
-        // create facebook message convervation handler
-        const nodes = Payload.nodes;
-        const handerFbMessage = new HandlerFacebookMessage(strapi, token, senderId, recipientId, context, nodes, message);
+        const handerFbMessage = new HandlerFacebookMessage(message, context);
+
         const responseContext = await handerFbMessage.responseMessage();
+
         if(!responseContext){
           return ctx.body = {
             message: "Đã có lỗi không mong muốn xảy ra, xin liên hệ với quản trị viên để được hỗ trợ"
           }
         }
+
         const { conservation } = responseContext;
 
         let text = conservation.followUp;;
@@ -203,12 +176,13 @@ module.exports = ({ strapi }) => ({
           await client.del( conservationId );
         }
       
-        // closing redis
         await client.disconnect(); 
-        // fallback context
-        return ctx.body = conservation;
+        
+        return ctx.body = {
+          message: text
+        };
+
       } catch (err) {
-        console.log(err);
         ctx.throw(403, err);
       }
   },

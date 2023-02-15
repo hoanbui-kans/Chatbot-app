@@ -6,7 +6,8 @@ const initialState = {
   nodes: [
     DefaultTemplate(uuidv4()) 
   ],
-  editorState: false,
+  editorState: null,
+  editorMessage: null
 };
 
 const ConservationBuilder = createSlice({  
@@ -50,6 +51,27 @@ const ConservationBuilder = createSlice({
       setEditorState: (state, action) => {
         state.editorState = action.payload
       },
+
+      setEditorMessage: (state, action) => {
+        state.editorMessage = action.payload;
+      },
+      
+      updateEditorMessage: (state, action) => {
+        if(action.payload) {
+          const CurrentNodes = state.nodes;
+          let newNodes = [];
+          CurrentNodes.map((node) => {
+            let NodeData = {...node}
+            if(node.id == action.payload.id){ 
+              NodeData.data = action.payload.data;
+            }
+            newNodes.push(NodeData);
+          });
+
+          state.nodes = newNodes;
+        }
+      }
+
     },
 })
 
@@ -58,10 +80,12 @@ export const {
   updateNode, 
   updateNodeData,
   removeNode, 
-  setEditorState
+  setEditorState,
+  setEditorMessage
 } = ConservationBuilder.actions;
 
 export const initialNotes = (state) => state.conservation.nodes;
 export const editorState = (state) => state.conservation.editorState;
+export const editorMessage = (state) => state.conservation.editorMessage;
 
 export default ConservationBuilder.reducer;

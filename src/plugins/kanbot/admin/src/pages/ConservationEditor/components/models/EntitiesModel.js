@@ -1,12 +1,12 @@
 export const Entities = [
     {
         id: "861842221548776",
-        label: "Sản phẩm",
+        label: "Tên sản phẩm",
         name: "product"
     },
     {
         id: "1160259917986580",
-        label: "Dịch vụ",
+        label: "Tên dịch vụ",
         name: "service"
     },
     {
@@ -16,7 +16,7 @@ export const Entities = [
     },
     {
         id: "5722be39-fa78-4e50-827d-dc659e04f055",
-        label: "Họ và tên khách hàng",
+        label: "Họ và tên",
         name: "wit$contact"
     },
     {

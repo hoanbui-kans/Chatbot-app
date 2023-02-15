@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_conservation_messages",
+  "info": {
+    "displayName": "message"
+  },
+  "options": {},
+  "attributes": {
+    "message": {
+      "type": "text"
+    }
+  }
+}

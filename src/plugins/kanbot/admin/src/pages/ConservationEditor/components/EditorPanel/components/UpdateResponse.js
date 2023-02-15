@@ -1,71 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import { Typography, Stack, Button, Grid, GridItem, Box }  from '@strapi/design-system';
+import React, { useState } from 'react'
+import ResponseController from '../controllers/ResponseController';
+import ListController from '../controllers/ListController';
+import TemplateController from '../controllers/TemplateController';
 
-import MessagesController from '../templates/messagesController';
-import ChoicesController from '../templates/choicesController';
-import TemplateController from '../templates/templateController';
-import { findOneWitaiByAppName } from '../../../../../api/witAi';
-import { useParams } from 'react-router-dom';
-import { Message, Puzzle, PicturePlus} from '@strapi/icons'
+const UpdateResponse = ({ editorMessage, setEditorMessage }) => {
 
-const NewResponse = ({ setCreateResponse }) => {
-
-    const { app_name } = useParams();
-    const [type, setType] = useState(false);
-    const [appInfo, setAppInfo] = useState(false);
-
-    async function HandleGetApp(app_name) {
-        const App = await findOneWitaiByAppName(app_name);
-        if(App){
-            setAppInfo(App);
-        }
-    }
-
-    useEffect( async() => {
-        if(!appInfo){
-          await HandleGetApp(app_name);
-        }
-    }, [appInfo])
-
-    useEffect(() => {
-        setCreateResponse(type)
-    },[type])
+    const [type, setType] = useState(editorMessage.type);
 
     switch (type) {
-        case 'messages':
-            return(
-                <>
-                    <MessagesController 
-                        appInfo={appInfo}
-                        goBack={() => setType(false)}
-                    />
-                </>
-            )
-            break;
+        case 'message':
+            return(<ResponseController data={editorMessage} goBack={() => setType(false)}/>)
+        break;
 
         case 'choices':
-            return(
-                <>
-                    <ChoicesController goBack={() => setType(false)}/>
-                </>
-            )
-            break;    
+            return(<ListController data={editorMessage} goBack={() => setType(false)}/>)
+        break;    
 
         case 'templates':
-            return(
-                <>
-                    <TemplateController goBack={() => setType(false)}/>
-                </>
-            )
-            break;      
+            return(<TemplateController data={editorMessage} goBack={() => setType(false)}/>)
+        break;      
 
         default:
-            break;
+            return "hello"
+         break;
     }
 
     return (
         <>
-            <Stack spacing={6}>
+            {/* <Stack spacing={6}>
                 <Box>
                     <Typography fontWeight="bold">Tạo mẫu câu trả lời</Typography>
                 </Box>
@@ -116,9 +78,9 @@ const NewResponse = ({ setCreateResponse }) => {
                         </GridItem>
                     </Grid>
                 </Box>
-            </Stack>
+            </Stack> */}
         </>
   )
 }
 
-export default NewResponse
+export default UpdateResponse

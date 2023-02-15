@@ -20,21 +20,14 @@
       "targetField": "title"
     },
     "flow": {
-      "displayName": "chatflow",
-      "type": "component",
-      "repeatable": true,
-      "component": "kanbot.chatflow"
-    },
-    "default_response": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::kanbot.response"
-    },
-    "bot": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::kanbot.bot",
-      "inversedBy": "kanbot_conservations"
+      "type": "dynamiczone",
+      "components": [
+        "conservation.message",
+        "conservation.product",
+        "conservation.email",
+        "conservation.info",
+        "conservation.phone"
+      ]
     }
   }
 }

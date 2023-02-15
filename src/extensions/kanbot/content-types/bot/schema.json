@@ -21,12 +21,6 @@
     },
     "description": {
       "type": "richtext"
-    },
-    "kanbot_conservations": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::kanbot.conservation",
-      "mappedBy": "bot"
     }
   }
 }

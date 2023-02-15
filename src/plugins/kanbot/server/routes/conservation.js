@@ -27,7 +27,7 @@ module.exports = {
     },
     {
       method: 'POST',
-      path: '/conservation/messaging/:app_id',
+      path: '/conservation/messaging/:id',
       handler: 'conservation.incommingMessageSim',
       config: {
         policies: [],

@@ -24,7 +24,6 @@ import CreateResponse from './components/CreateResponse';
 import DeleteResponse from './components/DeleteResponse';
 import UpdateResponse from './components/UpdateResponse';
 
-import { findOneWitaiByAppName } from '../../api/witAi';
 import { findManyIntent } from '../../api/Intent';
 import { findManyEntity } from '../../api/Entity';
 import { useParams } from 'react-router-dom';
@@ -96,26 +95,16 @@ const index = () => {
         }
     }
 
-    async function HandleGetApp ( app_name ) {
-        const App = await findOneWitaiByAppName( app_name );
-        if(App){
-            setAppInfo(App);
-        }
-    }
 
     useEffect( async() => {
-        if(!appInfo){
-            await HandleGetApp(app_name);
-        } else {
-            if(!entities.length) {
-                await HandleGetEntities(appInfo.id);
-            }
-            if(!intents.length) {
-                await HandleGetIntents(appInfo.id);
-            }
-            if(!Responses.length) {
-                await HandleGetResponses(appInfo.id);
-            }
+        if(!entities.length) {
+            await HandleGetEntities(appInfo.id);
+        }
+        if(!intents.length) {
+            await HandleGetIntents(appInfo.id);
+        }
+        if(!Responses.length) {
+            await HandleGetResponses(appInfo.id);
         }
       }, [appInfo]);
 

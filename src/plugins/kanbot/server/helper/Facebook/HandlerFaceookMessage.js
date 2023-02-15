@@ -3,12 +3,10 @@ const WitService = require('../witAi/WitService');
 
 class HandlerFacebookMessage {
   
-  constructor(strapi, token, senderId, recipientId, context, nodes, message){
-    this.app_token = token;
+  constructor( message, context ){
+    this.app_token = process.env.WITAI_BOT_CLIENT_TOKEN;
     this.message = message.text;
     this.context = context;
-    this.nodes = nodes;
-    this.strapi = strapi;
   }
 
   localizeMessage(message){
@@ -22,12 +20,10 @@ class HandlerFacebookMessage {
     try {
       const messageText = this.localizeMessage(this.message);
       const redisContext = this.context;
-      const WitToken = this.app_token;
-      const nodes = this.nodes;
-      const strapi = this.strapi;
-      const context = await ConservationService.run(strapi, WitToken, WitService, messageText, nodes, redisContext);
+
+      const context = await ConservationService.run(WitService, messageText, redisContext);
       const { conservation } = context;
-      const { entities, intents } = conservation;
+      const { entities } = conservation;
 
       let text = '';
       if(!conservation.complete){
@@ -39,6 +35,7 @@ class HandlerFacebookMessage {
       return context;
     } catch (error) {
       console.log('error', error);
+      return null
     }
   }
 
@@ -46,7 +43,11 @@ class HandlerFacebookMessage {
     const handleProcessContext = await this.processMessage();
     return handleProcessContext;
   }
-  
+
+  async responseMessage(){
+    const handleProcessContext = await this.processMessage();
+    return handleProcessContext;
+  }
 }
 
 module.exports = HandlerFacebookMessage

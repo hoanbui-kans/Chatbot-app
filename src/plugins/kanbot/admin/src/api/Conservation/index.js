@@ -84,7 +84,7 @@ export const clearConservation = async (conservation) => {
 }
 export const postMessageConservation = async (message, nodes, appInfo) => {
     try {
-        const response = await request(`/kanbot/conservation/messaging/${appInfo.id}`, {
+        const response = await request(`/kanbot/conservation/messaging/16`, {
             method: "POST",
             body: {
                 message: message,

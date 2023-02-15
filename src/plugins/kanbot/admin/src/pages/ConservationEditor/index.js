@@ -20,20 +20,10 @@ import {
 } from '@strapi/design-system';
 
 import { ArrowLeft } from '@strapi/icons';
-import { createResponse } from '../../api/Response';
 import { createConservation } from '../../api/Conservation';
-
-import { findOneWitaiByAppName } from '../../api/witAi';
-
-import { findOneIntent } from '../../api/Intent';
-import { findManyEntity } from '../../api/Entity';
-import { findManyResponse } from '../../api/Response';
-
 import ChatUi from './components/ChatUi';
 import EditorPanel from './components/EditorPanel';
-import Loading from '../../components/Loading';
 import Flow from './components/Flow';
-import { Plus } from '@strapi/icons';
 
 const index = () => {
 
@@ -45,49 +35,14 @@ const index = () => {
   // Simulator chat
   const [simChat, setSimChat] = useState(false);
 
-  const HandleCreateResponse = async () => {
-    const response = await createResponse(Edges);
-  }
-
-  async function HandleGetConservation () {
-
-  }
-
-  async function HandleCreateConservation (){
-    setIsLoading(true);
+  async function HandleCreateConservation(){
     let Flow = [];
     const data = {
       intent: intent,
       flow: Flow
     }
     await createConservation(data);
-    setIsLoading(false)
   }
-
-  async function HandleGetApp(app_id) {
-      const App = await findOneWitaiByAppName(app_id);
-      if(App){
-          setAppInfo(App);
-      }
-  }
-
-  async function HandleGetIntent(app_id){
-    const response = await findOneIntent(intent_id);
-    if(response){
-      setConservationIntent(response);
-    }
-  }
-
-  useEffect( async () => {
-      if(!AppInfo){
-          await HandleGetApp(app_name);
-      } else {
-          if(!conservationIntent){
-            HandleGetIntent(AppInfo.id);
-          }
-      }
-  }, [AppInfo])
-  
 
   return (
     <>
@@ -120,17 +75,15 @@ const index = () => {
                   <ContentLayout>
                       <Flow appInfo={AppInfo}/>
                   </ContentLayout>
-
                   { 
-                  simChat ? 
-                    <Box className="simchat">
-                      <ChatUi 
-                        appInfo={AppInfo}
-                        title={'bot Ai'} 
-                        setSimChat={setSimChat}/>
-                    </Box> : ""
+                    simChat && 
+                      <Box className="simchat">
+                        <ChatUi 
+                          appInfo={AppInfo}
+                          title={'bot Ai'} 
+                          setSimChat={setSimChat}/>
+                      </Box>
                   }
-                  { isloading && <Loading /> }
         </Layout>
     </>
   )

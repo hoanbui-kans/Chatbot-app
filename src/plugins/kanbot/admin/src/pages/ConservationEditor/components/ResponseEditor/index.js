@@ -15,13 +15,14 @@ import { ProductModel } from '../models/ProductModel';
 import Highlighter from "react-highlight-words";
 import { findAll } from "highlight-words-core";
 
-const index = ({ updateNode }) => {
+const index = ({ stateEditor }) => {
 
   const [message, setMessage] = useState('');
-
   const [options, setOptions] = useState([]); 
   const [highlightText, setHigtlightText] = useState([]);
 
+  console.log('stateEditor', stateEditor);
+  
   const HandleAddKeyToMessage = (e) => {
     setMessage((message) => message + ' ' + e)
   }
@@ -56,7 +57,7 @@ const index = ({ updateNode }) => {
   return (
     <>
       {
-        updateNode &&
+        stateEditor &&
         <ModalLayout labelledBy="title">
                     <ModalHeader>
                       <Typography fontWeight="bold" textColor="neutral800" as="h2" id="title">

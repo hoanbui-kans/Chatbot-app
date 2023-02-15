@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_conservation_infos",
+  "info": {
+    "displayName": "info"
+  },
+  "options": {},
+  "attributes": {
+    "message": {
+      "type": "text"
+    }
+  }
+}
