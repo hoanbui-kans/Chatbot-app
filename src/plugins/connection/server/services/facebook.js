@@ -8,10 +8,9 @@ const { createCoreService } = require('@strapi/strapi').factories;
 
 module.exports = createCoreService('plugin::connection.facebook', (({strapi}) => ({
 
-    async findAll() {
-        return await strapi.entityService.findMany("plugin::connection.facebook", {
-            query: query,
-            populate: populate
+    async findAll(query) {
+        return await strapi.db.query("plugin::connection.facebook").findPage({
+            where: query
         });
     },
 

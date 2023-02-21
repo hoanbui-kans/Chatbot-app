@@ -4,6 +4,10 @@ module.exports = {
       enabled: true,
       resolve: './src/plugins/dashboard'
     },
+    chatapp: {
+      enabled: true,
+      resolve: './src/plugins/chatapp'
+    },
     product: {
       enabled: true,
       resolve: './src/plugins/product'
@@ -19,5 +23,25 @@ module.exports = {
     connection: {
       enabled: true,
       resolve: './src/plugins/connection'
-    }
+    },
+    io: {
+      enabled: true,
+      config: {
+        IOServerOptions :{
+          cors: { origin: "http://localhost:5000", methods: ["GET"] },
+        },
+        contentTypes: {
+          message: "*",
+          chat:["create"]
+        },
+        events:[
+          {
+            name: "connection",
+            handler: ({ strapi }, socket) => {
+              strapi.log.info(`[io] new connection with id ${socket.id}`);
+            },
+          },
+        ]
+      },
+    },
   }

@@ -8,7 +8,10 @@ module.exports = (config, webpack) => {
   // Important: return the modified config
   config.plugins.push(
     new webpack.DefinePlugin({
-      CLIENT_FRONTEND_URL: JSON.stringify(process.env.CLIENT_FRONTEND_URL),
+      CLIENT_FRONTEND_URL: process.env.CLIENT_FRONTEND_URL,
+      CLIENT_FB_REQUEST_VERSION: process.env.FB_REQUEST_VERSION,
+      CLIENT_FB_APP_ID: process.env.FB_APP_ID,
+      CLIENT_FB_APP_SECRECT: process.env.FB_APP_SECRECT,
     })
   )
 

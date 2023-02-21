@@ -24,7 +24,7 @@ module.exports = createCoreController('plugin::connection.facebook', (({ strapi 
                 ctx.body = await strapi
                 .plugin('connection')
                 .service('facebook')
-                .findOneByPageId(ctx.query);
+                .findOneByPageId(ctx.params.id);
             } catch (error) {
                 ctx.throw(403, error)
             }
