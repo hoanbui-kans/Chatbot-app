@@ -24,7 +24,7 @@ import CreateConnectionModal from './components/CreateConnectionModal';
 import UpdateConnectionModal from './components/UpdateConnectionModal';
 import DialogDeleteConnection from './components/DialogDeleteConnection';
 
-import { getFaceBookConnection, createFaceBookConnection, deleteFacebookConnection } from '../../api/Facebook';
+import { getFaceBookConnection, createFaceBookConnection, updateFacebookConnection, deleteFacebookConnection } from '../../api/Facebook';
 
 import { useQueryParams } from '@strapi/helper-plugin';
 
@@ -59,6 +59,13 @@ const index = () => {
         setIsLoading(false);
     }
 
+    async function HandleUpdateConnection (data){
+        setIsLoading('update');
+        await updateFacebookConnection(data);
+        await HandleGetConnection();
+        setIsLoading(false);
+    }
+
     async function HandleDeleteConnection (id) {
         setIsLoading(true);
         await deleteFacebookConnection(id);
@@ -79,64 +86,61 @@ const index = () => {
     
     return (
         <>
-        <Layout sideNav={<SideNav />}>
-                    <HeaderLayout 
-                        navigationAction={
-                            <Link 
-                                startIcon={<ArrowLeft />} 
-                                to={`/plugins/${pluginId}/settings`}>
-                                Trở lại
-                            </Link>
-                            }
-                            primaryAction={
-                                <Stack spacing={3} horizontal>
-                                    <Button variant="secondary" startIcon={<Pencil />}>
-                                        Tài liệu tham khảo
-                                    </Button>
-                                    <Button onClick={() => { setConnectionCreate(true)} } variant="primary" startIcon={<Plus />}>
-                                        Thêm mới
-                                    </Button>
-                                </Stack>
-                            } 
-                            title="Facebook"
-                            subtitle="Quản lý các kết nối trang facebook" 
-                            as="h2" 
-                            />
-                    <ContentLayout>
-                        {
-                            // Table
-                            Array.isArray(Connection) 
-                            && Connection.length 
-                            && <ConnectionTable 
-                                    Connection={Connection}
-                                    Pagination={Pagination}
-                                    setConnectionCreate={setConnectionCreate}
-                                    setConnectionUpdate={setConnectionUpdate}
-                                    setConnectionDelete={setConnectionDelete}
+            <Layout sideNav={<SideNav />}>
+                        <HeaderLayout 
+                            navigationAction={
+                                <Link 
+                                    startIcon={<ArrowLeft />} 
+                                    to={`/plugins/${pluginId}/settings`}>
+                                    Trở lại
+                                </Link>
+                                }
+                                primaryAction={
+                                    <Stack spacing={3} horizontal>
+                                        <Button variant="secondary" startIcon={<Pencil />}>
+                                            Tài liệu tham khảo
+                                        </Button>
+                                        <Button onClick={() => { setConnectionCreate(true)} } variant="primary" startIcon={<Plus />}>
+                                            Thêm mới
+                                        </Button>
+                                    </Stack>
+                                } 
+                                title="Facebook"
+                                subtitle="Quản lý các kết nối trang facebook" 
+                                as="h2" 
                                 />
-                        }
-                        {
-                            // Create Modal
-                            ConnectionCreate && 
-                            <CreateConnectionModal 
-                                isLoading={isLoading}
+                        <ContentLayout>
+                            <ConnectionTable 
+                                Connection={Connection}
+                                Pagination={Pagination}
                                 setConnectionCreate={setConnectionCreate}
-                                HandleCreateConnection={HandleCreateConnection}
-                            />
-                        }
-                        {
-                            // Delete Dialogue 
-                            ConnectionDelete && 
-                            <DialogDeleteConnection 
-                                ConnectionDelete={ConnectionDelete}
+                                setConnectionUpdate={setConnectionUpdate}
                                 setConnectionDelete={setConnectionDelete}
-                                HandleDeleteConnection={HandleDeleteConnection}
                             />
+                            {
+                                // Create Modal
+                                ConnectionCreate && 
+                                    <CreateConnectionModal 
+                                        isLoading={isLoading}
+                                        Connection={Connection}
+                                        HandleUpdateConnection={HandleUpdateConnection}
+                                        setConnectionCreate={setConnectionCreate}
+                                        HandleCreateConnection={HandleCreateConnection}
+                                    />
+                            }
+                            {
+                                // Delete Dialogue 
+                                ConnectionDelete && 
+                                    <DialogDeleteConnection 
+                                        ConnectionDelete={ConnectionDelete}
+                                        setConnectionDelete={setConnectionDelete}
+                                        HandleDeleteConnection={HandleDeleteConnection}
+                                    />
+                            }
+                        </ContentLayout>
+                        {
+                            isLoading && <Loading />
                         }
-                    </ContentLayout>
-                    {
-                        isLoading && <Loading />
-                    }
             </Layout>
     </>
   )

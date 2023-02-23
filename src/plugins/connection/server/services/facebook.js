@@ -15,6 +15,14 @@ module.exports = createCoreService('plugin::connection.facebook', (({strapi}) =>
         });
     },
 
+    async findOnePage(page_id) {
+        return await strapi.query("plugin::connection.facebook").findOne({
+            where: {
+                page_id: page_id
+            }
+        });
+    },
+
     async create(data) {
         return await strapi.db.query("plugin::connection.facebook").createMany(data);
     },

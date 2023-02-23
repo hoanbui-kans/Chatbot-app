@@ -42,20 +42,31 @@ const index = ({ Connection, Pagination, setConnectionCreate, setConnectionUpdat
                         </Thead>
                         <Tbody>
                         {
-                        Connection.map((entry, index) => <Tr key={entry.id}>
-                            <Td>
-                                <Typography textColor="neutral800">{index + 1}</Typography>
-                            </Td>
-                            <Td>
-                                <Typography textColor="neutral800">{entry.title}</Typography>
-                            </Td>
-                            <Td>
-                                <Flex>
-                                    <IconButton onClick={() => setConnectionUpdate(entry)} label="Chỉnh sửa" noBorder icon={<Pencil />} />
-                                    <IconButton onClick={() => setConnectionDelete(entry.id)} label="Xóa" noBorder icon={<Trash />} />
-                                </Flex>
-                            </Td>
-                            </Tr>)}
+                            Array.isArray(Connection) && Connection.length ?
+                            Connection.map((entry, index) => 
+                                <Tr key={entry.id}>
+                                    <Td>
+                                        <Typography textColor="neutral800">{index + 1}</Typography>
+                                    </Td>
+                                    <Td>
+                                        <Typography textColor="neutral800">{entry.title}</Typography>
+                                    </Td>
+                                    <Td>
+                                        <Flex>
+                                            <IconButton onClick={() => setConnectionUpdate(entry)} label="Chỉnh sửa" noBorder icon={<Pencil />} />
+                                            <IconButton onClick={() => setConnectionDelete(entry.id)} label="Xóa" noBorder icon={<Trash />} />
+                                        </Flex>
+                                    </Td>
+                                </Tr>
+                            ): 
+                            <Tr>
+                                <Td colSpan={3}>
+                                    <Box padding={3} style={{textAlign: 'center'}}>
+                                        <Typography textColor="neutral800">Bạn chưa kết nối đến trang nào</Typography>
+                                    </Box>
+                                </Td>
+                            </Tr>
+                        }
                         </Tbody>
                     </Table>
                     <PaginationFooter pagination={Pagination}/>

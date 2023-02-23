@@ -19,6 +19,17 @@ module.exports = createCoreController('plugin::connection.facebook', (({ strapi 
             }
         },
 
+        async fineOnePage(ctx) {
+            try {
+                ctx.body = await strapi
+                .plugin('connection')
+                .service('facebook')
+                .findOnePage(ctx.params.page_id);
+            } catch (error) {
+                ctx.throw(403, error)
+            }
+        },
+        
         async create(ctx) {
             try {
                 ctx.body = await strapi

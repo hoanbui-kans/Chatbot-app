@@ -21,6 +21,7 @@
     "@strapi/strapi": "4.6.1",
     "axios": "^1.2.3",
     "chatgpt": "^4.4.0",
+    "fb": "^2.0.0",
     "fb-messenger-bot-api": "^4.4.0",
     "html-react-parser": "^3.0.9",
     "mysql": "2.18.1",

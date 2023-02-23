@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, Box, Stack, Checkbox} from '@strapi/design-system';
-import SocialButton from "../SocialLoginButton";
-import { getListPages } from '../../../../api/Facebook';
+import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, IconButton, Box, Stack, Checkbox} from '@strapi/design-system';
+import { Table, Thead, Tbody, Th, Tr, Td, BaseCheckbox, Flex} from '@strapi/design-system';
 
-const CreateModal = ({ isLoading, setConnectionCreate, HandleCreateConnection }) => {
+import SocialButton from "../SocialLoginButton";
+import { getListPages, getUserLongTermToken } from '../../../../api/Facebook';
+
+import Rotate from '@strapi/icons/Rotate';
+import Trash from '@strapi/icons/Trash';
+import Plus from '@strapi/icons/Plus';
+
+const CreateModal = ({ Connection, isLoading, setConnectionCreate, HandleCreateConnection, HandleUpdateConnection }) => {
 
   const [pages, setPages] = useState(false);
   const [selectPages, setSelectPages] = useState([]);
@@ -22,11 +28,15 @@ const CreateModal = ({ isLoading, setConnectionCreate, HandleCreateConnection })
     setConnectionCreate(false)
   }
 
-
   const handleSocialLogin = async (user) => {
-    const pages = await getListPages(user._profile.id, user._token.accessToken);
-    if(Array.isArray(pages.data) && pages.data.length){
-      setPages(pages.data)
+    const userToken = await getUserLongTermToken(user._token.accessToken);
+    if(userToken){
+      const pages = await getListPages(user._profile.id, userToken.access_token);
+      if(Array.isArray(pages.data) && pages.data.length){
+        setPages(pages.data)
+      }
+    } else {
+      return null;
     }
   };
   
@@ -72,45 +82,96 @@ const CreateModal = ({ isLoading, setConnectionCreate, HandleCreateConnection })
             {
               Array.isArray(pages) && pages.length ? 
                 <Stack spacing={3}>
-                    {
+                  <Table colCount={6} rowCount={4}>
+                    <Thead>
+                      <Tr>
+                        <Th>
+                          <Typography variant="sigma">ID</Typography>
+                        </Th>
+                        <Th>
+                          <Typography variant="sigma">Tiêu đề trang</Typography>
+                        </Th>
+                        <Th>
+                          <Typography variant="sigma">Hành động</Typography>
+                        </Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      { 
+                        pages.map(entry => {
+                            let existed = false;
+                            if(Array.isArray(Connection) && Connection.length){
+                              existed = Connection.find((connection) => connection.page_id == entry.id);
+                            }
+                            if(!existed) {
+                              const dataCreate = {
+                                title: entry.name,
+                                page_id: entry.id,
+                                page_token: entry.access_token,
+                              }
+                              return (
+                                <Tr key={entry.id}>
+                                  <Td>
+                                    <Typography textColor="neutral800">{entry.id}</Typography>
+                                  </Td>
+                                  <Td>
+                                    <Typography textColor="neutral800">{entry.name}</Typography>
+                                  </Td>
+                                  <Td>
+                                    <IconButton onClick={() => HandleCreateConnection([dataCreate])} label="Thêm mới" noBorder icon={<Plus />} />
+                                  </Td>
+                                </Tr>
+                              )
+                            }
+                        })}
+                    </Tbody>
+                  </Table>
+                    {/* {
                       pages.map((val) => {
                         const checked = validateSelected(val.id);
+                        let existed = false;
+                        if(Array.isArray(Connection) && Connection.length){
+                          existed = Connection.find((connection) => connection.id == val.id);
+                        }
                         return (
-                          <Box background="neutral100" borderColor="neutral200" hasRadius padding={3} key={val.id} block>
-                            {
-                              checked ? 
-                                <Checkbox onChange={() => toggleSelected(val)} checked>{val.name}</Checkbox>
-                              : <Checkbox onChange={() => toggleSelected(val)} unchecked>{val.name}</Checkbox>
-                            }
-                            
-                          </Box>
-                        )
+                            <Box background="neutral100" borderColor="neutral200" hasRadius padding={3} key={val.id} block>
+                              {
+                                existed ? <>
+                                  {
+                                    checked ? 
+                                        <Checkbox onChange={() => toggleSelected(val)} checked>{val.name}</Checkbox>
+                                      : <Checkbox onChange={() => toggleSelected(val)} unchecked>{val.name}</Checkbox>
+                                    }
+                                </> : 
+                                <>
+                                  <Typography>{val.name}</Typography>
+                                  <Typography>Cập nhật</Typography>
+                                  <Typography>Xóa</Typography>
+                                </>
+                                
+                              }
+                              
+                            </Box>
+                          )
                       })
-                    }
+                    } */}
                 </Stack>
               :             
               <Stack horizontal spacing={3}>
                 <Box background="neutral100" borderColor="neutral200" padding={3} hasRadius>
-                  <SocialButton
-                    provider="facebook"
-                    appId="385466796942941"
-                    onLoginSuccess={handleSocialLogin}
-                    onLoginFailure={handleSocialLoginFailure}
-                    scope="pages_manage_metadata,pages_read_engagement,pages_messaging"
-                    redirect="http://localhost:1337/api/connect/facebook/callback"
-                  >
-                    Đăng nhập với Facebook
-                  </SocialButton>
+                    <SocialButton
+                      provider="facebook"
+                      appId={ENV.CLIENT_FB_APP_ID}
+                      onLoginSuccess={handleSocialLogin}
+                      onLoginFailure={handleSocialLoginFailure}
+                      scope="pages_manage_metadata,pages_read_engagement,pages_messaging,email,public_profile,user_friends,pages_user_locale"
+                    >
+                      Đăng nhập với Facebook
+                    </SocialButton>
                 </Box>
               </Stack>
             }
           </ModalBody>
-          <ModalFooter 
-            startActions={ <Button onClick={() => setConnectionCreate(false)} variant="tertiary"> Hủy</Button>} 
-            endActions={  
-              Array.isArray(pages) && pages.length ?  
-                <Button loading={isLoading == 'create' ? true : false} onClick={HandleCreate}>Lưu</Button> : ""
-            } />
       </ModalLayout>
     </>
   )

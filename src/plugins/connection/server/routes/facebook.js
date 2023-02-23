@@ -18,6 +18,15 @@ module.exports = {
         },
       },
       {
+        method: 'GET',
+        path: '/facebook/:page_id',
+        handler: 'facebook.fineOnePage',
+        config: {
+          policies: [],
+          auth: false,
+        },
+      },
+      {
         method: 'POST',
         path: '/facebook/',
         handler: 'facebook.create',

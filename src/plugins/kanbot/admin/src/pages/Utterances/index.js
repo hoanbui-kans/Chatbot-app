@@ -24,7 +24,6 @@ import CreateUtterance from './components/CreateUtterance';
 import DeleteUtterance from './components/DeleteUtterance';
 import UpdateUtterance from './components/UpdateUtterance';
 
-import { findOneWitaiByAppName } from '../../api/witAi';
 import { findManyIntent } from '../../api/Intent';
 import { findManyEntity } from '../../api/Entity';
 import { useParams } from 'react-router-dom';
@@ -96,29 +95,6 @@ const index = () => {
             setIntents(response);
         }
     }
-
-    async function HandleGetApp ( app_name ) {
-        const App = await findOneWitaiByAppName( app_name );
-        if(App){
-            setAppInfo(App);
-        }
-    }
-
-    useEffect( async() => {
-        if(!appInfo){
-            await HandleGetApp(app_name);
-        } else {
-            if(!entities.length) {
-                await HandleGetEntities(appInfo.id);
-            }
-            if(!intents.length) {
-                await HandleGetIntents(appInfo.id);
-            }
-            if(!utterances.length) {
-                await HandleGetUtterances(appInfo.id);
-            }
-        }
-      }, [appInfo]);
 
     return (
         <>
