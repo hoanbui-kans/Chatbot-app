@@ -8,32 +8,15 @@ const { createCoreService } = require('@strapi/strapi').factories;
 
 module.exports = createCoreService('plugin::connection.facebook', (({strapi}) => ({
 
-    async findAll(query) {
-        return await strapi.db.query("plugin::connection.facebook").findPage({
-            where: query
+    async findMany(query) {
+        console.log('query', query);
+        return await strapi.query("plugin::connection.facebook").findPage({
+            ...query
         });
     },
 
-    async findOneByPageId(page_id) {
-        const query = {
-            filters: {
-                page_id: { '$eq': page_id }
-            }
-        }
-        const response = await strapi.entityService.findMany("plugin::connection.facebook", query);
-        if(Array.isArray(response) && response.length){
-            return(response[0]);
-        }
-
-        return false 
-    },
-
-    async findOne(id) {
-        return await strapi.entityService.findOne("plugin::connection.facebook", id);
-    },
-
     async create(data) {
-        return await strapi.entityService.create("plugin::connection.facebook", data);
+        return await strapi.db.query("plugin::connection.facebook").createMany(data);
     },
 
     async update(id, data) {

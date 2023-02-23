@@ -8,34 +8,34 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('plugin::connection.facebook', (({ strapi }) => ({
 
-        async findAllFacebookPage(ctx) {
+        async findMany(ctx) {
             try {
                 ctx.body = await strapi
                 .plugin('connection')
                 .service('facebook')
-                .findAll(ctx.query);
+                .findMany(ctx.query);
             } catch (error) {
                 ctx.throw(403, error)
             }
         },
 
-        async findOneFacebookPageById(ctx) {
+        async create(ctx) {
             try {
                 ctx.body = await strapi
                 .plugin('connection')
                 .service('facebook')
-                .findOneByPageId(ctx.params.id);
-            } catch (error) {
-                ctx.throw(403, error)
+                .create(ctx.request.body);
+            } catch (err) {
+                ctx.throw(500, err);
             }
         },
 
-        async findOneFacebookPage(ctx) {
+        async delete(ctx) {
             try {
                 ctx.body = await strapi
                 .plugin('connection')
                 .service('facebook')
-                .findOne(ctx.params.id);
+                .delete(ctx.params.id);
             } catch (err) {
                 ctx.throw(500, err);
             }

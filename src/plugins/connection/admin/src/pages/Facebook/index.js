@@ -15,8 +15,6 @@ import {
   ContentLayout,
   Stack
 } from '@strapi/design-system';
-
-import { findManyConnection, createConnection, updateConnection, deleteConnection } from '../../api/Connection';
 import { ArrowLeft, Pencil, Plus } from '@strapi/icons';
 import SideNav from '../../components/SideNav';
 import Loading from '../../components/Loading';
@@ -28,43 +26,42 @@ import DialogDeleteConnection from './components/DialogDeleteConnection';
 
 import { getFaceBookConnection, createFaceBookConnection, deleteFacebookConnection } from '../../api/Facebook';
 
+import { useQueryParams } from '@strapi/helper-plugin';
+
 import '../style.css'
 
 const index = () => {
 
     const [Connection, setConnection] = useState([]);
+    const [Pagination, setPagination] = useState(false);
     const [ConnectionCreate, setConnectionCreate] = useState(false);
     const [ConnectionUpdate, setConnectionUpdate] = useState(false);
     const [ConnectionDelete, setConnectionDelete] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const query = useQueryParams()[0].rawQuery;
+
     async function HandleGetConnection () {
         setIsLoading(true);
-        const response = await getFaceBookConnection();
+        const response = await getFaceBookConnection(query);
         if(response){
-            setConnection(response)
+            setConnection(response.results)
+            setPagination(response.pagination)
         }
         setIsLoading(false);
     }
 
     async function HandleCreateConnection (data) {
-        setIsLoading(true);
-        await createConnection(data);
-        await HandleGetConnection();
-        setIsLoading(false);
-    }
-
-    async function HandleUpdateConnection (id, data) {
-        setIsLoading(true);
-        await updateConnection(id, data);
+        setIsLoading('create');
+        await createFaceBookConnection(data);
         await HandleGetConnection();
         setIsLoading(false);
     }
 
     async function HandleDeleteConnection (id) {
         setIsLoading(true);
-        await deleteConnection(id);
+        await deleteFacebookConnection(id);
         await HandleGetConnection();
         setIsLoading(false);
     }
@@ -112,6 +109,7 @@ const index = () => {
                             && Connection.length 
                             && <ConnectionTable 
                                     Connection={Connection}
+                                    Pagination={Pagination}
                                     setConnectionCreate={setConnectionCreate}
                                     setConnectionUpdate={setConnectionUpdate}
                                     setConnectionDelete={setConnectionDelete}
@@ -121,17 +119,9 @@ const index = () => {
                             // Create Modal
                             ConnectionCreate && 
                             <CreateConnectionModal 
+                                isLoading={isLoading}
                                 setConnectionCreate={setConnectionCreate}
                                 HandleCreateConnection={HandleCreateConnection}
-                            />
-                        }
-                        {
-                            // Edit Modal
-                            ConnectionUpdate && 
-                            <UpdateConnectionModal 
-                                ConnectionUpdate={ConnectionUpdate}
-                                setConnectionUpdate={setConnectionUpdate}
-                                HandleUpdateConnection={HandleUpdateConnection}
                             />
                         }
                         {

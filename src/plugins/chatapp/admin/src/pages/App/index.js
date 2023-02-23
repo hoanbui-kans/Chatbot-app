@@ -11,11 +11,14 @@ import { NotFound } from '@strapi/helper-plugin';
 import pluginId from '../../pluginId';
 import HomePage from '../HomePage';
 
+import Messsenger from '../Messenger';
+
 const App = () => {
   return (
     <div>
       <Switch>
         <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+        <Route path={`/plugins/${pluginId}/facebook/:page_id`} component={Messsenger} exact />
         <Route component={NotFound} />
       </Switch>
     </div>

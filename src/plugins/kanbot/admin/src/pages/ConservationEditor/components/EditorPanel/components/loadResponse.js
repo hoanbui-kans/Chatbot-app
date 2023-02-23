@@ -4,7 +4,6 @@ import { Illo } from '../../../../../components/Illo';
 import { Plus } from '@strapi/icons'
 import { stateDataPanel, entityOptions, responseOptions, fetchData, stateLoading, setStatePanel } from '../../../../slice/diagram-panelEditor-slice';
 import { updateNodeData } from '../../../../slice/conservation-builder-slice';
-import { findOneWitaiByAppName } from '../../../../../api/witAi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -71,13 +70,6 @@ const index = ({ stateEditor, setCreateResponse }) => {
     const [updateState, setUpdateState] = useState(stateEditor.data);
     const { app_name } = useParams();
 
-    async function HandleGetApp(app_name) {
-        const App = await findOneWitaiByAppName(app_name);
-        if(App){
-            setAppInfo(App);
-        }
-    }
-
     function HandleUpdateEntity(e) {
         setUpdateState({ 
             ...updateState, 
@@ -118,14 +110,6 @@ const index = ({ stateEditor, setCreateResponse }) => {
     useEffect(() => {
         setUpdateState(stateEditor.data)
     }, [stateEditor])
-
-    useEffect( async() => {
-        if(!appInfo){
-          await HandleGetApp(app_name);
-        } else {
-            dispatch(fetchData(appInfo.id));
-        } 
-    }, [appInfo])
 
     return (
         <>

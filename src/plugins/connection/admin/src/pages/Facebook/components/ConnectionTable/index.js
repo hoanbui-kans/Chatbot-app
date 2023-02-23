@@ -2,8 +2,20 @@ import React from 'react'
 import { Box, Flex, Table, Thead, Tbody, TFooter, Th, Tr, Td} from '@strapi/design-system';
 import { IconButton, Typography, VisuallyHidden, Badge, Stack  } from '@strapi/design-system';
 import { Plus, Pencil, Trash } from '@strapi/icons'
+import { PaginationURLQuery, PageSizeURLQuery } from '@strapi/helper-plugin';
 
-const index = ({ Connection, setConnectionCreate, setConnectionUpdate, setConnectionDelete }) => {
+const index = ({ Connection, Pagination, setConnectionCreate, setConnectionUpdate, setConnectionDelete }) => {
+
+    const PaginationFooter = ({ pagination }) => {
+        return (
+          <Box paddingTop={6}>
+            <Flex alignItems="flex-end" justifyContent="space-between">
+              <PageSizeURLQuery />
+              <PaginationURLQuery pagination={pagination} />
+            </Flex>
+          </Box>
+        );
+    };
 
     return (
         <>
@@ -46,6 +58,7 @@ const index = ({ Connection, setConnectionCreate, setConnectionUpdate, setConnec
                             </Tr>)}
                         </Tbody>
                     </Table>
+                    <PaginationFooter pagination={Pagination}/>
                 </Box>
         </>
     )

@@ -7,8 +7,7 @@ const ROOT_URL = 'https://graph.facebook.com';
 /* CURD kết nối facebook */
 export const getFaceBookConnection = async (query) => {
     try {
-        const params = query ? urlEncodeJson(query) : ''
-        const response = await request(`/${pluginId}/facebook/${params}`, {
+        const response = await request(`/${pluginId}/facebook/${query}`, {
             method: "GET"
         });
         return response;
@@ -19,7 +18,7 @@ export const getFaceBookConnection = async (query) => {
 
 export const createFaceBookConnection = async (data) => {
     try {
-        const response = await request(`/${pluginId}/facebook`, {
+        const response = await request(`/${pluginId}/facebook/`, {
             method: "POST",
             body: {
                 data: data

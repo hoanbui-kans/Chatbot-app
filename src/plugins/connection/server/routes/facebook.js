@@ -11,25 +11,25 @@ module.exports = {
       {
         method: 'GET',
         path: '/facebook/',
-        handler: 'facebook.findAllFacebookPage',
+        handler: 'facebook.findMany',
         config: {
           policies: [],
           auth: false,
         },
       },
       {
-        method: 'GET',
-        path: '/facebook/page/:id',
-        handler: 'facebook.findOneFacebookPageById',
+        method: 'POST',
+        path: '/facebook/',
+        handler: 'facebook.create',
         config: {
           policies: [],
           auth: false,
         },
       },
       {
-        method: 'GET',
+        method: 'DELETE',
         path: '/facebook/:id',
-        handler: 'facebook.findOneFacebookPage',
+        handler: 'facebook.delete',
         config: {
           policies: [],
           auth: false,

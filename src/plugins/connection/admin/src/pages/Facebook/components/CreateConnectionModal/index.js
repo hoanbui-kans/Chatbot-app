@@ -3,35 +3,27 @@ import { ModalLayout, ModalBody, ModalHeader, ModalFooter, Typography, Button, B
 import SocialButton from "../SocialLoginButton";
 import { getListPages } from '../../../../api/Facebook';
 
-const CreateModal = ({ setConnectionCreate, HandleCreateConnection }) => {
+const CreateModal = ({ isLoading, setConnectionCreate, HandleCreateConnection }) => {
 
-  const [title, setTitle] = useState('');
-  const [options, setOptions] = useState([]);
   const [pages, setPages] = useState(false);
   const [selectPages, setSelectPages] = useState([]);
 
-  const keywordSchema = {
-    keyword: '',
-  };
-
   const HandleCreate = async () => {
-    setIsLoading(true);
-    const keywords = options.filter((val) => val.keyword != '');
-
-    const data = {
-      title: title,
-      keywords: keywords
-    }
-
+    let data = [];
+    Array.from(selectPages).forEach((val) => {
+      data.push({
+        title: val.name,
+        page_id: val.id,
+        page_token: val.access_token
+      })
+    })
     await HandleCreateConnection(data);
-    setTitle('');
-    setOptions([]);
+    setSelectPages([]);
     setConnectionCreate(false)
   }
 
 
   const handleSocialLogin = async (user) => {
-    console.log(user);
     const pages = await getListPages(user._profile.id, user._token.accessToken);
     if(Array.isArray(pages.data) && pages.data.length){
       setPages(pages.data)
@@ -61,7 +53,6 @@ const CreateModal = ({ setConnectionCreate, HandleCreateConnection }) => {
 
   const validateSelected = (id) => {
     const validate = selectPages.find((val) => val.id == id);
-    console.log(id, validate);
     return validate ? true : false;
   }
 
@@ -78,27 +69,6 @@ const CreateModal = ({ setConnectionCreate, HandleCreateConnection }) => {
             </Typography>
           </ModalHeader>
           <ModalBody>
-            <Stack horizontal spacing={3}>
-              <Box background="neutral100" borderColor="neutral200" padding={3} hasRadius>
-                <Typography>Facebook</Typography>
-                <SocialButton
-                  provider="facebook"
-                  appId="385466796942941"
-                  onLoginSuccess={handleSocialLogin}
-                  onLoginFailure={handleSocialLoginFailure}
-                  scope="pages_manage_metadata,pages_read_engagement,pages_messaging"
-                  redirect="http://localhost:1337/api/connect/facebook/callback"
-                >
-                  Login with Facebook
-                </SocialButton>
-              </Box>
-              <Box background="neutral100" borderColor="neutral200" padding={3} hasRadius>
-                <Typography>Instagram</Typography>
-              </Box>
-              <Box background="neutral100" borderColor="neutral200" padding={3} hasRadius>
-                <Typography>Zalo</Typography>
-              </Box>
-            </Stack>
             {
               Array.isArray(pages) && pages.length ? 
                 <Stack spacing={3}>
@@ -118,12 +88,29 @@ const CreateModal = ({ setConnectionCreate, HandleCreateConnection }) => {
                       })
                     }
                 </Stack>
-              : ""
+              :             
+              <Stack horizontal spacing={3}>
+                <Box background="neutral100" borderColor="neutral200" padding={3} hasRadius>
+                  <SocialButton
+                    provider="facebook"
+                    appId="385466796942941"
+                    onLoginSuccess={handleSocialLogin}
+                    onLoginFailure={handleSocialLoginFailure}
+                    scope="pages_manage_metadata,pages_read_engagement,pages_messaging"
+                    redirect="http://localhost:1337/api/connect/facebook/callback"
+                  >
+                    Đăng nhập với Facebook
+                  </SocialButton>
+                </Box>
+              </Stack>
             }
           </ModalBody>
-          <ModalFooter startActions={<Button onClick={() => setConnectionCreate(false)} variant="tertiary">
-                Hủy
-          </Button>} endActions={<Button onClick={HandleCreate}>Lưu</Button>} />
+          <ModalFooter 
+            startActions={ <Button onClick={() => setConnectionCreate(false)} variant="tertiary"> Hủy</Button>} 
+            endActions={  
+              Array.isArray(pages) && pages.length ?  
+                <Button loading={isLoading == 'create' ? true : false} onClick={HandleCreate}>Lưu</Button> : ""
+            } />
       </ModalLayout>
     </>
   )

@@ -18,15 +18,14 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title"
-    },
-    "page_id": {
-      "type": "string",
-      "required": true,
-      "unique": true
+      "targetField": "title",
+      "required": true
     },
     "page_token": {
       "type": "string"
+    },
+    "page_id": {
+      "type": "uid"
     }
   }
 }
