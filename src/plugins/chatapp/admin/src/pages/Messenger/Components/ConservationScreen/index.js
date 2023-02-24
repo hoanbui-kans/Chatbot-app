@@ -14,11 +14,8 @@ const index = ({ typing, chatState, HandleSendMessage}) => {
     const [ value, setValue ] = useState('');
 
     const HandleAddMessage = async (message) => {
-        const newMessage = await HandleSendMessage(message);
-        console.log('newMessage', newMessage);
-        if(newMessage){
-            setValue('');
-        }
+        await HandleSendMessage(message);
+        setValue('');
     }
 
     return (
@@ -35,7 +32,7 @@ const index = ({ typing, chatState, HandleSendMessage}) => {
                             {
                                 Array.isArray(chatState) 
                                     && chatState.length 
-                                    ? chatState.map((message, index) => {
+                                    ? chatState.reverse().map((message, index) => {
                                         const model = message.from.id == page_id ? 
                                         {
                                             message: message.message,

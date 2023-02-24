@@ -82,7 +82,7 @@ const index = () => {
     const HandleSendMessage = async (message) => {
         const response = await sendMessage(page, conservation.participant, message);
         if(response){
-            await HandleGetAllMessages(page, conservation);
+            await HandleGetAllMessages(page, conservation.conservation);
             return response;
         }
     }

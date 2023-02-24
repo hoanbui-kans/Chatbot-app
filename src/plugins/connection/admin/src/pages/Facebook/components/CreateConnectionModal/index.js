@@ -164,7 +164,7 @@ const CreateModal = ({ Connection, isLoading, setConnectionCreate, HandleCreateC
                       appId={ENV.CLIENT_FB_APP_ID}
                       onLoginSuccess={handleSocialLogin}
                       onLoginFailure={handleSocialLoginFailure}
-                      scope="pages_manage_metadata,pages_read_engagement,pages_messaging,email,public_profile,user_friends,pages_user_locale"
+                      scope="pages_manage_metadata,pages_read_engagement,pages_messaging,email,public_profile"
                     >
                       Đăng nhập với Facebook
                     </SocialButton>

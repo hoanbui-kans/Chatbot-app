@@ -1,7 +1,11 @@
 'use strict';
 
-const myService = require('./my-service');
+//const message = require('./message');
+//const conservation = require('./conservation');
+const customer = require('./customer');
 
 module.exports = {
-  myService,
+  //message,
+  //conservation,
+  customer
 };

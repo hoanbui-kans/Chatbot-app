@@ -1,0 +1,15 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "inboxes",
+  "info": {
+    "singularName": "inbox",
+    "pluralName": "inboxes",
+    "displayName": "inbox"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {}
+}
